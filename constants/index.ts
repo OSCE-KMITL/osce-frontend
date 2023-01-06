@@ -1,2 +1,1 @@
-export const URI =
-  process.env.PUBLIC_NEXT_URI || "http://localhost:4000/graphql/";
+export const API_URI = process.env.NEXT_PUBLIC_API_URI;

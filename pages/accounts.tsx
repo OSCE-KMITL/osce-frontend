@@ -21,10 +21,10 @@ const accounts: React.FC<ScriptProps> = () => {
   const { data, loading, error } = useQueryAccounts();
 
   if (error) {
-    return <h1>{error.message}</h1>;
+    return <h1>err</h1>;
   }
   if (loading) {
-    return <h1>{loading}</h1>;
+    return <h1>loading</h1>;
   }
 
   return (

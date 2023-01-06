@@ -8,9 +8,9 @@ const font_setting = Noto_Sans_Thai({
 });
 const Layout: React.FC<ScriptProps> = ({ children }) => {
   return (
-    <div className={font_setting.className}>
+    <div className="w-full h-screen">
       <NavigationBar />
-      {children}
+      <div className="w-full h-screen"> {children}</div>
     </div>
   );
 };
