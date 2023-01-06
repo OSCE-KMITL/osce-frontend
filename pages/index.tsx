@@ -1,7 +1,5 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import NavigationBar from "../components/navigation_bar";
-
 export default function Home() {
   return (
     <div>
@@ -10,9 +8,7 @@ export default function Home() {
         <meta name="description" content="ระบบสหกิจออนไลน์" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.container}>
-        <NavigationBar />
-      </div>
+      <div className={styles.container}>hello</div>
     </div>
   );
 }
