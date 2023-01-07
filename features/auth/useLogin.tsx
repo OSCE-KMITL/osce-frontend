@@ -1,7 +1,8 @@
 import { gql, useMutation } from "@apollo/client";
-import { MutationSignInArgs } from "../../../src/__generated__/graphql";
+import { MutationSignInArgs } from "../../src/__generated__/graphql";
 
 interface AuthData {
+  id: string;
   email: string;
   token: string;
   role: string;
@@ -10,7 +11,8 @@ export interface LoginInput {
   email: string;
   password: string;
 }
-const LOGIN = gql`
+
+export const LOGIN = gql`
   mutation SignIn($password: String!, $email: String!) {
     signIn(password: $password, email: $email) {
       email
@@ -21,5 +23,5 @@ const LOGIN = gql`
 `;
 
 export const useLogin = () => {
-  return useMutation<AuthData, MutationSignInArgs>(LOGIN);
+  return  useMutation<AuthData, MutationSignInArgs>(LOGIN);
 };
