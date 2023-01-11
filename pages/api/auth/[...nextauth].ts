@@ -55,8 +55,7 @@ export default NextAuth({
             },
         }),
     ],
-    pages: { signIn: '/auth/login' },
-    debug: true,
+    debug: false,
     callbacks: {
         jwt({ token, account, isNewUser, profile, user }) {
             if (user) {

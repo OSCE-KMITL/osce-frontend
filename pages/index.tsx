@@ -1,15 +1,15 @@
-import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { useSession } from 'next-auth/react';
+import { useAppDispatch } from '../state/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { authenticationSelector, loginReducer } from '../features/auth/authSlice';
+import { LoginInput } from '../features/auth/hooks/useLogin';
+import { useEffect } from 'react';
 
 export default function Home() {
+    const selector = useSelector(authenticationSelector);
+
     return (
         <div>
-            <Head>
-                <title>KMITL | Online System For Co-Operative Education</title>
-                <meta name="description" content="ระบบสหกิจออนไลน์" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
             <div className={styles.container}>hello</div>
         </div>
     );

@@ -7,10 +7,12 @@ const accounts: React.FC = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, loading, error } = useQueryAccounts();
     const [messageApi, contextHolder] = message.useMessage();
+
     const push_error_notication = (content: string) => {
         messageApi.open({
             type: 'error',
             content: content,
+            className: '',
         });
     };
 
@@ -26,12 +28,12 @@ const accounts: React.FC = () => {
     }
 
     return (
-        <div className="w-100 px-16 flex flex-col mt-16 gap-2">
+        <div className="w-full px-16 flex flex-col mt-16 gap-2 ">
             {contextHolder}
             <h1 onClick={() => push_error_notication('error')} className="font-bold text-2xl">
                 Accounts Table
             </h1>
-            {!error && <AccountsTable loading={loading} data_source={data.getAccounts!} />}
+            <div className="w-full">{!error && <AccountsTable loading={loading} data_source={data.getAccounts!} />}</div>
         </div>
     );
 };

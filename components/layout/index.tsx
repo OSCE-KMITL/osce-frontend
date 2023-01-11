@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import NavigationBar from './navigation_bar';
 import { ScriptProps } from 'next/script';
-import { Noto_Sans_Thai } from '@next/font/google';
+import { Inter, IBM_Plex_Sans_Thai, Poppins } from '@next/font/google';
 import { useSession } from 'next-auth/react';
 import { TOKEN_NAME } from '../../constants';
+import Head from 'next/head';
+import SideBar from '../sidebar';
 
-const font_setting = Noto_Sans_Thai({
-    subsets: ['thai'],
-});
 const Layout: React.FC<ScriptProps> = ({ children }) => {
     const { data: session, status } = useSession();
     useEffect(() => {
@@ -18,10 +17,20 @@ const Layout: React.FC<ScriptProps> = ({ children }) => {
         }
     }, [session]);
     return (
-        <div className="w-full h-screen bg-slate-50">
-            <NavigationBar />
-            <div className="w-full h-screen"> {children}</div>
-        </div>
+        <>
+            <Head>
+                <title>ระบบสหกิจออนไลน์ | สจล</title>
+                <meta name="description" content="ระบบสหกิจออนไลน์" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <div className="w-full min-h-fit bg-slate-200 ">
+                <NavigationBar />
+                <div className="flex flex-row justify-start bg-slate-200 h-screen">
+                    <SideBar />
+                    {children}
+                </div>
+            </div>
+        </>
     );
 };
 
