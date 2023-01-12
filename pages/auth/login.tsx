@@ -1,49 +1,44 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { message } from 'antd';
-import { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
+import { notification } from 'antd';
 import { GoogleIcon } from '../../components/common/Icon';
 import { LoginInput, useLogin } from '../../features/auth/hooks/useLogin';
-import { useDispatch } from 'react-redux';
-import { loginReducer } from '../../features/auth/authSlice';
-import { getSession } from 'next-auth/react';
+import { UserAuthData } from '../../features/auth/auth-slice';
+import { router } from 'next/client';
+import { AuthenticationContext } from '../../context/AuthContextProvider';
+import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
+
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const Login: React.FC = () => {
     const { register, handleSubmit } = useForm<LoginInput>();
-    const router = useRouter();
-    const [messageApi, contextHolder] = message.useMessage();
-    const [login, { data, loading, error }] = useLogin();
-    const dispatch = useDispatch();
-
-    const push_error_notication = (content: string) => {
-        messageApi.open({
-            type: 'error',
-            content: content,
+    const [api, contextHolder] = notification.useNotification();
+    const [login, { loading, error }] = useLogin();
+    const { setAuthUser } = useContext(AuthenticationContext);
+    const openNotificationWithIcon = (type: NotificationType, title: string, message: string) => {
+        api[type]({
+            message: title,
+            description: message,
         });
     };
-
     const onSubmit: SubmitHandler<LoginInput> = async (input) => {
         try {
             await login({
                 variables: { ...input },
                 onCompleted: (data) => {
+                    const { id, role, email, token } = data.signIn;
+                    const response: UserAuthData = { role: role, email: email, id: id, token: token };
+                    setAuthUser(response);
                     router.push('/');
-                    dispatch(loginReducer());
                 },
             });
         } catch (error) {
-            console.log(error);
-            push_error_notication(error.message);
+            console.log(error.message);
         }
     };
 
     if (error) {
-        push_error_notication(error.message);
-    }
-
-    if (data) {
-        console.log(data);
+        openNotificationWithIcon('error', 'พบข้อผิดพลาด', error.message);
     }
 
     return (
@@ -53,7 +48,10 @@ const Login: React.FC = () => {
                 <div className="flex flex-col px-16 my-auto font-primary_noto gap-4">
                     <h1 className="font-bold text-4xl">เข้าสู่ระบบ</h1>
                     <p className="font-light text-xl text-gray-700 ">บุคลากรและนักศึกษาเข้าสู่ระบบด้วย Email ของสถาบัน</p>
-                    <div className="flex bg-white  text-gray-900 border-2 justify-center items-center font-semibold  rounded-md gap-4 cursor-pointer">
+                    <div
+                        className="flex bg-white  text-gray-900 border-2 justify-center items-center font-semibold  rounded-md gap-4 cursor-pointer"
+                        onClick={() => {}}
+                    >
                         <GoogleIcon />
                         <p className=" py-3"> {!loading ? 'Log in with Google' : 'Loading ...'}</p>
                     </div>
@@ -80,8 +78,13 @@ const Login: React.FC = () => {
                             required={true}
                         />
                     </div>
-                    <button className="bg-gray-900 border-2 text-white   rounded-md" type="submit" disabled={loading}>
-                        <p className="px-24 py-3"> {!loading ? 'Log in with credential' : 'Loading ...'}</p>
+                    <button
+                        className={`${loading ? 'bg-gray-600' : 'bg-gray-900'} border-2 text-white flex justify-center items-center rounded-md`}
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading && <LoadingSpinner></LoadingSpinner>}
+                        <p className="px-3 py-3"> {!loading ? 'Log in ' : 'Loading ...'}</p>
                     </button>
                 </div>
             </form>
@@ -89,18 +92,3 @@ const Login: React.FC = () => {
     );
 };
 export default Login;
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    const session = await getSession(context);
-    if (session) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
-        };
-    }
-    return {
-        props: {}, // will be passed to the page component as props
-    };
-}

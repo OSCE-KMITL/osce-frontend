@@ -13,6 +13,10 @@ export const public_nav_contents: NavContent[] = [
         link: '/announcements',
     },
     {
+        title: 'ประชาสัมพันธ์',
+        link: '/announcements',
+    },
+    {
         title: 'กำหนดการสหกิจ',
         link: '/accounts',
     },
