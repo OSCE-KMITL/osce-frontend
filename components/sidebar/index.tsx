@@ -6,7 +6,7 @@ import { FormOutlined } from '@ant-design/icons';
 const SideBar: FC = () => {
     const { SubMenu } = Menu;
     return (
-        <div className="static flex justify-center w-1/5 h-screen bg-white shadow-md py-8  ">
+        <div className=" flex bg-white justify-center w-1/5 h-screen  shadow-md py-8  ">
             <Menu className="w-full text-md font-medium gap-4 font-primary_noto px-8" mode={'inline'}>
                 <Menu.ItemGroup key="g1" title={<span>จัดการสหกิจ</span>}>
                     <Menu.Item key="1">

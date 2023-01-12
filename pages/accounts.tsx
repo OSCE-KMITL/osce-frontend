@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useQueryAccounts } from '../features/account/hooks/useQueryAccounts';
+import { useQueryAccounts } from '../features/user-account/hooks/useQueryAccounts';
 import UserAccountTable from '../components/account-table/UserAccountTable';
 import { message } from 'antd';
 
