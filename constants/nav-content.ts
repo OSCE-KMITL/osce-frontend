@@ -9,12 +9,12 @@ export const public_nav_contents: NavContent[] = [
         link: '/',
     },
     {
-        title: 'ประกาศรับสมัครงาน',
-        link: '/announcements',
+        title: 'ประชาสัมพันธ์',
+        link: '/announcement',
     },
     {
-        title: 'ประชาสัมพันธ์',
-        link: '/announcements',
+        title: 'ประกาศรับสมัครงาน',
+        link: '/announcement',
     },
     {
         title: 'กำหนดการสหกิจ',
