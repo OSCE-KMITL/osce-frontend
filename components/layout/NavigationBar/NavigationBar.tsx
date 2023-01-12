@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useLogout } from '../../../hooks/useLogout';
 import { public_nav_contents } from '../../../constants/nav-content';
 import UserAvatar from '../../Avatar';
+import { AuthenticationContext } from '../../../context/AuthContextProvider';
+import { Tag } from 'antd';
+import { LiteralUnion } from 'type-fest';
 
 const NavigationBar: React.FC = () => {
+    const { user, useLogout } = useContext(AuthenticationContext);
     const contents = public_nav_contents.map((content, index) => {
         return (
             <li key={index} className="hover:text-primary-500 text-">
@@ -14,7 +16,6 @@ const NavigationBar: React.FC = () => {
         );
     });
 
-    const { data: session } = useSession();
     return (
         <div className="bg-white w-full shadow-md  mx-auto  flex justify-center text-md font-[500]  font-primary_noto z-50">
             <nav className="flex justify-between items-center w-full px-24 shadow-md mx-auto z-50">
@@ -25,17 +26,20 @@ const NavigationBar: React.FC = () => {
                     <ul className="flex items-center gap-[4vw]">{contents}</ul>
                 </div>
                 <div className="flex font-medium justify-center align-middle items-center gap-4">
-                    {!session?.user ? (
+                    {!user ? (
                         <Link href={'/auth/login'} className="bg-primary-500 hover:bg-amber-500 w-auto px-16 py-2 rounded-md font-sm text-[#ffff] ">
                             เข้าสู่ระบบ
                         </Link>
                     ) : (
                         <>
-                            <span className="flex items-center gap-6" onClick={useLogout}>
-                                <div>
-                                    <p className="text-gray-70  ">{session.user.email.toLowerCase()}</p>
-                                </div>
-                                <UserAvatar email={session.user.email} />
+                            <span className="flex items-end gap-2 cursor-pointer font-bold text-white text-xl font-mono " onClick={useLogout}>
+                                <Tag className="text-sm" color={'default'}>
+                                    {user.role}
+                                </Tag>
+                                <Tag className="text-sm" color={'error'}>
+                                    {user.email.toUpperCase()}
+                                </Tag>
+                                {/* <UserAvatar email={user.email} />*/}
                             </span>
                         </>
                     )}

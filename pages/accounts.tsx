@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQueryAccounts } from '../features/account/hooks/useQueryAccounts';
-import AccountsTable from '../components/account-table/accountsTable';
+import UserAccountTable from '../components/account-table/UserAccountTable';
 import { message } from 'antd';
 
 const accounts: React.FC = () => {
@@ -33,7 +33,7 @@ const accounts: React.FC = () => {
             <h1 onClick={() => push_error_notication('error')} className="font-bold text-2xl">
                 Accounts Table
             </h1>
-            <div className="w-full">{!error && <AccountsTable loading={loading} data_source={data.getAccounts!} />}</div>
+            <div className="w-full">{!error && <UserAccountTable loading={loading} data_source={data.getAccounts!} />}</div>
         </div>
     );
 };

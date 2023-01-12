@@ -10,16 +10,19 @@ interface AccountTable {
 
 type AccountTableProps = AccountTable;
 
-const AccountsTable: React.FC<AccountTableProps> = ({ data_source, loading }) => {
+const UserAccountTable: React.FC<AccountTableProps> = ({ data_source, loading }) => {
     return (
         <Table
-            rowClassName={(record, index) => (index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200')}
-            rowKey="id"
+            className="shadow-2xl bg-amber-400 rounded-xl "
+            rowClassName={'odd:bg-white even:bg-stone-100 text-[16px]'}
+            rowKey="email"
             dataSource={data_source}
             columns={column_type}
             loading={loading}
+            size="middle"
+            showHeader
         ></Table>
     );
 };
 
-export default AccountsTable;
+export default UserAccountTable;
