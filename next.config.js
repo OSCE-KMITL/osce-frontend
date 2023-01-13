@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     swcMinify: true,
     experimental: {
         fontLoaders: [{ loader: '@next/font/google', options: { subsets: ['latin'] } }],

@@ -1,9 +1,7 @@
-import styles from '../styles/Home.module.css';
+import React from 'react';
 
-export default function Index() {
-    return (
-        <div>
-            <div className={styles.container}>hello</div>
-        </div>
-    );
-}
+const Home: React.FC = () => {
+    return <div className="layout">Home</div>;
+};
+
+export default Home;

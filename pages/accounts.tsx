@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useQueryAccounts } from '../features/user-account/hooks/useQueryAccounts';
 import UserAccountTable from '../components/account-table/UserAccountTable';
 import { message } from 'antd';
+import { useQueryAccounts } from '../features/account/hooks/useQueryAccounts';
 
 const accounts: React.FC = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks

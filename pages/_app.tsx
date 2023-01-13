@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import Layout from '../components/layout/Layout';
+import PageLayout from '../components/layout/PageLayout';
 import { ApolloProvider } from '@apollo/client';
 import client from '../lib/apollo/apollo-client';
 import AuthContextProvider from '../context/AuthContextProvider';
@@ -13,11 +13,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <ApolloProvider client={client}>
             <AuthContextProvider>
                 <Provider store={store}>
-                    <Layout>
+                    <PageLayout>
                         <AuthenticatedGuard>
                             <Component {...pageProps} />
                         </AuthenticatedGuard>
-                    </Layout>
+                    </PageLayout>
                 </Provider>
             </AuthContextProvider>
         </ApolloProvider>

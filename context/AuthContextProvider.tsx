@@ -2,9 +2,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useGetMe } from '../features/auth/hooks/useGetMe';
 import { CookieManager } from '../utils/CookieManager';
 import client from '../lib/apollo/apollo-client';
-import { GetServerSideProps } from 'next';
-import { TOKEN_NAME } from '../constants';
-import { cookies } from 'next/headers';
 import { RoleOption } from '../constants/RoleOptions';
 
 interface Props {
@@ -33,17 +30,14 @@ const initialState: AuthContextValues = {
 export const AuthenticationContext = createContext<AuthContextValues>(initialState);
 
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
-    const { data, error } = useGetMe();
+    const { data } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
 
     useEffect(() => {
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });
-        } else if (error) {
-            setMe(null);
-            CookieManager.clearTokenFromCookie();
         }
-    }, [data?.getMe, error]);
+    }, [data?.getMe]);
 
     function setAuthUser(user: UserAuthData | null) {
         setMe(user);

@@ -2,15 +2,16 @@ import React, { useContext, useEffect } from 'react';
 import AnnouncementCards from '../../components/announcement/AnnouncementCards';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { RoleOption } from '../../constants/RoleOptions';
-import { useGetAnnouncements } from '../../features/announcement/hooks/useGetAnnouncement';
 import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
 import { storeAnnouncement } from '../../features/announcement/announcement-slice';
 import { useDispatch } from 'react-redux';
+import { useQuery } from '@apollo/client';
+import { GET_ANNOUNCEMENTS, GetAnnouncementResponse } from '../../features/announcement/types';
+import CreateAnnouncementDrawer from '../../components/announcement/AnnouncementDrawer/CreateAnnouncementDrawer';
 
 const Announcements: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
-    const { data, loading, error } = useGetAnnouncements();
-
+    const { data, loading, error } = useQuery<GetAnnouncementResponse>(GET_ANNOUNCEMENTS, { pollInterval: 1000 });
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -18,6 +19,7 @@ const Announcements: React.FC = () => {
             dispatch(storeAnnouncement(data));
         }
     }, [data]);
+
     return (
         <div className="flex flex-col items-center gap-8 w-full min-h-full max-h-full relative overflow-y-auto  py-8">
             <div className="w-[80%] h-fit">
@@ -32,7 +34,7 @@ const Announcements: React.FC = () => {
                     <p className=" px-4 py-2 rounded-2xl  cursor-pointer"> ประกาศรับสมัคร</p>
                     <p className="  px-4 py-2 rounded-2xl  cursor-pointer"> กิจกรรม</p>
                 </div>
-                {me?.role === RoleOption.COMMITTEE && <p className=" bg-primary-500 text-white px-4 py-2 rounded-2xl  cursor-pointer"> + สร้างประกาศไหม่</p>}
+                {me?.role === RoleOption.COMMITTEE && <CreateAnnouncementDrawer />}
             </div>
             <div className="w-[80%] flex flex-col font-primary_noto gap-2  ">
                 {loading && <LoadingSpinner />}

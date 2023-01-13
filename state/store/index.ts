@@ -1,11 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import announcementReducer from '../../features/announcement/announcement-slice';
-const reducers = {
-    announcementReducer,
-};
 export const store = configureStore({
-    reducer: reducers,
+    reducer: { announcement: announcementReducer },
     devTools: process.env.NODE_ENV === 'development',
 });
 
