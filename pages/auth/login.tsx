@@ -46,7 +46,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="w-full h-full flex justify-center ">
+        <div className="w-full h-screen flex justify-center ">
             {contextHolder}
             <form className="flex max-w-3/6  max-w-3/6 h-5/6 flex-col bg-white  mx-auto my-auto py-auto px-24 px-6 gap-2" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col px-16 my-auto font-primary_noto gap-4">

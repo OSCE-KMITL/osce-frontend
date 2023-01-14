@@ -15,31 +15,19 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
             <Head>
                 <title>ระบบสหกิจออนไลน์ | สจล</title>
                 <meta name="description" content="ระบบสหกิจออนไลน์" />
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="/osce.ico" />
             </Head>
-            <div>
+            <div className="w-screen max-h-full">
                 <NavigationBar />
                 <Layout>
                     {me && (
-                        <Sider
-                            width={300}
-                            breakpoint="lg"
-                            collapsedWidth="0"
-                            className={'bg-white'}
-                            style={{ backgroundColor: '#fff' }}
-                            onBreakpoint={(broken) => {
-                                console.log(broken);
-                            }}
-                            onCollapse={(collapsed, type) => {
-                                console.log(collapsed, type);
-                            }}
-                        >
+                        <Sider width={300} breakpoint="lg" style={{ backgroundColor: 'white' }} collapsedWidth="0" className={'bg-white'}>
                             <div className="logo" />
                             <SideBar />
                         </Sider>
                     )}
-                    <Content style={{ margin: '24px 16px 0' }}>
-                        <div className="h-screen">{children}</div>
+                    <Content className={'my-32  mx:8 md:mx-16'}>
+                        <div className="">{children}</div>
                     </Content>
                 </Layout>
             </div>
