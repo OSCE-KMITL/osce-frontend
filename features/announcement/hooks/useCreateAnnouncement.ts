@@ -24,5 +24,5 @@ export interface AnnouncementResponse {
 }
 
 export const useCreateAnnouncement = () => {
-    return useMutation<AnnouncementResponse, CreateAnnouncementInput>(CREATE_ANNOUNCEMENT);
+    return useMutation<AnnouncementResponse, CreateAnnouncementInput>(CREATE_ANNOUNCEMENT, { refetchQueries: [GET_ANNOUNCEMENTS] });
 };

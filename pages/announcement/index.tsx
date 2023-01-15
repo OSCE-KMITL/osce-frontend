@@ -41,7 +41,7 @@ const Announcements: React.FC = () => {
                     </Link>
                 )}
             </div>
-            <div className="w-[80%] flex flex-col font-primary_noto gap-2  ">
+            <div className="w-[80%] flex flex-col font-primary_noto gap-6  ">
                 {loading && <LoadingSpinner />}
                 {error && <LoadingSpinner />}
                 {error && <h1>{error.message}</h1>}

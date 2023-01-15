@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Layout } from 'antd';
-import SideBar from '../sidebar';
 import NavigationBar from './NavigationBar/NavigationBar';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { ScriptProps } from 'next/script';
 import Head from 'next/head';
+import SideBar from './Sidebar';
 
 const { Content, Sider } = Layout;
 

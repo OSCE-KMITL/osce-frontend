@@ -8,7 +8,7 @@ const NavigationBar: React.FC = () => {
     const { me, useLogout } = useContext(AuthenticationContext);
 
     return (
-        <div className=" w-full h-[100px] bg-white py-4 mx-auto  fixed z-50 shadow-md  flex justify-center text-md font-[500]  font-primary_noto ">
+        <header className=" w-full h-[100px] bg-white py-4 mx-auto  fixed z-50 shadow-md  flex justify-center text-md font-[500]  font-primary_noto ">
             <nav className="flex justify-between items-center w-full px-4 md:px-8 xl:px-14 mx-auto ">
                 <Link href={'/'} className="text-primary-500 text-sm md:text-2xl font-bold py-5">
                     ระบบสหกิจออนไลน์
@@ -34,7 +34,7 @@ const NavigationBar: React.FC = () => {
                     )}
                 </div>
             </nav>
-        </div>
+        </header>
     );
 };
 
