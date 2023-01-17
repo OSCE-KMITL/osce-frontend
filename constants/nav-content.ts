@@ -10,7 +10,7 @@ export const public_nav_contents: NavContent[] = [
     },
     {
         title: 'ประกาศรับสมัครงาน',
-        link: '/announcements',
+        link: '/jobs',
     },
     {
         title: 'ประชาสัมพันธ์',

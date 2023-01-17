@@ -1,33 +1,36 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import Link from 'next/link';
 import { Card } from 'antd';
-interface OwnProps {}
+import { useQuery, gql } from '@apollo/client';
+import { useQueryJobs } from '../../features/job/hooks/useQueryJobs';
+import { message } from 'antd';
 
-type Props = OwnProps;
+const Jobs: React.FC = () => {
+    const { data, loading, error } = useQueryJobs();
+    const [messageApi, contextHolder] = message.useMessage();
 
-const testData = [
-    {
-        id: 1,
-        job_title: 'Frontend dev',
-        salary: 300,
-    },
-    {
-        id: 2,
-        job_title: 'Backend dev',
-        salary: 500,
-    },
-    {
-        id: 3,
-        job_title: 'Network Admin',
-        salary: 400,
-    },
-];
+    const push_error_notication = (content: string) => {
+        messageApi.open({
+            type: 'error',
+            content: content,
+            className: '',
+        });
+    };
 
-const jobs: FunctionComponent<Props> = () => {
+    useEffect(() => {
+        if (error) {
+            push_error_notication(error.message);
+        }
+    }, [data, error]);
+
+    if (loading) {
+        return <h1>loading</h1>;
+    }
+
     return (
         <div className="w-full px-16 flex flex-col mt-16 gap-2">
             <h1>jobs</h1>
-            {testData.map((prod) => (
+            {data.getAllJob.map((prod) => (
                 <Card
                     key={prod.id}
                     title={prod.job_title}
@@ -40,14 +43,14 @@ const jobs: FunctionComponent<Props> = () => {
                     }
                     style={{ width: 300 }}
                 >
-                    <p>salary: {prod.salary}</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
-                    <p>Card content</p>
+                    <p>salary : {prod.compensation}</p>
+                    <p>limit : {prod.limit}</p>
+                    <p>required major : {prod.required_major}</p>
+                    <p>project topic : {prod.project_topic}</p>
                 </Card>
             ))}
         </div>
     );
 };
 
-export default jobs;
+export default Jobs;
