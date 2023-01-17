@@ -2,7 +2,7 @@ import { ColumnsType } from 'antd/es/table';
 import { Account } from '../../src/__generated__/graphql';
 import { Tag } from 'antd';
 import React from 'react';
-import { DeleteFilled, DeleteOutlined, EditFilled, FileSearchOutlined, IdcardFilled, SearchOutlined } from '@ant-design/icons';
+import { DeleteFilled, EditFilled, IdcardFilled } from '@ant-design/icons';
 
 const fmtName = (account: Account): string => {
     if (account.is_student) {

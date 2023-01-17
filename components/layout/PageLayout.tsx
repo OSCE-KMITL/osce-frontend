@@ -17,9 +17,9 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                 <meta name="description" content="ระบบสหกิจออนไลน์" />
                 <link rel="icon" href="/osce.ico" />
             </Head>
-            <div className="w-screen max-h-full">
+            <div className="w-screen max-h-full bg-primary-300'">
                 <NavigationBar />
-                <Layout>
+                <Layout style={{ backgroundColor: '#f8f8f8' }}>
                     {me && (
                         <Sider width={300} breakpoint="lg" style={{ backgroundColor: 'white' }} collapsedWidth="0" className={'bg-white'}>
                             <div className="logo" />
@@ -27,7 +27,7 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                         </Sider>
                     )}
                     <Content className={'my-32  mx:8 md:mx-16'}>
-                        <div className="">{children}</div>
+                        <div className="ิbg-white">{children}</div>
                     </Content>
                 </Layout>
             </div>

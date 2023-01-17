@@ -12,7 +12,7 @@ export interface AnnouncementProps {
     };
 }
 
-export interface GetAnnouncementResponse {
+export interface GetAnnouncementsResponse {
     getAnnouncements: AnnouncementProps[] | null;
 }
 

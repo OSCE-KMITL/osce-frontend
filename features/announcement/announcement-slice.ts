@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AnnouncementProps, GetAnnouncementResponse } from './types';
+import { AnnouncementProps, GetAnnouncementsResponse } from './types';
 
 interface AnnouncementsState {
     announcements: AnnouncementProps[] | null;
@@ -15,7 +15,7 @@ const announcement_slice = createSlice({
         getAnnouncement: (state, action: PayloadAction<string>) => {
             state.announcements = state.announcements.filter((data) => data.id.includes(action.payload));
         },
-        storeAnnouncement: (state, action: PayloadAction<GetAnnouncementResponse>) => {
+        storeAnnouncement: (state, action: PayloadAction<GetAnnouncementsResponse>) => {
             state.announcements = [...action.payload.getAnnouncements];
         },
     },

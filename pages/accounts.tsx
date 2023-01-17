@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import UserAccountTable from '../components/account-table/UserAccountTable';
+import UserAccountTable from '../components/Accounts/UserAccountTable';
 import { message } from 'antd';
 import { useQueryAccounts } from '../features/account/hooks/useQueryAccounts';
 
@@ -15,7 +15,6 @@ const accounts: React.FC = () => {
             className: '',
         });
     };
-
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         if (error) {

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "watch": "graphql-codegen -w",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
@@ -20,6 +22,8 @@
     "@types/react-dom": "18.0.9",
     "antd": "^5.1.2",
     "axios": "^1.2.2",
+    "class-variance-authority": "^0.4.0",
+    "concurrently": "^7.6.0",
     "cookies": "^0.8.0",
     "dotenv": "^16.0.3",
     "eslint": "8.28.0",
@@ -41,8 +45,17 @@
     "typescript": "4.9.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@graphql-codegen/cli": "^2.16.3",
     "@graphql-codegen/client-preset": "^1.2.5",
+    "@storybook/addon-actions": "^6.5.15",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-interactions": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/builder-webpack4": "^6.5.15",
+    "@storybook/manager-webpack4": "^6.5.15",
+    "@storybook/react": "^6.5.15",
+    "@storybook/testing-library": "^0.0.13",
     "@types/axios": "^0.14.0",
     "@types/cookies": "^0.7.7",
     "@types/dotenv": "^8.2.0",
@@ -50,10 +63,13 @@
     "@types/quill": "^2.0.10",
     "@types/react-redux": "^7.1.25",
     "autoprefixer": "^10.4.13",
+    "babel-loader": "^8.3.0",
     "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-storybook": "^0.6.10",
     "postcss": "^8.4.20",
     "prettier": "2.8.0",
     "sass": "^1.56.1",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "tsconfig-paths-webpack-plugin": "^4.0.0"
   }
 }

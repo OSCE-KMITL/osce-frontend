@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { Avatar } from 'antd';
 
 interface AvartarProp {
     email: string;

@@ -7,6 +7,7 @@ export interface CreateAnnouncementInput {
         desc: string;
     };
 }
+
 export const CREATE_ANNOUNCEMENT = gql`
     mutation CreatePost($announcementInfo: AnnouncementInput!) {
         createAnnouncement(announcement_info: $announcementInfo) {

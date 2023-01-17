@@ -1,6 +1,4 @@
 import { ApolloError, gql, useQuery } from '@apollo/client';
-import accounts from '../../../pages/accounts';
-import { Account } from '../../../src/__generated__/graphql';
 
 export const GET_ACCOUNTS = gql`
     query GetAccounts {

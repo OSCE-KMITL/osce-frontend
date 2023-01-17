@@ -6,9 +6,10 @@ import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
 import { storeAnnouncement } from '../../features/announcement/announcement-slice';
 import { useDispatch } from 'react-redux';
 import { useGetAnnouncements } from '../../features/announcement/hooks/useGetAnnouncement';
-import Link from 'next/link';
 import BreadcrumbComponent from '../../components/common/Beardcrumb/Beardcrumb';
-
+import { Link } from '@ui/Link';
+import ContentContainer from '@ui/ContentContainer';
+import SkeletonLoading from '@ui/SkeletonLoading';
 const Announcements: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
     const { data, loading, error } = useGetAnnouncements();
@@ -21,8 +22,12 @@ const Announcements: React.FC = () => {
         }
     }, [data]);
 
+    if (loading) {
+        return <SkeletonLoading></SkeletonLoading>;
+    }
+
     return (
-        <div className="flex flex-col items-start gap-8 w-full min-h-full max-h-full  relative overflow-y-auto py-8">
+        <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
                 <h1 className="text-5xl font-primary_noto font-semibold"> ประชาสัมพันธ์</h1>
@@ -37,7 +42,7 @@ const Announcements: React.FC = () => {
                     <p className="  px-4 py-2 rounded-md cursor-pointer"> กิจกรรม</p>
                 </div>
                 {me?.role === RoleOption.COMMITTEE && (
-                    <Link href={'announcement/new'} className=" bg-primary-500 text-white text-lg px-4 py-2 rounded-xl  cursor-pointer">
+                    <Link href={'/announcement/new'} intent="primary">
                         + สร้างประกาศไหม่
                     </Link>
                 )}
@@ -48,7 +53,7 @@ const Announcements: React.FC = () => {
                 {error && <h1>{error.message}</h1>}
                 {data && <AnnouncementCards getAnnouncements={data.getAnnouncements} />}
             </div>{' '}
-        </div>
+        </ContentContainer>
     );
 };
 

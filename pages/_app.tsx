@@ -7,7 +7,6 @@ import AuthenticatedGuard from '../components/Guard/AuthenticatedGuard';
 import { store } from '../state/store';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
-
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ApolloProvider client={client}>
