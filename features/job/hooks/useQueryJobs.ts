@@ -14,6 +14,10 @@ export const GET_JOBS = gql`
             welfare
             compensation
             coop301_fileurl
+            company_id {
+                name
+                address
+            }
         }
     }
 `;
@@ -35,27 +39,46 @@ export const GET_JOB_BY_ID = gql`
             updatedAt
             company_id {
                 name
+                address
             }
         }
     }
 `;
 
-interface Result {
-    loading: boolean;
-    error: ApolloError | undefined;
-    data: any;
+export interface JobProps {
+    id: string;
+    job_title: string;
+    required_major: string;
+    project_topic: string;
+    nature_of_work: string;
+    required_skills: string;
+    limit: string;
+    welfare: string;
+    compensation: string;
+    coop301_fileurl: string;
+    company_id: {
+        name: string;
+        address: string;
+    };
+}
+export interface JobResponse {
+    getJobById: JobProps | null;
 }
 
-export function useQueryJobs(): Result {
+export interface JobResponses {
+    getAllJob: JobProps[] | null;
+}
+
+export function useQueryJobs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery(GET_JOBS);
+    const { data, loading, error } = useQuery<JobResponses>(GET_JOBS);
 
     return { data, loading, error };
 }
 
-export function useQueryJob({jobId :string}): Result {
+export function useQueryJob({ jobId: string }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery(GET_JOB_BY_ID,{variables:{jobId :string} });
+    const { data, loading, error } = useQuery<JobResponse>(GET_JOB_BY_ID, { variables: { jobId: string } });
 
     return { data, loading, error };
 }
