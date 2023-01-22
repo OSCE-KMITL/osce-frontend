@@ -9,11 +9,11 @@ export const public_nav_contents: NavContent[] = [
         link: '/',
     },
     {
-        title: 'ประชาสัมพันธ์',
-        link: '/announcement',
+        title: 'ประกาศรับสมัครงาน',
+        link: '/jobs',
     },
     {
-        title: 'ประกาศรับสมัครงาน',
+        title: 'ประชาสัมพันธ์',
         link: '/announcement',
     },
     {
