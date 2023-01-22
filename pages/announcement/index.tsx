@@ -2,45 +2,48 @@ import React, { useContext, useEffect } from 'react';
 import AnnouncementCards from '../../components/announcement/AnnouncementCards';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { RoleOption } from '../../constants/RoleOptions';
-import { useGetAnnouncements } from '../../features/announcement/hooks/useGetAnnouncement';
 import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
-import { storeAnnouncement } from '../../features/announcement/announcement-slice';
-import { useDispatch } from 'react-redux';
-
+import { useGetAnnouncements } from '../../features/announcement/hooks/useGetAnnouncement';
+import BreadcrumbComponent from '../../components/common/Beardcrumb/Beardcrumb';
+import { Link } from '@ui/Link';
+import ContentContainer from '@ui/ContentContainer';
+import SkeletonLoading from '@ui/SkeletonLoading';
 const Announcements: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
-    const { data, loading, error } = useGetAnnouncements();
+    const { data, loading, error, refetch } = useGetAnnouncements();
 
-    const dispatch = useDispatch();
+    if (loading) {
+        return <SkeletonLoading></SkeletonLoading>;
+    }
 
-    useEffect(() => {
-        if (data) {
-            dispatch(storeAnnouncement(data));
-        }
-    }, [data]);
     return (
-        <div className="flex flex-col items-center gap-8 w-full min-h-full max-h-full relative overflow-y-auto  py-8">
+        <ContentContainer>
             <div className="w-[80%] h-fit">
+                <BreadcrumbComponent />
                 <h1 className="text-5xl font-primary_noto font-semibold"> ประชาสัมพันธ์</h1>
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
-            <div className="w-[80%] flex flex-row justify-between items-center gap-6 font-primary_noto ">
-                <div className=" flex flex-row gap-6 font-primary_noto ">
-                    <p className=" bg-gray-500 text-white px-4 py-2 rounded-2xl  cursor-pointer"> ทั้งหมด</p>
-                    <p className="  px-4 py-2 rounded-2xl  cursor-pointer"> ทั่วไป</p>
-                    <p className="  px-4 py-2 rounded-2xl  cursor-pointer"> กำหนดการ</p>
-                    <p className=" px-4 py-2 rounded-2xl  cursor-pointer"> ประกาศรับสมัคร</p>
-                    <p className="  px-4 py-2 rounded-2xl  cursor-pointer"> กิจกรรม</p>
+            <div className="w-full flex flex-row justify-between items-center gap-2 font-primary_noto ">
+                <div className=" flex flex-row gap-2 font-primary_noto ">
+                    <p className=" bg-gray-500 text-white px-4 py-2 rounded-md  cursor-pointer"> ทั้งหมด</p>
+                    <p className="  px-4 py-2 rounded-md  cursor-pointer"> ทั่วไป</p>
+                    <p className="  px-4 py-2 rounded-md  cursor-pointer"> กำหนดการ</p>
+                    <p className=" px-4 py-2 rounded-md  cursor-pointer"> ประกาศรับสมัคร</p>
+                    <p className="  px-4 py-2 rounded-md cursor-pointer"> กิจกรรม</p>
                 </div>
-                {me?.role === RoleOption.COMMITTEE && <p className=" bg-primary-500 text-white px-4 py-2 rounded-2xl  cursor-pointer"> + สร้างประกาศไหม่</p>}
+                {me?.role === RoleOption.COMMITTEE && (
+                    <Link href={'/announcement/new'} intent="primary">
+                        + สร้างประกาศไหม่
+                    </Link>
+                )}
             </div>
-            <div className="w-[80%] flex flex-col font-primary_noto gap-2  ">
+            <div className="w-full flex flex-col font-primary_noto gap-6  ">
                 {loading && <LoadingSpinner />}
                 {error && <LoadingSpinner />}
                 {error && <h1>{error.message}</h1>}
                 {data && <AnnouncementCards getAnnouncements={data.getAnnouncements} />}
             </div>{' '}
-        </div>
+        </ContentContainer>
     );
 };
 

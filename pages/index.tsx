@@ -1,9 +1,8 @@
-import styles from '../styles/Home.module.css';
+import React, { useState } from 'react';
+import ContentContainer from '@ui/ContentContainer';
 
-export default function Index() {
-    return (
-        <div>
-            <div className={styles.container}>hello</div>
-        </div>
-    );
-}
+const HomePage: React.FC = () => {
+    return <ContentContainer></ContentContainer>;
+};
+
+export default HomePage;

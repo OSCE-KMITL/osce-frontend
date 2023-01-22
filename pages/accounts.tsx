@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useQueryAccounts } from '../features/user-account/hooks/useQueryAccounts';
-import UserAccountTable from '../components/account-table/UserAccountTable';
+import UserAccountTable from '../components/Accounts/UserAccountTable';
 import { message } from 'antd';
+import { useQueryAccounts } from '../features/account/hooks/useQueryAccounts';
 
 const accounts: React.FC = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -15,7 +15,6 @@ const accounts: React.FC = () => {
             className: '',
         });
     };
-
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         if (error) {

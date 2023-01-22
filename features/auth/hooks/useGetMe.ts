@@ -9,6 +9,17 @@ export interface GetMeResponse {
     };
 }
 
+export const FETCH_ME = {
+    query: ` 
+    query Query {
+        getMe {
+            id
+            email
+            role
+        }
+    }`,
+};
+
 export const GET_ME = gql`
     query Query {
         getMe {

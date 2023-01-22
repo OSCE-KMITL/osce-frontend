@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AnnouncementProps, GetAnnouncementResponse } from './types';
+import { AnnouncementProps, GetAnnouncementsResponse } from './types';
 
 interface AnnouncementsState {
     announcements: AnnouncementProps[] | null;
@@ -12,15 +12,18 @@ const announcement_slice = createSlice({
     name: 'counter',
     initialState: initial_state,
     reducers: {
-        storeAnnouncement: (state, action: PayloadAction<GetAnnouncementResponse>) => {
-            state.announcements = {
-                ...action.payload.getAnnouncements,
-            };
+        getAnnouncement: (state, action: PayloadAction<string>) => {
+            state.announcements = state.announcements.filter((data) => data.id.includes(action.payload));
+        },
+        storeAnnouncement: (state, action: PayloadAction<GetAnnouncementsResponse>) => {
+            if (action.payload) {
+                state.announcements = [...action.payload.getAnnouncements];
+            } else state.announcements = null;
         },
     },
 });
 
-export const { storeAnnouncement } = announcement_slice.actions;
+export const { storeAnnouncement, getAnnouncement } = announcement_slice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 

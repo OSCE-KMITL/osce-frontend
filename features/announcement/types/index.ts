@@ -3,16 +3,16 @@ import { gql } from '@apollo/client';
 export interface AnnouncementProps {
     id: string;
     title: string;
-    updatedAt: string;
     description: string;
-    createdAt: string;
+    updatedAt: Date;
+    createdAt: Date;
     advisor_id: {
         name: string;
         last_name: string;
     };
 }
 
-export interface GetAnnouncementResponse {
+export interface GetAnnouncementsResponse {
     getAnnouncements: AnnouncementProps[] | null;
 }
 

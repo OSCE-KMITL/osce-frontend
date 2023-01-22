@@ -3,13 +3,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { notification } from 'antd';
 import { GoogleIcon } from '../../components/common/Icon';
 import { LoginInput, useLogin } from '../../features/auth/hooks/useLogin';
-
 import { AuthenticationContext, UserAuthData } from '../../context/AuthContextProvider';
 import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { TOKEN_NAME } from '../../constants';
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
+export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const Login: React.FC = () => {
     const { register, handleSubmit } = useForm<LoginInput>();
@@ -46,7 +45,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="w-full h-full flex justify-center ">
+        <div className="w-full h-screen flex justify-center ">
             {contextHolder}
             <form className="flex max-w-3/6  max-w-3/6 h-5/6 flex-col bg-white  mx-auto my-auto py-auto px-24 px-6 gap-2" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col px-16 my-auto font-primary_noto gap-4">
