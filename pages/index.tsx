@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ContentContainer from '@ui/ContentContainer';
 
-const Home: React.FC = () => {
-    return <div className="layout">Home</div>;
+const HomePage: React.FC = () => {
+    return <ContentContainer></ContentContainer>;
 };
 
-export default Home;
+export default HomePage;

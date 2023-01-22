@@ -3,8 +3,6 @@ import AnnouncementCards from '../../components/announcement/AnnouncementCards';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { RoleOption } from '../../constants/RoleOptions';
 import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
-import { storeAnnouncement } from '../../features/announcement/announcement-slice';
-import { useDispatch } from 'react-redux';
 import { useGetAnnouncements } from '../../features/announcement/hooks/useGetAnnouncement';
 import BreadcrumbComponent from '../../components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
@@ -12,15 +10,7 @@ import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 const Announcements: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
-    const { data, loading, error } = useGetAnnouncements();
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (data) {
-            dispatch(storeAnnouncement(data));
-        }
-    }, [data]);
+    const { data, loading, error, refetch } = useGetAnnouncements();
 
     if (loading) {
         return <SkeletonLoading></SkeletonLoading>;

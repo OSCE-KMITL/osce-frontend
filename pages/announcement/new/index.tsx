@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import BreadcrumbComponent from '../../../components/common/Beardcrumb/Beardcrumb';
-import { useForm } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
 import { useCreateAnnouncement } from '../../../features/announcement/hooks/useCreateAnnouncement';
 import { NotificationType } from '../../auth/login';
 import { notification } from 'antd';
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import { useQuill } from 'react-quilljs';
 import Button from '@ui/Button';
+import Input from '@ui/Input';
+import { RegisterOptions } from 'react-hook-form/dist/types/validator';
+import { useForm } from 'react-hook-form';
 
 type Inputs = {
     title: string;
@@ -24,7 +25,7 @@ const CreatePostPage: FC = () => {
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<Inputs>({ shouldUseNativeValidation: true });
+    } = useForm<Inputs>({ shouldUseNativeValidation: true, mode: 'onChange' });
     const [createPost, { loading }] = useCreateAnnouncement();
     useEffect(() => {
         if (quill) {
@@ -72,6 +73,23 @@ const CreatePostPage: FC = () => {
         });
     };
 
+    const titleValidationOption: RegisterOptions = {
+        required: 'จำเป็นต้องกรอกหัวข้อ',
+        minLength: {
+            message: 'ข้อมูลหัวข้อน้อยเกินไป',
+            value: 5,
+        },
+        maxLength: {
+            message: 'ข้อมูลหัวข้อมากเกินไป',
+            value: 255,
+        },
+    };
+
+    const minLengthDescription = descriptionLength < 10 ? true : false && <p>รายละเอียดน้อยเกินไป</p>;
+    const maxLengthDescription = descriptionLength > 5000 ? true : false && <p>รายละเอียดน้อยเยอะเกินไป</p>;
+    const requireDescription = descriptionLength === 0 ? true : false && <p>จำเป็นต้องมีรายละเอียดในการสร้างประกาศ</p>;
+    const descriptValidation = minLengthDescription || maxLengthDescription || requireDescription;
+
     return (
         <div className="flex flex-col items-start gap-8 w-full min-h-full max-h-full  relative overflow-y-auto py-8">
             {contextHolder}
@@ -81,42 +99,31 @@ const CreatePostPage: FC = () => {
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full bg-white h-auto min-h-screen gap-6 rounded-md px-8 py-8 font-primary_noto">
+                <Input
+                    errors={errors}
+                    name={'title'}
+                    type={'text'}
+                    label={'หัวข้อ'}
+                    register={register}
+                    isError={errors.title && true}
+                    validationSchema={titleValidationOption}
+                />
                 <div className="mb-6">
-                    <label htmlFor="email" className={`block mb-2 text-lg font-medium $text-gray-900 `}>
-                        หัวข้อ
-                    </label>
-                    <input
-                        type="text"
-                        id="title"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-blue-500 outline-0 block w-full p-2.5 "
-                        placeholder="หัวข้อประชาสัมพันธ์ 5 - 255 ตัวอักษร"
-                        {...register('title', {
-                            required: 'จำเป็นต้องกรอกหัวข้อการประกาศ',
-                            minLength: {
-                                message: 'ข้อมูลน้อยเกินไป',
-                                value: 5,
-                            },
-                            maxLength: {
-                                message: 'ข้อมูลมากเกินไป',
-                                value: 150,
-                            },
-                        })}
-                    />
-                    <ErrorMessage errors={errors} name={'title'} render={({ message }) => <p className={'text-red-500'}>{message}</p>} />
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="desc" className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
-                        รายละเอียด
-                    </label>
-                    <div className="h-[300px] mb-24 lg:mb-16">
-                        <div ref={quillRef}></div>
+                    <div className="flex flex-row gap-2">
+                        <label htmlFor="desc" className={`block mb-2 text-lg font-medium'text-gray-900'`}>
+                            รายละเอียด
+                        </label>{' '}
+                    </div>
+                    <div className={`border min-h-[300px] max-h-full mb-24 lg:mb-16 ${descriptValidation ? 'border border-red-400' : ''}`}>
+                        <div className="border-none " ref={quillRef}></div>
                     </div>
                 </div>
+
                 <div className="flex flex-row w-full justify-end gap-4 ">
                     <Button onClick={clearForm} intent="secondary">
                         ล้างฟอร์ม
                     </Button>
-                    <Button type={'submit'} intent="primary">
+                    <Button type={'submit'} intent="primary" isDisabled={descriptionLength < 10 ? true : false}>
                         {!loading && '+ สร้างประกาศไหม่'}
                         {loading && (
                             <span>

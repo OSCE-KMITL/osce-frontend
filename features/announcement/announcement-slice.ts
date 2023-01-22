@@ -16,7 +16,9 @@ const announcement_slice = createSlice({
             state.announcements = state.announcements.filter((data) => data.id.includes(action.payload));
         },
         storeAnnouncement: (state, action: PayloadAction<GetAnnouncementsResponse>) => {
-            state.announcements = [...action.payload.getAnnouncements];
+            if (action.payload) {
+                state.announcements = [...action.payload.getAnnouncements];
+            } else state.announcements = null;
         },
     },
 });

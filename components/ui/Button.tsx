@@ -20,6 +20,9 @@ export const buttonStyles = cva('flex justify-center items-center text-lg px-4 p
         fullWidth: {
             true: 'w-full',
         },
+        isDisabled: {
+            true: 'cursor-not-allowed',
+        },
     },
     defaultVariants: {
         intent: 'primary',
@@ -28,6 +31,6 @@ export const buttonStyles = cva('flex justify-center items-center text-lg px-4 p
 
 export interface ButtonProps extends ButtonOrLinkProps, VariantProps<typeof buttonStyles> {}
 
-export default function Button({ intent, fullWidth, ...props }: ButtonProps) {
-    return <ButtonOrLink className={buttonStyles({ intent, fullWidth })} {...props} />;
+export default function Button({ intent, fullWidth, isDisabled, ...props }: ButtonProps) {
+    return <ButtonOrLink disabled={isDisabled} className={buttonStyles({ intent, fullWidth, isDisabled })} {...props} />;
 }
