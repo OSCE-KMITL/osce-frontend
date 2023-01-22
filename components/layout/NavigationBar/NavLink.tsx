@@ -14,7 +14,7 @@ export const PUBLIC_NAVIGATOR_LINK: NavContent[] = [
     },
     {
         title: 'ประกาศรับสมัครงาน',
-        link: '/announcement',
+        link: '/jobs',
     },
     {
         title: 'กำหนดการสหกิจ',

@@ -8,9 +8,11 @@ import BreadcrumbComponent from '../../components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
+import NotificationService from '../../lib/ant_service/NotificationService';
 const Announcements: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
     const { data, loading, error, refetch } = useGetAnnouncements();
+    const notification = NotificationService.getInstance();
 
     if (loading) {
         return <SkeletonLoading></SkeletonLoading>;
@@ -20,7 +22,10 @@ const Announcements: React.FC = () => {
         <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1 className="text-5xl font-primary_noto font-semibold"> ประชาสัมพันธ์</h1>
+                <h1 onClick={() => notification.info('assss', 'sss')} className="text-5xl font-primary_noto font-semibold">
+                    {' '}
+                    ประชาสัมพันธ์
+                </h1>
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
             <div className="w-full flex flex-row justify-between items-center gap-2 font-primary_noto ">

@@ -29,6 +29,7 @@ interface InputProps extends VariantProps<typeof inputStyle> {
 }
 
 const Input: FunctionComponent<InputProps> = ({ validationSchema, name, errors, register, type, label, fullWidth, isError }) => {
+    console.log(errors);
     return (
         <div className="mb-4 h-auto">
             <label htmlFor={name} className={`block mb-2 text-lg font-medium $text-gray-900 `}>

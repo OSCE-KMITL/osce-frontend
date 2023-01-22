@@ -1,27 +1,23 @@
-import { Card } from 'antd';
 import { useRouter } from 'next/router';
 import { useQueryJob } from '../../features/job/hooks/useQueryJobs';
-import MessageService from '../../lib/ant_service/MessageService';
-import NotificationService from '../../lib/ant_service/NotificationService';
+import ContentContainer from '@ui/ContentContainer';
+import SkeletonLoading from '@ui/SkeletonLoading';
+import React, { FC, FunctionComponent } from 'react';
+interface OwnProps {}
 
-const Job = () => {
+type Props = OwnProps;
+const JobDetail: FunctionComponent<Props> = () => {
     const router = useRouter();
-    const { jobId } = router.query;
-
-    const { data, loading, error } = useQueryJob({ jobId: jobId });
-    const notification = NotificationService.getInstance();
-    const message = MessageService.getInstance();
+    const { id } = router.query;
+    const { data, loading, error } = useQueryJob({ jobId: id });
 
     if (error) {
-        notification.error('Error', error.message);
-    }
-
-    if (loading) {
-        message.loading('Loading');
+        return <h1>{error.message || 'พบข้อผิดพลาดบางประการ'}</h1>;
     }
 
     return (
-        <div className="mx-auto px-40 flex flex-col mt-8 gap-2">
+        <ContentContainer>
+            {loading && <SkeletonLoading></SkeletonLoading>}
             <div className="overflow-hidden bg-white shadow sm:rounded-lg w-full px-8 border-solid border-2 border-gray-300 ">
                 <div className="px-4 py-5 sm:px-6">
                     <h3 className="text-xl font-medium leading-6 text-gray-900">{data.getJobById.job_title ? data.getJobById.job_title : '-'}</h3>
@@ -30,10 +26,10 @@ const Job = () => {
                 <div className="border-t border-gray-200">
                     <dl>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt className="text-sm font-medium text-gray-500">ชื่อหัวข้อโครงงานสหกิจศึกษา</dt>
-                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            <div className="text-sm font-medium text-gray-500">ชื่อหัวข้อโครงงานสหกิจศึกษา</div>
+                            <div className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                 {data.getJobById.project_topic ? data.getJobById.project_topic : '-'}
-                            </dd>
+                            </div>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">ภาควิชา/หลักสูตรที่รับ</dt>
@@ -42,10 +38,10 @@ const Job = () => {
                             </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt className="text-sm font-medium text-gray-500">ลักษณะงานที่ต้องปฏิบัติ</dt>
-                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            <div className="text-sm font-medium text-gray-500">ลักษณะงานที่ต้องปฏิบัติ</div>
+                            <div className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                 {data.getJobById.required_skills ? data.getJobById.required_skills : '-'}
-                            </dd>
+                            </div>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">ทักษะที่นักศึกษาควรมี</dt>
@@ -99,8 +95,8 @@ const Job = () => {
                     </dl>
                 </div>
             </div>
-        </div>
+        </ContentContainer>
     );
 };
 
-export default Job;
+export default JobDetail;

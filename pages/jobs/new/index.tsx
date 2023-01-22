@@ -6,25 +6,22 @@ import { JobInput, useCreateJob } from '../../../features/job/hooks/useCreateJob
 // import { NotificationType } from '../../auth/login';
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import NotificationService from '../../../lib/ant_service/NotificationService';
+import Input from '@ui/Input';
 // import Button from '@ui/Button';
 
 const CreateJobPage: FC = () => {
-    // const { quill, quillRef } = useQuill();
-    const [description, setDescription] = useState('');
-    const [descriptionLength, setDescriptionLength] = useState(0);
     const notification = NotificationService.getInstance();
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<JobInput>({ shouldUseNativeValidation: true });
+    } = useForm<JobInput>({ mode: 'onChange' });
     const [createJob, { loading }] = useCreateJob();
 
-    // function clearForm() {
-    //     reset();
-    //     quill.deleteText(0, 1500);
-    // }
+    function clearForm() {
+        reset();
+    }
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -32,7 +29,7 @@ const CreateJobPage: FC = () => {
             onCompleted: (result) => {
                 if (result) {
                     notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
-                    // clearForm();
+                    clearForm();
                 }
             },
             onError: (error) => {
@@ -61,13 +58,6 @@ const CreateJobPage: FC = () => {
 
     return (
         <div className="flex flex-col items-start gap-8 w-full min-h-full max-h-full  relative overflow-y-auto py-8">
-            <button
-                className=" bg-yellow-500 hover:bg-yellow-400 w-40 py-2 px-2 rounded-md font-sm text-[#ffff] text-center mt-8 "
-                onClick={() => notification.error('Error', 'This is a custom success notification.')}
-            >
-                ทดสอบ notify
-            </button>
-
             <div className="w-[80%] h-fit">
                 {/* <BreadcrumbComponent /> */}
                 <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> เพิ่มงานที่เปิดรับ</h1>
@@ -75,27 +65,28 @@ const CreateJobPage: FC = () => {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full bg-white h-auto min-h-screen gap-6 rounded-md px-8 py-8 font-primary_noto">
                 <div className="mb-6">
-                    <label htmlFor="email" className={`block mb-2 text-lg font-medium $text-gray-900 `}>
-                        ตำแหน่งงาน
-                    </label>
-                    <input
-                        type="text"
-                        id="job_title"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-blue-500 outline-0 block w-full p-2.5 "
-                        placeholder=""
-                        {...register('job_title', {
-                            required: 'จำเป็นต้องกรอกตำแหน่งงาน',
+                    <Input
+                        type={'text'}
+                        label={'ตำแหน่งงาน'}
+                        name={'job_title'}
+                        errors={errors}
+                        register={register}
+                        validationSchema={{
+                            required: 'กรอกด้วยนะฮัลโหลล',
+                            maxLength: {
+                                message: 'ข้อมูลมากเกินไป',
+                                value: 100,
+                            },
                             minLength: {
                                 message: 'ข้อมูลน้อยเกินไป',
                                 value: 5,
                             },
-                            maxLength: {
-                                message: 'ข้อมูลมากเกินไป',
-                                value: 150,
-                            },
-                        })}
-                    />
-                    {/* <ErrorMessage errors={errors} name={'title'} render={({ message }) => <p className={'text-red-500'}>{message}</p>} /> */}
+                        }}
+                        isError={errors.job_title && true}
+                    ></Input>
+                    <label htmlFor="email" className={`block mb-2 text-lg font-medium $text-gray-900 `}>
+                        ตำแหน่งงาน 555
+                    </label>
                 </div>
                 <div className="mb-6">
                     <label htmlFor="email" className={`block mb-2 text-lg font-medium $text-gray-900 `}>
