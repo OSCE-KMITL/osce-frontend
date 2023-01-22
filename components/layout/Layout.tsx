@@ -6,7 +6,7 @@ import SideBar from '../sidebar';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 
 const Layout: React.FC<ScriptProps> = ({ children }) => {
-    const { user } = useContext(AuthenticationContext);
+    const { me } = useContext(AuthenticationContext);
     return (
         <>
             <Head>
@@ -14,10 +14,10 @@ const Layout: React.FC<ScriptProps> = ({ children }) => {
                 <meta name="description" content="ระบบสหกิจออนไลน์" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="w-full min-h-fit bg-slate-200 ">
+            <div className="w-full min-h-fit  ">
                 <NavigationBar />
-                <div className="flex flex-row justify-start bg-slate-200 h-screen">
-                    {user && <SideBar />}
+                <div className="flex flex-row justify-start bg-gray-100 h-screen">
+                    {me && <SideBar />}
                     {children}
                 </div>
             </div>

@@ -1,12 +1,13 @@
 import { gql, useMutation } from '@apollo/client';
 import { MutationSignInArgs } from '../../../src/__generated__/graphql';
+import { RoleOption } from '../../../constants/RoleOptions';
 
 export interface AuthResponse {
     signIn: {
         id: string;
         email: string;
         token: string;
-        role: string;
+        role: RoleOption;
     };
 }
 

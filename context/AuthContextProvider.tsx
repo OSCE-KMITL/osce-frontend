@@ -1,21 +1,31 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { UserAuthData } from '../features/auth/auth-slice';
 import { useGetMe } from '../features/auth/hooks/useGetMe';
 import { CookieManager } from '../utils/CookieManager';
 import client from '../lib/apollo/apollo-client';
+import { GetServerSideProps } from 'next';
+import { TOKEN_NAME } from '../constants';
+import { cookies } from 'next/headers';
+import { RoleOption } from '../constants/RoleOptions';
 
 interface Props {
     children: JSX.Element;
 }
 
+export interface UserAuthData {
+    id: string;
+    email: string;
+    token?: string;
+    role: RoleOption;
+}
+
 interface AuthContextValues {
-    user: UserAuthData;
+    me: UserAuthData | null;
     setAuthUser: (user: UserAuthData | null) => void;
     useLogout: () => void;
 }
 
 const initialState: AuthContextValues = {
-    user: null,
+    me: null,
     setAuthUser: () => {},
     useLogout: () => {},
 };
@@ -23,27 +33,30 @@ const initialState: AuthContextValues = {
 export const AuthenticationContext = createContext<AuthContextValues>(initialState);
 
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
-    const { data } = useGetMe();
-    const [user, setUser] = useState<UserAuthData | null>(null);
+    const { data, error } = useGetMe();
+    const [me, setMe] = useState<UserAuthData | null>(null);
 
     useEffect(() => {
         if (data?.getMe) {
-            setUser({ ...user, ...data.getMe });
+            setMe({ ...me, ...data.getMe });
+        } else if (error) {
+            setMe(null);
+            CookieManager.clearTokenFromCookie();
         }
-    }, [data?.getMe]);
+    }, [data?.getMe, error]);
 
     function setAuthUser(user: UserAuthData | null) {
-        setUser(user);
+        setMe(user);
         CookieManager.setCookieWithToken(user.token);
     }
 
     async function useLogout() {
-        setUser(null);
+        setMe(null);
         CookieManager.clearTokenFromCookie();
         await client.resetStore();
     }
 
-    return <AuthenticationContext.Provider value={{ user, setAuthUser, useLogout }}>{children}</AuthenticationContext.Provider>;
+    return <AuthenticationContext.Provider value={{ me: me, setAuthUser, useLogout }}>{children}</AuthenticationContext.Provider>;
 };
 
 export default AuthContextProvider;

@@ -10,7 +10,14 @@ module.exports = {
             },
             colors: {
                 primary: {
+                    100: '#FFEEE6',
+                    200: '#FFCAAE',
+                    300: '#FFA576',
+                    400: '#FF813E',
                     500: '#e35205',
+                    600: '#B03D00',
+                    700: '#7D2B00',
+                    800: '#4A1A00',
                 },
             },
             fontFamily: {

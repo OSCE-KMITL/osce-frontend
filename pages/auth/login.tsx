@@ -3,11 +3,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { notification } from 'antd';
 import { GoogleIcon } from '../../components/common/Icon';
 import { LoginInput, useLogin } from '../../features/auth/hooks/useLogin';
-import { UserAuthData } from '../../features/auth/auth-slice';
-import { router } from 'next/client';
-import { AuthenticationContext } from '../../context/AuthContextProvider';
-import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
 
+import { AuthenticationContext, UserAuthData } from '../../context/AuthContextProvider';
+import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { TOKEN_NAME } from '../../constants';
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const Login: React.FC = () => {
@@ -15,12 +16,15 @@ const Login: React.FC = () => {
     const [api, contextHolder] = notification.useNotification();
     const [login, { loading, error }] = useLogin();
     const { setAuthUser } = useContext(AuthenticationContext);
+    const router = useRouter();
+
     const openNotificationWithIcon = (type: NotificationType, title: string, message: string) => {
         api[type]({
             message: title,
             description: message,
         });
     };
+
     const onSubmit: SubmitHandler<LoginInput> = async (input) => {
         try {
             await login({
@@ -29,7 +33,7 @@ const Login: React.FC = () => {
                     const { id, role, email, token } = data.signIn;
                     const response: UserAuthData = { role: role, email: email, id: id, token: token };
                     setAuthUser(response);
-                    router.push('/');
+                    router.back();
                 },
             });
         } catch (error) {
@@ -92,3 +96,17 @@ const Login: React.FC = () => {
     );
 };
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
+    const token = req.cookies[TOKEN_NAME];
+    if (token) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: true,
+            },
+        };
+    } else {
+        return { props: {} };
+    }
+};

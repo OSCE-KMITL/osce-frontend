@@ -14,7 +14,7 @@ export const public_nav_contents: NavContent[] = [
     },
     {
         title: 'ประชาสัมพันธ์',
-        link: '/announcements',
+        link: '/announcement',
     },
     {
         title: 'กำหนดการสหกิจ',
