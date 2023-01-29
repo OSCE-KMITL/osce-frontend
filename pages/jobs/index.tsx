@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
-import Link from 'next/link';
-import { useQueryJobs } from '../../features/job/hooks/useQueryJobs';
+import { useGetJobs } from '../../features/job/hooks/useGetJobs';
 import NotificationService from '../../lib/ant_service/NotificationService';
 import MessageService from '../../lib/ant_service/MessageService';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { RoleOption } from '../../constants/RoleOptions';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
+import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
+import { Link } from '@ui/Link';
 
 const Jobs: React.FC = () => {
-    const { data, loading, error } = useQueryJobs();
+    const { data, loading, error } = useGetJobs();
     const notification = NotificationService.getInstance();
     const message = MessageService.getInstance();
     const { me } = useContext(AuthenticationContext);
@@ -25,55 +26,47 @@ const Jobs: React.FC = () => {
 
     return (
         <ContentContainer>
+            <div className="w-[80%] h-fit">
+                <BreadcrumbComponent />
+                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> เพิ่มงานที่เปิดรับ</h1>
+                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+            </div>
             {loading && <SkeletonLoading />}
-            {me?.role === RoleOption.COMMITTEE ? (
-                <Link href={'/jobs/new'} className=" bg-green-500 hover:bg-green-400 w-40 py-2 px-2 rounded-md font-sm text-[#ffff] text-center mt-8 ">
-                    + เพิ่มงานที่เปิดรับ
-                </Link>
+            {me?.role === RoleOption.COMMITTEE || me?.role === RoleOption.COMPANY ? (
+                <div className="w-[100%] flex justify-end">
+                    <Link href={'/jobs/new'} intent="primary">
+                        + เพิ่มงานที่เปิดรับ
+                    </Link>
+                </div>
             ) : (
                 ''
             )}
-            <button
-                className=" bg-yellow-500 hover:bg-yellow-400 w-40 py-2 px-2 rounded-md font-sm text-[#ffff] text-center mt-8 "
-                onClick={() => notification.error('Error', 'This is a custom success notification.')}
-            >
-                ทดสอบ notify
-            </button>
-            <button
-                className=" bg-sky-500 hover:bg-sky-400 w-40 py-2 px-2 rounded-md font-sm text-[#ffff] text-center mt-8 "
-                onClick={() => message.loading('This is a message loading.')}
-            >
-                ทดสอบ message
-            </button>
-            {data &&
-                data?.getAllJob.map((prod) => (
-                    <div className="w-full mt-8" key={prod.id}>
-                        <div className=" px-6 py-6 overflow-hidden shadow-sm bg-white min-w-[800px] max-w-[1000px]  sm:rounded-lg  border-solid border-2 border-gray-300">
-                            <div className="flex flex-row w-full">
-                                <div className="flex flex-col ">
-                                    <h1 className="text-xl font-medium leading-6 text-gray-700">{prod.job_title ? prod.job_title : '-'}</h1>
 
-                                    <div className="flex flex-row gap-4 w-full min-w-[560px] mt-3">
-                                        <p className="text-left min-w-[240px]">ค่าตอบแทน : {prod.compensation ? prod.compensation : '-'}</p>
-                                        <p className="">ประเภท : ฝึกงาน + สหกิจศึกษา 6 เดือน </p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col border-l-2 border-gray-200 ">
-                                    {prod.company_id && (
-                                        <Link href="#" className=" text-lg text-gray-700 pl-4">
-                                            บริษัท : {prod.company_id.name}
-                                        </Link>
-                                    )}{' '}
-                                    {!prod.company_id && <p className=" text-lg text-gray-700 pl-4">บริษัท : -</p>}
-                                    <div className="flex flex-row w-full min-w-full py-2 pl-4  overflow-hidden relative">
-                                        <p className="text-left min-w-[240px]">ที่อยู่ : {prod.company_id ? prod.company_id.address : '-'}</p>
-                                        <Link
-                                            href={`/jobs/` + prod.id}
-                                            className=" bg-primary-500 hover:bg-amber-500 w-auto py-1 px-2 rounded-md font-sm text-[#ffff] right-0 absolute"
-                                        >
-                                            ดูข้อมูล
-                                        </Link>
-                                    </div>
+            {data &&
+                data?.getAllJob.map((job) => (
+                    <div
+                        key={job.id}
+                        className=" w-full h-auto p-4 grid grid-cols-5  shadow-sm sm:rounded-lg border-solid border-2 border-gray-300 overflow-hidden"
+                    >
+                        <div className=" w-full h-full col-span-3 gap-4 grid grid-rows-2">
+                            <div className=" w-full h-full grid md:items-center">
+                                <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : '-'}</h1>
+                            </div>
+                            <div className=" w-full h-full grid xl:grid-cols-2 items-end sm:items-start">
+                                <p>ค่าตอบแทน : {job.compensation ? job.compensation : '-'}</p>
+                                <p className="hidden sm:contents">ประเภท : ฝึกงาน + สหกิจศึกษา 6 เดือน</p>
+                            </div>
+                        </div>
+                        <div className=" w-full h-full col-span-2 gap-4 grid grid-rows-2 md:items-center border-l-4 pl-4">
+                            <div>
+                                <h2 className="text-xl font-medium leading-6 text-gray-700">บริษัท : {job.company_id?.name ? job.company_id.name : '-'}</h2>
+                            </div>
+                            <div className=" grid sm:grid-cols-2">
+                                <p className="hidden sm:grid items-end sm:items-start">ที่อยู่ : {job.company_id?.address ? job.company_id?.address : '-'}</p>
+                                <div className="text-right grid items-end">
+                                    <Link href={`/jobs/` + job.id} className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer">
+                                        {'ดูรายละเอียด'}
+                                    </Link>
                                 </div>
                             </div>
                         </div>

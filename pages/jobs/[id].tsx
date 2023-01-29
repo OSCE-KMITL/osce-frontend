@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useQueryJob } from '../../features/job/hooks/useQueryJobs';
+import { useGetJob } from '../../features/job/hooks/useGetJobs';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import React, { FunctionComponent } from 'react';
@@ -9,7 +9,7 @@ type Props = OwnProps;
 const JobDetail: FunctionComponent<Props> = () => {
     const router = useRouter();
     const { id } = router.query;
-    const { data, loading, error } = useQueryJob({ jobId: id as string });
+    const { data, loading, error } = useGetJob({ jobId: id as string });
 
     if (error) {
         return <h1>{error.message || 'พบข้อผิดพลาดบางประการ'}</h1>;

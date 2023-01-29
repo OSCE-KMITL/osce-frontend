@@ -32,7 +32,7 @@ const Input: FunctionComponent<InputProps> = ({ validationSchema, name, errors, 
     console.log(errors);
     return (
         <div className="mb-4 h-auto">
-            <label htmlFor={name} className={`block mb-2 text-lg font-medium $text-gray-900 `}>
+            <label htmlFor={name} className={`block mb-2 text-lg font-medium text-gray-900 `}>
                 {label}
             </label>
             <input className={inputStyle({ isError, fullWidth })} id={name} name={name} type={type} {...register(name, validationSchema)} />

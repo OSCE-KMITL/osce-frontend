@@ -69,14 +69,14 @@ export interface JobResponses {
     getAllJob: JobProps[] | null;
 }
 
-export function useQueryJobs() {
+export function useGetJobs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, loading, error } = useQuery<JobResponses>(GET_JOBS);
 
     return { data, loading, error };
 }
 
-export function useQueryJob({ jobId: string }) {
+export function useGetJob({ jobId: string }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, loading, error } = useQuery<JobResponse>(GET_JOB_BY_ID, { variables: { jobId: string } });
 
