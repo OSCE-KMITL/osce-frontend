@@ -7,18 +7,22 @@ import AuthenticatedGuard from '../components/Guard/AuthenticatedGuard';
 import { store } from '../state/store';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
+
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ApolloProvider client={client}>
-            <AuthContextProvider>
-                <Provider store={store}>
-                    <PageLayout>
-                        <AuthenticatedGuard>
-                            <Component {...pageProps} />
-                        </AuthenticatedGuard>
-                    </PageLayout>
-                </Provider>
-            </AuthContextProvider>
+            <SessionProvider session={pageProps.session}>
+                <AuthContextProvider>
+                    <Provider store={store}>
+                        <PageLayout>
+                            <AuthenticatedGuard>
+                                <Component {...pageProps} />
+                            </AuthenticatedGuard>
+                        </PageLayout>
+                    </Provider>
+                </AuthContextProvider>
+            </SessionProvider>
         </ApolloProvider>
     );
 }

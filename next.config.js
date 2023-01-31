@@ -3,6 +3,9 @@ const path = require('path');
 require('dotenv').config();
 const nextConfig = {
     reactStrictMode: false,
+    images: {
+        domains: ['lh3.googleusercontent.com'],
+    },
     swcMinify: true,
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
