@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import Link from 'next/link';
 
 interface OwnProps {
-    goto: string;
+    goto?: string | null | undefined;
     button_title: string;
     hero_content: string;
     description: string;

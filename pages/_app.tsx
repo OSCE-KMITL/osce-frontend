@@ -8,6 +8,18 @@ import { store } from '../state/store';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
+import { ConfigProvider } from 'antd';
+
+const colorTheme = {
+    primary_100: '#FFEEE6',
+    primary_200: '#FFCAAE',
+    primary_300: '#FFA576',
+    primary_400: '#FF813E',
+    primary_500: '#e35205',
+    primary_600: '#B03D00',
+    primary_700: '#7D2B00',
+    primary_800: '#4A1A00',
+};
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
