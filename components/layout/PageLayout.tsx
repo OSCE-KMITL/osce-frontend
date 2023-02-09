@@ -20,7 +20,17 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
             <div className="w-screen max-h-full bg-primary-300'">
                 <ConfigProvider
                     theme={{
-                        token: { colorPrimary: '#FF813E', colorPrimaryBg: '#FF813E' },
+                        components: {
+                            Menu: {
+                                colorPrimary: '#FF813E',
+                            },
+                            Steps: {
+                                colorPrimary: '#FF813E',
+                            },
+                        },
+                        token: {
+                            colorPrimary: '#FF813E',
+                        },
                     }}
                 >
                     <NavigationBar />

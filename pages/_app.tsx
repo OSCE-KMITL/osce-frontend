@@ -7,8 +7,6 @@ import AuthenticatedGuard from '../components/Guard/AuthenticatedGuard';
 import { store } from '../state/store';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
-import { ConfigProvider } from 'antd';
 
 const colorTheme = {
     primary_100: '#FFEEE6',
@@ -24,17 +22,15 @@ const colorTheme = {
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ApolloProvider client={client}>
-            <SessionProvider session={pageProps.session}>
-                <AuthContextProvider>
-                    <Provider store={store}>
-                        <PageLayout>
-                            <AuthenticatedGuard>
-                                <Component {...pageProps} />
-                            </AuthenticatedGuard>
-                        </PageLayout>
-                    </Provider>
-                </AuthContextProvider>
-            </SessionProvider>
+            <AuthContextProvider>
+                <Provider store={store}>
+                    <PageLayout>
+                        <AuthenticatedGuard>
+                            <Component {...pageProps} />
+                        </AuthenticatedGuard>
+                    </PageLayout>
+                </Provider>
+            </AuthContextProvider>
         </ApolloProvider>
     );
 }

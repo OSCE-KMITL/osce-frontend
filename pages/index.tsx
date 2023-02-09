@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ContentContainer from '@ui/ContentContainer';
 import ActionCard from '../components/HomePage/ActionCard';
-import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { ENDPOINT_URI } from '../constants';
+import { AuthenticationContext } from '../context/AuthContextProvider';
+import { RoleOption } from '../constants/RoleOptions';
 
 const HomePage: React.FC = () => {
-    const { data: student } = useSession();
+    const { me } = useContext(AuthenticationContext);
     const router = useRouter();
     return (
         <ContentContainer>
@@ -13,10 +15,15 @@ const HomePage: React.FC = () => {
                 <div className="grid grid-rows-3 gap-4">
                     <div
                         onClick={() => {
-                            if (!student?.user) {
-                                signIn('google', { redirect: true, callbackUrl: '/coopregister' });
+                            if (me) {
+                                if (me.role === RoleOption.STUDENT) {
+                                    router.push('coopregister');
+                                } else {
+                                    router.push(ENDPOINT_URI + '/auth/google');
+                                }
+                            } else {
+                                router.push(ENDPOINT_URI + '/auth/google');
                             }
-                            router.push('/coopregister');
                         }}
                     >
                         {' '}

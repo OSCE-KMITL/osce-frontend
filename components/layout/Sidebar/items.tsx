@@ -8,7 +8,7 @@ export const items: MenuProps['items'] = [
         children: [
             {
                 label: 'ใบสมัครงานสหกิจศึกษา',
-                key: 'apply coop',
+                key: '/coopregister',
             },
         ],
     },

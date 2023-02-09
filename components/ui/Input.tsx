@@ -32,7 +32,7 @@ interface InputProps extends VariantProps<typeof inputStyle> {
 const Input: FunctionComponent<InputProps> = ({ validationSchema, name, errors, placeholder, register, type, label, fullWidth, isError }) => {
     return (
         <div className="mb-2 h-auto">
-            <label htmlFor={name} className={`block text-sm font-medium text-gray-900 `}>
+            <label htmlFor={name} className={`block text-[16px] font-medium text-gray-900 `}>
                 {label}
             </label>
             <input
