@@ -3,6 +3,7 @@ import { useGetJob } from '../../features/job/hooks/useGetJobs';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import React, { FunctionComponent } from 'react';
+import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -20,6 +21,11 @@ const JobDetail: FunctionComponent<Props> = () => {
 
     return (
         <ContentContainer>
+            <div className="w-[80%] h-fit">
+                <BreadcrumbComponent />
+                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> รายละเอียดงาน</h1>
+                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+            </div>
             {data && (
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg w-full px-8 border-solid border-2 border-gray-300 ">
                     <div className="px-4 py-5 sm:px-6">

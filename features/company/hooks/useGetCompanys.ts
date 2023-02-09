@@ -4,8 +4,13 @@ export const GET_ALL_COMPANIES = gql`
     query GetAllCompanies {
         getAllCompanies {
             id
-            name
+            name_th
+            name_eng
             address
+            sub_district
+            district
+            province
+            postal_code
             phone_number
             website_url
             business_type
@@ -28,8 +33,13 @@ export const GET_ALL_COMPANIES = gql`
 
 export interface CompanyProps {
     id: string;
-    name: string;
+    name_th: string;
+    name_eng: string;
     address: string;
+    sub_district: string;
+    district: string;
+    province: string;
+    postal_code: string;
     phone_number: string;
     website_url: string;
     business_type: string;

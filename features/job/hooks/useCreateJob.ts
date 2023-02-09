@@ -4,7 +4,7 @@ import { gql, useMutation } from '@apollo/client';
 export interface JobInputCommittee {
     job_title: string | null;
     compensation: string | null;
-    coop301_fileurl: string | null;
+    coop301_fileurl: File | null;
     limit: string | null;
     nature_of_work: string | null;
     project_topic: string | null;

@@ -15,8 +15,13 @@ export const GET_JOBS = gql`
             compensation
             coop301_fileurl
             company_id {
-                name
+                name_th
+                name_eng
                 address
+                sub_district
+                district
+                province
+                postal_code
             }
         }
     }
@@ -38,8 +43,13 @@ export const GET_JOB_BY_ID = gql`
             createdAt
             updatedAt
             company_id {
-                name
+                name_th
+                name_eng
                 address
+                sub_district
+                district
+                province
+                postal_code
             }
         }
     }
@@ -57,8 +67,13 @@ export interface JobProps {
     compensation: string;
     coop301_fileurl: string;
     company_id: {
-        name: string;
+        name_th: string;
+        name_eng: string;
         address: string;
+        sub_district: string;
+        district: string;
+        province: string;
+        postal_code: string;
     };
 }
 export interface JobResponse {
