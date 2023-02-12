@@ -52,7 +52,7 @@ const Jobs: React.FC = () => {
                                 <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : '-'}</h1>
                             </div>
                             <div className=" w-full h-full grid xl:grid-cols-2 items-end sm:items-start">
-                                <p>ค่าตอบแทน : {job.compensation ? job.compensation.split(', ', 2)[0] +' บาท/'+ job.compensation.split(', ', 2)[1] : '-'}</p>
+                                <p>ค่าตอบแทน : {job.compensation ? job.compensation.split(', ', 2)[0] + ' บาท/' + job.compensation.split(', ', 2)[1] : '-'}</p>
                                 <p className="hidden sm:contents">ประเภท : ฝึกงาน + สหกิจศึกษา 6 เดือน</p>
                             </div>
                         </div>
@@ -63,7 +63,12 @@ const Jobs: React.FC = () => {
                                 </h2>
                             </div>
                             <div className=" grid sm:grid-cols-2">
-                                <p className="hidden sm:grid items-end sm:items-start">ที่อยู่ : {job.company_id?.address ? job.company_id?.address : '-'}</p>
+                                <p className="hidden sm:grid items-end sm:items-start">
+                                    ที่อยู่ :{' '}
+                                    {job.company_id?.district
+                                        ? job.company_id.district + ', ' + (job.company_id?.province ? job.company_id?.province : '')
+                                        : ''}
+                                </p>
                                 <div className="text-right grid items-end">
                                     <Link href={`/jobs/` + job.id} className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer">
                                         {'ดูรายละเอียด'}
