@@ -13,6 +13,11 @@ export interface UserAuthData {
     email: string;
     token?: string;
     role: RoleOption;
+    is_company?: {
+        company_id?: {
+            id: string;
+        };
+    };
 }
 
 interface AuthContextValues {

@@ -12,18 +12,38 @@ export interface JobInputCommittee {
     required_skills: string | null;
     welfare: string | null;
     company_id: string | null;
+    internship_period: string | null;
+    work_period: string | null;
+    coordinator_name: string | null;
+    coordinator_job_title: string | null;
+    coordinator_email: string | null;
+    coordinator_phone_number: string | null;
+    supervisor_name: string | null;
+    supervisor_job_title: string | null;
+    supervisor_email: string | null;
+    supervisor_phone_number: string | null;
 }
 
 export interface JobInputCompany {
-    job_title: string;
-    compensation: string;
-    coop301_fileurl: string;
-    limit: string;
-    nature_of_work: string;
-    project_topic: string;
-    required_major: string;
-    required_skills: string;
-    welfare: string;
+    job_title: string | null;
+    compensation: string | null;
+    coop301_fileurl: string | null;
+    limit: string | null;
+    nature_of_work: string | null;
+    project_topic: string | null;
+    required_major: string | null;
+    required_skills: string | null;
+    welfare: string | null;
+    internship_period: string | null;
+    work_period: string | null;
+    coordinator_name: string | null;
+    coordinator_job_title: string | null;
+    coordinator_email: string | null;
+    coordinator_phone_number: string | null;
+    supervisor_name: string | null;
+    supervisor_job_title: string | null;
+    supervisor_email: string | null;
+    supervisor_phone_number: string | null;
 }
 
 export interface CreateJobInputCommittee {

@@ -6,6 +6,11 @@ export interface GetMeResponse {
         id: string;
         email: string;
         role: RoleOption;
+        is_company?: {
+            company_id?: {
+                id: string;
+            };
+        };
     };
 }
 
@@ -16,6 +21,11 @@ export const FETCH_ME = {
             id
             email
             role
+            is_company {
+                company_id {
+                  id
+                }
+              }
         }
     }`,
 };
@@ -26,6 +36,11 @@ export const GET_ME = gql`
             id
             email
             role
+            is_company {
+                company_id {
+                  id
+                }
+              }
         }
     }
 `;

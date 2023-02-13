@@ -20,6 +20,8 @@ export const GET_ALL_COMPANIES = gql`
                 company_person_id
                 full_name
                 job_title
+                email
+                phone_number
                 is_coordinator
                 created_at
                 updated_at
@@ -44,9 +46,12 @@ export interface CompanyProps {
     website_url: string;
     business_type: string;
     company_persons: {
+        [x: string]: any;
         company_person_id: string;
         full_name: string;
         job_title: string;
+        email: string;
+        phone_number: string;
         is_coordinator: string;
     };
     job: {
