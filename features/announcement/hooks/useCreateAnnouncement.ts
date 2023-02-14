@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { AnnouncementProps, GET_ANNOUNCEMENTS } from '../types';
+import { AnnouncementProps, GET_ANNOUNCEMENTS } from '../interfaces';
 
 export interface CreateAnnouncementInput {
     announcementInfo: {

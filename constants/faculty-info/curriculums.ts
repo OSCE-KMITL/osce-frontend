@@ -1,14 +1,7 @@
 // 20230201145625
 // https://k8s.reg.kmitl.ac.th/api/curriculum/?function=get-registrar-curriculum&level_id=1
-export interface ICurriculum {
-    level_id: string;
-    faculty_id: string;
-    dept_id: string;
-    curriculum_id: string;
-    curriculum_name_th: string;
-    curriculum_name_en: string;
-}
-export const curriculum = [
+
+export const curriculums = [
     {
         level_id: '1',
         faculty_id: '01',

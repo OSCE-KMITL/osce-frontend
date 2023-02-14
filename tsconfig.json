@@ -16,7 +16,20 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["components/ui/*"]
+      "@ui/*": ["components/ui/*"],
+      "@components/*": ["components/*"],
+      "@components": ["components"],
+      "@features/*": ["features/*"],
+      "@features": ["features"],
+      "@constants/*":["constants/*"],
+      "@constants":["constants"],
+      "@lib/*": ["lib/*"],
+      "@store": ["store"],
+      "@store/*": ["store/*"],
+      "@context": ["context"],
+      "@context/*": ["context/*"],
+
+
     }
   },
 

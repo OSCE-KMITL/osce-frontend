@@ -1,15 +1,11 @@
 import axios from 'axios';
-import { API_URI } from '../../constants';
+import { API_URI, ENDPOINT_URI } from '@constants';
 import { CookieManager } from '../../utils/CookieManager';
 const token = CookieManager.getCookieWithToken();
 
 const requestAxios = axios.create({
-    baseURL: API_URI,
+    baseURL: 'http://localhost:4000/'!,
     responseType: 'json',
     withCredentials: true,
-    method: 'POST',
-    headers: {
-        Authorization: token ? `bearer ${token}` : '',
-    },
 });
 export default requestAxios;

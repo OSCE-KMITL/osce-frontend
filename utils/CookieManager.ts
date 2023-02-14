@@ -1,4 +1,4 @@
-import { TOKEN_NAME } from '../constants';
+import { TOKEN_NAME } from '@constants';
 import Cookie from 'js-cookie';
 export class CookieManager {
     static setCookieWithToken(token: string) {

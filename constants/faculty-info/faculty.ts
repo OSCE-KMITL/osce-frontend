@@ -1,7 +1,7 @@
 // 20230201143217
 // https://k8s.reg.kmitl.ac.th/api/faculty/?function=get-registrar-faculty
 
-export const faculty = [
+export const faculties = [
     {
         faculty_id: '01',
         faculty_name_th: 'วิศวกรรมศาสตร์',

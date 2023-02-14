@@ -1,13 +1,7 @@
 // 20230201145357
 // https://k8s.reg.kmitl.ac.th/api/department/?function=get-registrar-department
 
-export interface IDepartment {
-    faculty_id: string;
-    department_id: string;
-    department_name_th: string;
-    department_name_en: string;
-}
-export const department = [
+export const departments = [
     {
         faculty_id: '01',
         department_id: '01',

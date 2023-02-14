@@ -1,8 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useGetMe } from '../features/auth/hooks/useGetMe';
 import { CookieManager } from '../utils/CookieManager';
-import client from '../lib/apollo/apollo-client';
+import client from '@lib/apollo';
 import { RoleOption } from '../constants/RoleOptions';
+import { router } from 'next/client';
+import { useRouter } from 'next/router';
+import { API_URI, ENDPOINT_URI } from '../constants';
+import axios from 'axios';
 
 interface Props {
     children: JSX.Element;
@@ -32,6 +36,7 @@ export const AuthenticationContext = createContext<AuthContextValues>(initialSta
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
     const { data } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (data?.getMe) {

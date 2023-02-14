@@ -13,6 +13,21 @@ export const items: MenuProps['items'] = [
         ],
     },
     {
+        label: 'งานที่เปิดรับ',
+        key: '03',
+        type: 'group',
+        children: [
+            {
+                label: 'งานที่เปิดรับ',
+                key: 'job opening',
+            },
+            {
+                label: 'งานที่สมัคร',
+                key: 'job applying',
+            },
+        ],
+    },
+    {
         label: 'การรายงานผลสหกิจศึกษา',
         key: '02',
         type: 'group',
@@ -23,21 +38,7 @@ export const items: MenuProps['items'] = [
             },
         ],
     },
-    {
-        label: 'งานที่เปิดรับ',
-        key: '03',
-        type: 'group',
-        children: [
-            {
-                label: 'งานที่เปิดรับ',
-                key: 'job opening',
-            },
-            {
-                label: 'งานที่กำลังสมัคร',
-                key: 'job applying',
-            },
-        ],
-    },
+
     {
         label: 'การประเมินผล',
         key: '04',
@@ -50,6 +51,19 @@ export const items: MenuProps['items'] = [
             {
                 label: 'ประเมินอาจารย์นิเทศ',
                 key: 'company advisor',
+            },
+        ],
+    },
+];
+export const itemsCompany: MenuProps['items'] = [
+    {
+        label: 'จัดการสหกิจ',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'ใบสมัครงานสหกิจศึกษา',
+                key: '/coopregister',
             },
         ],
     },
