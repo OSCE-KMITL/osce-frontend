@@ -49,17 +49,17 @@ const Jobs: React.FC = () => {
                     >
                         <div className=" w-full h-full col-span-3 gap-4 grid grid-rows-2">
                             <div className=" w-full h-full grid md:items-center">
-                                <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : '-'}</h1>
+                                <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : 'ไม่ระบุตำแหน่งงาน'}</h1>
                             </div>
                             <div className=" w-full h-full grid xl:grid-cols-2 items-end sm:items-start">
                                 <p>ค่าตอบแทน : {job.compensation ? job.compensation.split(', ', 2)[0] + ' บาท/' + job.compensation.split(', ', 2)[1] : '-'}</p>
-                                <p className="hidden sm:contents">ประเภท : ฝึกงาน + สหกิจศึกษา 6 เดือน</p>
+                                <p className="hidden sm:contents">ระยะเวลาการฝึกงาน : {job.internship_period ? job.internship_period : '-'}</p>
                             </div>
                         </div>
                         <div className=" w-full h-full col-span-2 gap-4 grid grid-rows-2 md:items-center border-l-4 pl-4">
                             <div>
                                 <h2 className="text-xl font-medium leading-6 text-gray-700">
-                                    บริษัท : {job.company_id?.name_eng ? job.company_id.name_eng : '-'}
+                                    บริษัท : {job.company_id?.name_eng ? job.company_id.name_eng : 'ไม่ระบุข้อมูล'}
                                 </h2>
                             </div>
                             <div className=" grid sm:grid-cols-2">

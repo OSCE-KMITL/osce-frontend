@@ -1,25 +1,33 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { JobInputCommittee, useCreateJobByCommittee, useCreateJobByCompany } from '../../../features/job/hooks/useCreateJob';
+import {
+    JobInputCommittee,
+    useCreateJobByCommittee,
+    useCreateJobByCommitteeNoFile,
+    useCreateJobByCompany,
+    useCreateJobByCompanyNoFile,
+} from '../../../features/job/hooks/useCreateJob';
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import NotificationService from '../../../lib/ant_service/NotificationService';
 import Input from '@ui/Input';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
-import { AutoComplete, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
+import { AutoComplete, Cascader, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import client from 'lib/apollo/apollo-client';
 import Button from '@ui/Button';
 import { ErrorMessage } from '@hookform/error-message';
 import { useDropzone, FileWithPath } from 'react-dropzone';
-import { UPLOAD_FILE, useUploadFile } from 'features/upload/hooks/useUploadFile';
+import { UploadFileInput, UPLOAD_FILE, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
 
 const CreateJobPage: FC = () => {
     const notification = NotificationService.getInstance();
     const [createJobByCommittee, { loading: committee_loading }] = useCreateJobByCommittee();
+    const [createJobByCommitteeNoFile, { loading: committee_no_file_loading }] = useCreateJobByCommitteeNoFile();
     const [createJobByCompany, { loading: company_loading }] = useCreateJobByCompany();
+    const [createJobByCompanyNoFile, { loading: company_no_file_loading }] = useCreateJobByCompanyNoFile();
     const [uploadFile, { loading: file_loading }] = useUploadFile();
     const { data: companies } = useGetAllCompany();
     const { me } = useContext(AuthenticationContext);
@@ -32,7 +40,7 @@ const CreateJobPage: FC = () => {
     const [periodWork, setPeriodWork] = useState<string | undefined | null>(null);
     const [dateSelect, setDateSelect] = useState<string[] | undefined | null>(null);
     const [compensationSuffix, setCompensationSuffix] = useState<string | undefined | null>(null);
-    const [fileRecive, setFileRecive] = useState<Object>(undefined);
+    const [fileRecive, setFileRecive] = useState<UploadFileInput | null | undefined>(null);
     const [companyPersonObj, setComapnyPersonObj] = useState<undefined | CompanyPersonObj | null>(undefined);
     const [coordinatorPosition, setCoordinatorPosition] = useState<string | undefined | null>(null);
     const [coordinatorName, setCoordinatorName] = useState<string | undefined | null>(null);
@@ -51,34 +59,212 @@ const CreateJobPage: FC = () => {
     // set prop require major
     const require_major = [
         {
-            label: 'ไม่ระบุข้อมูล',
-            value: 'ไม่ระบุข้อมูล',
+            label: 'ไม่ระบุ',
+            value: 'ไม่ระบุ',
         },
         {
-            label: 'ไม่จำกัดภาควิชา',
-            value: 'ไม่จำกัดภาควิชา',
-        },
-        {
-            label: 'วิศวกรรมคอมพิวเตอร์',
-            value: 'วิศวกรรมคอมพิวเตอร์',
-        },
-        {
-            label: 'วิศวกรรมอิเล็กทรอนิกสฺ์',
-            value: 'วิศวกรรมอิเล็กทรอนิกสฺ์',
-        },
-        {
-            label: 'วิศวกรรมไฟฟ้า',
-            value: 'วิศวกรรมไฟฟ้า',
+            label: 'ไม่จำกัดภาควิชาหรือหลักสูตร',
+            value: 'ไม่จำกัดภาควิชาหรือหลักสูตร',
         },
         {
             label: 'วิศวกรรมโทรคมนาคม',
-            value: 'วิศวกรรมโทรคมนาคม',
+            options: [
+                {
+                    label: 'วิศวกรรมโทรคมนาคม',
+                    value: 'วิศวกรรมโทรคมนาคม',
+                },
+                {
+                    label: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
+                    value: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
+                },
+                {
+                    label: 'อิเล็กทรอนิกส์',
+                    value: 'อิเล็กทรอนิกส์',
+                },
+                {
+                    label: 'เทคโนโลยีโทรคมนาคม',
+                    value: 'เทคโนโลยีโทรคมนาคม',
+                },
+                {
+                    label: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
+                    value: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมไฟฟ้า',
+            options: [
+                {
+                    label: 'วิศวกรรมไฟฟ้า',
+                    value: 'วิศวกรรมไฟฟ้า',
+                },
+                {
+                    label: 'วิศวกรรมพลังงานไฟฟ้า',
+                    value: 'วิศวกรรมพลังงานไฟฟ้า',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมอิเล็กทรอนิกส์',
+            options: [
+                {
+                    label: 'วิศวกรรมอิเล็กทรอนิกส์',
+                    value: 'วิศวกรรมอิเล็กทรอนิกส์',
+                },
+                {
+                    label: 'เทคโนโลยีอิเล็กทรอนิกส์',
+                    value: 'เทคโนโลยีอิเล็กทรอนิกส์',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมคอมพิวเตอร์',
+            options: [
+                {
+                    label: 'วิศวกรรมคอมพิวเตอร์',
+                    value: 'วิศวกรรมคอมพิวเตอร์',
+                },
+                {
+                    label: 'วิศวกรรมสารสนเทศ',
+                    value: 'วิศวกรรมสารสนเทศ',
+                },
+                {
+                    label: 'Software Engineering',
+                    value: 'Software Engineering',
+                },
+                {
+                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
+                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
+                },
+                {
+                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศและฟิสิกส์อุตสาหกรรม',
+                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศและฟิสิกส์อุตสาหกรรม',
+                },
+                {
+                    label: 'วิศวกรรมดนตรีและสื่อประสม',
+                    value: 'วิศวกรรมดนตรีและสื่อประสม',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมเครื่องกล',
+            options: [
+                {
+                    label: 'วิศวกรรมเครื่องกล',
+                    value: 'วิศวกรรมเครื่องกล',
+                },
+                {
+                    label: 'วิศวกรรมขนส่งทางราง',
+                    value: 'วิศวกรรมขนส่งทางราง',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมการวัดและควบคุม',
+            options: [
+                {
+                    label: 'วิศวกรรมการวัดคุม',
+                    value: 'วิศวกรรมการวัดคุม',
+                },
+                {
+                    label: 'วิศวกรรมระบบควบคุม',
+                    value: 'วิศวกรรมระบบควบคุม',
+                },
+                {
+                    label: 'วิศวกรรมอัตโนมัติ',
+                    value: 'วิศวกรรมอัตโนมัติ',
+                },
+                {
+                    label: 'วิศวกรรมแมคคาทรอนิกส์',
+                    value: 'วิศวกรรมแมคคาทรอนิกส์',
+                },
+                {
+                    label: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
+                    value: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
+                },
+            ],
         },
         {
             label: 'วิศวกรรมโยธา',
-            value: 'วิศวกรรมโยธา',
+            options: [
+                {
+                    label: 'วิศวกรรมโยธา',
+                    value: 'วิศวกรรมโยธา',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมเกษตร',
+            options: [
+                {
+                    label: 'วิศวกรรมเกษตร',
+                    value: 'วิศวกรรมเกษตร',
+                },
+                {
+                    label: 'วิศวกรรมระบบอุตสาหกรรมการเกษตร',
+                    value: 'วิศวกรรมระบบอุตสาหกรรมการเกษตร',
+                },
+                {
+                    label: 'วิศวกรรมเกษตรอัจฉริยะ',
+                    value: 'วิศวกรรมเกษตรอัจฉริยะ',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมเคมี',
+            options: [
+                {
+                    label: 'วิศวกรรมเคมี',
+                    value: 'วิศวกรรมเคมี',
+                },
+                {
+                    label: 'วิศวกรรมปิโตรเคมี',
+                    value: 'วิศวกรรมปิโตรเคมี',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมอาหาร',
+            options: [
+                {
+                    label: 'วิศวกรรมอาหาร',
+                    value: 'วิศวกรรมอาหาร',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมอุตสาหการ',
+            options: [
+                {
+                    label: 'วิศวกรรมอุตสาหการ',
+                    value: 'วิศวกรรมอุตสาหการ',
+                },
+                {
+                    label: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
+                    value: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมชีวการแพทย์',
+            options: [
+                {
+                    label: 'วิศวกรรมชีวการแพทย์',
+                    value: 'วิศวกรรมชีวการแพทย์',
+                },
+            ],
+        },
+        {
+            label: 'วิศวกรรมการบินและนักบินพาณิชย์',
+            options: [
+                {
+                    label: 'วิศวกรรมการบินและนักบินพาณิชย์',
+                    value: 'วิศวกรรมการบินและนักบินพาณิชย์',
+                },
+            ],
         },
     ];
+
     const selectRequireMajorOnChange = (value: string[]) => {
         setSelectRequireMajor(value);
         setRequireMajor(value.join(', '));
@@ -110,7 +296,7 @@ const CreateJobPage: FC = () => {
 
     useEffect(() => {
         if (me?.role === 'COMPANY') {
-            setComapnyPersonObj((b) => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
+            setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
         }
     }, [me?.role, me?.is_company?.company_id.id]),
         [me?.role, me?.is_company?.company_id.id, companyPersonObj];
@@ -194,7 +380,7 @@ const CreateJobPage: FC = () => {
         setSelectRequireMajor(undefined);
         setRequireMajor(undefined);
         setFileRecive(undefined);
-        setWelfareList([]);
+        setWelfareList(undefined);
         setCoordinatorName(undefined);
         setCoordinatorEmail(undefined);
         setCoordinatorPhoneNum(undefined);
@@ -207,12 +393,12 @@ const CreateJobPage: FC = () => {
     }
 
     // date select
-    const dateFormat = 'YYYY/MM/DD';
+    const dateFormat = 'DD/MM/YYYY';
     const { RangePicker } = DatePicker;
 
     const dateOnChange = (first_array, secon_array) => {
         setDateSelect(secon_array);
-        setPeriodWork(secon_array[0] + '-' + secon_array[1]);
+        setPeriodWork(secon_array[0] + ' - ' + secon_array[1]);
     };
 
     const welfare_options = [
@@ -232,138 +418,179 @@ const CreateJobPage: FC = () => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
+        const file_type = file.name.substr(-3);
+        if (file_type != 'pdf') {
+            notification.error('Error อัพโหลดไฟล์','อัพโหลดไฟล์สกุล .pdf เท่านั้น !!')
+            const file_input = document.getElementById("file") as HTMLInputElement;
+            file_input.value = null
+            return;}
         setFileRecive(file);
-        // try {
-        //     uploadFile({
-        //         variables: { file },
-        //         onCompleted(data, clientOptions) {
-        //             console.log('res uploaded' + data.uploadFile.url);
-        //         },
-        //     });
-        // } catch (error) {
-        //     console.log(error);
-        // }
     };
     const onSubmit = async (data) => {
-        console.log(data);
-
         if (me?.role === RoleOption.COMPANY) {
             if (fileRecive) {
-                await uploadFile({
+                await createJobByCompany({
                     onCompleted: (result) => {
                         if (result) {
-                            // notification.success('Success', 'อัพโหลดไฟล์เสร็จสิ้น');
+                            notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
+                            clearForm();
                         }
                     },
                     onError: (error) => {
                         console.log(error);
                         if (error) {
-                            return notification.error('Error อัพโหลดไฟล์', error.message);
+                            notification.error('Error', error.message);
                         }
                     },
-                    variables: { file: fileRecive },
+                    variables: {
+                        jobInfo: {
+                            job_title: data.job_title,
+                            compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
+                            limit: data.limit,
+                            nature_of_work: data.nature_of_work,
+                            project_topic: data.project_topic,
+                            required_major: requireMajor,
+                            required_skills: data.required_skills,
+                            welfare: welfareList ? (data.other_welfare ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '') : '',
+                            internship_period: internshipPeriod,
+                            work_period: periodWork,
+                            coordinator_name: coordinatorName,
+                            coordinator_email: coordinatorEmail,
+                            coordinator_phone_number: coordinatorPhoneNum,
+                            coordinator_job_title: coordinatorPosition,
+                            supervisor_name: supervisorName,
+                            supervisor_email: supervisorEmail,
+                            supervisor_phone_number: supervisorPhoneNum,
+                            supervisor_job_title: supervisorPosition,
+                        },
+                        file: fileRecive,
+                    },
+                });
+            } else {
+                await createJobByCompanyNoFile({
+                    onCompleted: (result) => {
+                        if (result) {
+                            notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
+                            clearForm();
+                        }
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                        if (error) {
+                            notification.error('Error', error.message);
+                        }
+                    },
+                    variables: {
+                        jobInfo: {
+                            job_title: data.job_title,
+                            compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
+                            limit: data.limit,
+                            nature_of_work: data.nature_of_work,
+                            project_topic: data.project_topic,
+                            required_major: requireMajor,
+                            required_skills: data.required_skills,
+                            welfare: welfareList ? (data.other_welfare ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '') : '',
+                            internship_period: internshipPeriod,
+                            work_period: periodWork,
+                            coordinator_name: coordinatorName,
+                            coordinator_email: coordinatorEmail,
+                            coordinator_phone_number: coordinatorPhoneNum,
+                            coordinator_job_title: coordinatorPosition,
+                            supervisor_name: supervisorName,
+                            supervisor_email: supervisorEmail,
+                            supervisor_phone_number: supervisorPhoneNum,
+                            supervisor_job_title: supervisorPosition,
+                        },
+                    },
                 });
             }
-
-            await createJobByCompany({
-                onCompleted: (result) => {
-                    if (result) {
-                        notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
-                        clearForm();
-                    }
-                },
-                onError: (error) => {
-                    console.log(error);
-                    if (error) {
-                        notification.error('Error', error.message);
-                    }
-                },
-                variables: {
-                    jobInfo: {
-                        job_title: data.job_title,
-                        compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
-                        coop301_fileurl: data.coop301_fileurl,
-                        limit: data.limit,
-                        nature_of_work: data.nature_of_work,
-                        project_topic: data.project_topic,
-                        required_major: requireMajor,
-                        required_skills: data.required_skills,
-                        welfare: welfareList ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '',
-                        internship_period: internshipPeriod,
-                        work_period: periodWork,
-                        coordinator_name: coordinatorName,
-                        coordinator_email: coordinatorEmail,
-                        coordinator_phone_number: coordinatorPhoneNum,
-                        coordinator_job_title: coordinatorPosition,
-                        supervisor_name: supervisorName,
-                        supervisor_email: supervisorEmail,
-                        supervisor_phone_number: supervisorPhoneNum,
-                        supervisor_job_title: supervisorPosition,
-                    },
-                },
-            });
         }
         if (me?.role === RoleOption.COMMITTEE) {
             if (!company) {
                 return message.error('จำเป็นต้องกรอกบริษัท');
             }
             if (fileRecive) {
-                await uploadFile({
+                await createJobByCommittee({
                     onCompleted: (result) => {
                         if (result) {
-                            // notification.success('Success', 'อัพโหลดไฟล์เสร็จสิ้น');
+                            notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
+                            clearForm();
+                            client.clearStore();
                         }
                     },
                     onError: (error) => {
                         console.log(error);
                         if (error) {
-                            return notification.error('Error อัพโหลดไฟล์', error.message);
+                            notification.error('Error', error.message);
+                            client.clearStore();
                         }
                     },
-                    variables: { file: fileRecive },
+                    variables: {
+                        jobInfo: {
+                            job_title: data.job_title,
+                            compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
+                            company_id: company,
+                            limit: data.limit,
+                            nature_of_work: data.nature_of_work,
+                            project_topic: data.project_topic,
+                            required_major: requireMajor,
+                            required_skills: data.required_skills,
+                            welfare: welfareList ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '',
+                            internship_period: internshipPeriod,
+                            work_period: periodWork,
+                            coordinator_name: coordinatorName,
+                            coordinator_email: coordinatorEmail,
+                            coordinator_phone_number: coordinatorPhoneNum,
+                            coordinator_job_title: coordinatorPosition,
+                            supervisor_name: supervisorName,
+                            supervisor_email: supervisorEmail,
+                            supervisor_phone_number: supervisorPhoneNum,
+                            supervisor_job_title: supervisorPosition,
+                        },
+                        file: fileRecive,
+                    },
+                });
+            } else {
+                await createJobByCommitteeNoFile({
+                    onCompleted: (result) => {
+                        if (result) {
+                            notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
+                            clearForm();
+                            client.clearStore();
+                        }
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                        if (error) {
+                            notification.error('Error', error.message);
+                            client.clearStore();
+                        }
+                    },
+                    variables: {
+                        jobInfo: {
+                            job_title: data.job_title,
+                            compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
+                            company_id: company,
+                            limit: data.limit,
+                            nature_of_work: data.nature_of_work,
+                            project_topic: data.project_topic,
+                            required_major: requireMajor,
+                            required_skills: data.required_skills,
+                            welfare: welfareList ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '',
+                            internship_period: internshipPeriod,
+                            work_period: periodWork,
+                            coordinator_name: coordinatorName,
+                            coordinator_email: coordinatorEmail,
+                            coordinator_phone_number: coordinatorPhoneNum,
+                            coordinator_job_title: coordinatorPosition,
+                            supervisor_name: supervisorName,
+                            supervisor_email: supervisorEmail,
+                            supervisor_phone_number: supervisorPhoneNum,
+                            supervisor_job_title: supervisorPosition,
+                        },
+                    },
                 });
             }
-
-            await createJobByCommittee({
-                onCompleted: (result) => {
-                    if (result) {
-                        notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
-                        clearForm();
-                        client.clearStore();
-                    }
-                },
-                onError: (error) => {
-                    console.log(error);
-                    if (error) {
-                        notification.error('Error', error.message);
-                        client.clearStore();
-                    }
-                },
-                variables: {
-                    jobInfo: {
-                        job_title: data.job_title,
-                        compensation: data.compensation + (compensationSuffix ? ', ' + compensationSuffix : ''),
-                        company_id: company,
-                        coop301_fileurl: data.coop301_fileurl,
-                        limit: data.limit,
-                        nature_of_work: data.nature_of_work,
-                        project_topic: data.project_topic,
-                        required_major: requireMajor,
-                        required_skills: data.required_skills,
-                        welfare: welfareList ? (welfareList.push(data.other_welfare), welfareList.join(', ')) : '',
-                        internship_period: internshipPeriod,
-                        work_period: periodWork,
-                        coordinator_name: coordinatorName,
-                        coordinator_email: coordinatorEmail,
-                        coordinator_phone_number: coordinatorPhoneNum,
-                        coordinator_job_title: coordinatorPosition,
-                        supervisor_name: supervisorName,
-                        supervisor_email: supervisorEmail,
-                        supervisor_phone_number: supervisorPhoneNum,
-                        supervisor_job_title: supervisorPosition,
-                    },
-                },
-            });
         }
     };
 
@@ -436,7 +663,6 @@ const CreateJobPage: FC = () => {
                                               }
                                             : {}
                                     }
-                                    isError={errors.job_title && true}
                                 ></Input>
                             </div>
                             <div className="mb-2">
@@ -478,7 +704,6 @@ const CreateJobPage: FC = () => {
                                               }
                                             : {}
                                     }
-                                    isError={errors.nature_of_work && true}
                                 ></Input>
                             </div>
 
@@ -504,7 +729,7 @@ const CreateJobPage: FC = () => {
                                               }
                                             : {}
                                     }
-                                    isError={errors.nature_of_work && true}
+                                    // isError={errors.nature_of_work && true}
                                 ></Input>
                             </div>
                             <div className="col-span-2">
@@ -553,7 +778,7 @@ const CreateJobPage: FC = () => {
                                             name="limit"
                                             {...register('limit')}
                                         />
-                                        <div className="h-5"></div>
+                                        <div className="h-5">{errors.limit && <p className={'text-red-500'}>จำเป็นต้องกรอกจำนวนที่รับสมัคร</p>}</div>
                                     </div>
 
                                     <div className="col-span-4 ">
@@ -567,9 +792,9 @@ const CreateJobPage: FC = () => {
                                                     id="compensation"
                                                     type="number"
                                                     min={0}
-                                                    step={100}
+                                                    max={1000000}
                                                     name="compensation"
-                                                    {...register('compensation')}
+                                                    {...register('compensation', { required: false })}
                                                 />
                                             </div>
 
@@ -616,7 +841,7 @@ const CreateJobPage: FC = () => {
                     <div className="">
                         <label className={`block mb-2 text-xl font-medium text-gray-900 `}>ผู้ประสานงาน</label>
                         <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                            <div className="mb-4 h-auto">
+                            <div className="mb-4 h-auto ">
                                 <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
                                 <AutoComplete
                                     id="coordinator_name"
@@ -632,7 +857,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     ตำแหน่ง
                                 </label>
@@ -649,7 +874,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     อีเมล์
                                 </label>
@@ -666,7 +891,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     โทรศัพท์
                                 </label>
@@ -703,7 +928,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     ตำแหน่ง
                                 </label>
@@ -720,7 +945,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     อีเมล์
                                 </label>
@@ -737,7 +962,7 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto ">
+                            <div className="mb-4 h-auto">
                                 <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
                                     โทรศัพท์
                                 </label>
@@ -756,14 +981,14 @@ const CreateJobPage: FC = () => {
                         </div>
                     </div>
                     <div>
-                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>เพิ่มเอกสาร</label>
+                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>เพิ่มเอกสาร (.pdf)</label>
                         <div>
-                            <input type="file" onChange={handleFileChange} />
+                            <input accept="application/pdf" type="file" onChange={handleFileChange} defaultValue={null} id='file' />
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-row w-full justify-end gap-4 ">
+                <div className="flex flex-row w-full justify-end gap-4  ">
                     <Button type={'submit'} intent="primary">
                         {(!committee_loading || !company_loading) && 'บันทึก'}
                         {(committee_loading || company_loading) && (

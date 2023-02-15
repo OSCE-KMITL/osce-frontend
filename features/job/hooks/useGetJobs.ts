@@ -13,7 +13,16 @@ export const GET_JOBS = gql`
             limit
             welfare
             compensation
-            coop301_fileurl
+            internship_period
+            work_period
+            coordinator_name
+            coordinator_job_title
+            coordinator_email
+            coordinator_phone_number
+            supervisor_name
+            supervisor_job_title
+            supervisor_email
+            supervisor_phone_number
             company_id {
                 name_th
                 name_eng
@@ -22,6 +31,14 @@ export const GET_JOBS = gql`
                 district
                 province
                 postal_code
+            }
+            file_upload {
+                id
+                original_name
+                current_name
+                url
+                createdAt
+                updatedAt
             }
         }
     }
@@ -39,7 +56,16 @@ export const GET_JOB_BY_ID = gql`
             limit
             welfare
             compensation
-            coop301_fileurl
+            internship_period
+            work_period
+            coordinator_name
+            coordinator_job_title
+            coordinator_email
+            coordinator_phone_number
+            supervisor_name
+            supervisor_job_title
+            supervisor_email
+            supervisor_phone_number
             createdAt
             updatedAt
             company_id {
@@ -50,6 +76,19 @@ export const GET_JOB_BY_ID = gql`
                 district
                 province
                 postal_code
+                phone_number
+                website_url
+                business_type
+                created_at
+                updated_at
+            }
+            file_upload {
+                id
+                original_name
+                current_name
+                url
+                createdAt
+                updatedAt
             }
         }
     }
@@ -65,7 +104,16 @@ export interface JobProps {
     limit: string;
     welfare: string;
     compensation: string;
-    coop301_fileurl: string;
+    internship_period: string;
+    work_period: string;
+    coordinator_name: string;
+    coordinator_job_title: string;
+    coordinator_email: string;
+    coordinator_phone_number: string;
+    supervisor_name: string;
+    supervisor_job_title: string;
+    supervisor_email: string;
+    supervisor_phone_number: string;
     company_id: {
         name_th: string;
         name_eng: string;
@@ -74,7 +122,22 @@ export interface JobProps {
         district: string;
         province: string;
         postal_code: string;
+        phone_number: string;
+        website_url: string;
+        business_type: string;
+        created_at: string;
+        updated_at: string;
     };
+    file_upload: [
+        {
+            id: string;
+            original_name: string;
+            current_name: string;
+            url: string;
+            createdAt: string;
+            updatedAt: string;
+        }
+    ];
 }
 export interface JobResponse {
     getJobById: JobProps | null;
