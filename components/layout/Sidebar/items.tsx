@@ -19,11 +19,11 @@ export const items: MenuProps['items'] = [
         children: [
             {
                 label: 'งานที่เปิดรับ',
-                key: 'job opening',
+                key: '/jobs',
             },
             {
                 label: 'งานที่สมัคร',
-                key: 'job applying',
+                key: '/applying',
             },
         ],
     },
@@ -34,7 +34,7 @@ export const items: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: 'coop report',
+                key: '/coopreport',
             },
         ],
     },
@@ -46,11 +46,11 @@ export const items: MenuProps['items'] = [
         children: [
             {
                 label: 'ประเมินสถานประกอบการ',
-                key: 'company assessment',
+                key: '/companyassessment',
             },
             {
                 label: 'ประเมินอาจารย์นิเทศ',
-                key: 'company advisor',
+                key: '/advisorassessment',
             },
         ],
     },

@@ -1,16 +1,25 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Steps } from 'antd';
-import { useSelector } from 'react-redux';
+import { Steps, notification } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 import PersonalInformation from '@components/CoopRegister/PersonalInformation';
 import EducationInformation from '@components/CoopRegister/EducationInformation';
 import { step_items } from '@components/CoopRegister/steps';
 import { RegisterCoopHookState } from '@features/register-coop/interfaces';
-import { facultyInfoStateSelector } from '@features/register-coop/coopregister.slice';
+import { birthDateStateSelector, curriculumStateSelector, facultyInfoStateSelector, facultyStateSelector } from '@features/register-coop/coopregister.slice';
 import EmergencyContact from '@components/CoopRegister/EmergencyContact';
 import PersonalSkill from '@components/CoopRegister/PersonalSkill';
 import LanguageAbility from '@components/CoopRegister/LanguageAbility';
 import TranscriptUpload from '@components/CoopRegister/TranscriptUpload';
+import { departmentStateSelector, skillsStateSelector, languageAbilitiesStateSelector } from '../features/register-coop/coopregister.slice';
+import { CoopStudentInfo, RegisterCoopPayload } from '../features/student/interfaces/index';
+import { REGISTER_COOP, useCoopRegister } from '../features/student/hooks/useCoopRegister';
+import NotificationService from '../lib/ant_service/NotificationService';
+import LoadingSpinner from '../components/common/Spinner/LoadingSpinner';
+import { useMutation } from '@apollo/client';
+import { decreaseStep, handleSavedStudentInfo, studentStatusStateSelector } from '@features/student/student.slice';
+import { studentStepStateSelector } from '../features/student/student.slice';
+import AppliedStatus from '../components/CoopRegister/AppliedStatus';
 
 interface OwnProps {}
 
@@ -23,39 +32,124 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
         formState: { errors },
         reset,
     } = useForm<RegisterCoopHookState>({ shouldUseNativeValidation: true, mode: 'onChange' });
-    const [step, setStep] = useState(0);
-    let info = useSelector(facultyInfoStateSelector);
-    const onSubmit = (data) => {
-        const result = { ...data, ...info };
-        setStep((step) => step + 1);
-        console.log(result);
+    const info = useSelector(facultyInfoStateSelector);
+    const faculties_obj = useSelector(facultyStateSelector);
+    const departments_obj = useSelector(departmentStateSelector);
+    const curriculums_obj = useSelector(curriculumStateSelector);
+    const skills = useSelector(skillsStateSelector);
+    const languages = useSelector(languageAbilitiesStateSelector);
+    const birth_date_state = useSelector(birthDateStateSelector);
+    const step = useSelector(studentStepStateSelector);
+    const [register_coop, { data, error, loading }] = useCoopRegister();
+    const notification_instanst = NotificationService.getInstance();
+    const dispatch = useDispatch();
+
+    const apply_status = useSelector(studentStatusStateSelector);
+
+    const onSubmit = async (data: RegisterCoopHookState) => {
+        const result: CoopStudentInfo = {
+            level_id: curriculums_obj.level_id,
+            curriculum_id: curriculums_obj.curriculum_id,
+            curriculum_name_th: curriculums_obj.curriculum_name_th,
+            curriculum_name_en: curriculums_obj.curriculum_name_en,
+            name_th: data.name,
+            lastname_th: data.lastname,
+            gpa: data.gpa,
+            gender: data.gender,
+            religion: data.religion,
+            military_status: data.military_status,
+            driver_license: data.driver_license,
+            citizen_id: data.citizen_id,
+            weight: data.weight,
+            height: data.height,
+            address: data.address,
+            phone_number: data.phone_number,
+            emer_relation: data.emer_relation,
+            emer_name: data.emer_name,
+            emer_lastname: data.lastname,
+            emer_tel: data.emer_tel,
+            birth_date: birth_date_state,
+            faculty_id: faculties_obj.faculty_id,
+            faculty_name_th: faculties_obj.faculty_name_th,
+            faculty_name_en: faculties_obj.faculty_name_en,
+            department_id: departments_obj.department_id,
+            department_name_en: departments_obj.department_name_en,
+            department_name_th: departments_obj.department_name_th,
+        };
+
+        const payload: RegisterCoopPayload = {
+            registerCoopInput: { ...result },
+            skills: skills,
+            languageAbilities: languages,
+        };
+
+        dispatch(handleSavedStudentInfo(payload));
+
+        await register_coop({
+            variables: {
+                ...payload,
+            },
+            onCompleted: (result) => {
+                notification_instanst.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
+            },
+            onError(error, clientOptions) {
+                notification_instanst.error('พบข้อผิดพลาก', error.message);
+                console.log(JSON.stringify(error, null, 2));
+            },
+        });
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col max-w-[100%] min-w-[80%] min-h-screen font-primary_noto ">
-            <div className="flex items-center mb-6 w-full bg-primary-500 w-full h-[150px] m-2 rounded-md px-4  text-gray-800">
+        <div className="flex flex-col max-w-[100%] min-w-[80%] min-h-screen font-primary_noto ">
+            <div className="flex items-center mb-6 w-full bg-primary-500  h-[150px] m-2 rounded-md px-4  text-gray-800">
                 <h1 className="font-semibold text-5xl text-white ">สมัครเข้าร่วมสหกิจศึกษา</h1>
             </div>
-            <div className="flex items-center justify-center  px-6 py-2 ">
+            {/* <div className="flex items-center justify-center  px-6 py-2 ">
                 <Steps responsive={true} current={step} className={'mb-6 font-primary_noto'} items={step_items} />
-            </div>{' '}
-            <EducationInformation register={register} errors={errors} />
-            <PersonalInformation register={register} errors={errors} />
-            <EmergencyContact register={register} errors={errors} />
-            <PersonalSkill />
-            <LanguageAbility />
-            <TranscriptUpload />
+            </div>{' '} */}
+
+            {apply_status === 'APPLIED' ? (
+                <AppliedStatus />
+            ) : (
+                <>
+                    <form>
+                        <EducationInformation register={register} errors={errors} />
+                        <PersonalInformation register={register} errors={errors} />
+                    </form>
+                    <EmergencyContact register={register} errors={errors} />
+                    <PersonalSkill />
+                    <LanguageAbility />
+                    <TranscriptUpload />
+                </>
+            )}
+
             <div className="w-full   ">
-                <div className="flex gap-4 justify-end">
+                <div className="flex gap-4 justify-end items-center">
+                    {step == 1 && (
+                        <h1 className="text-md text-primary-500">* * หากยืนยันสมัครเข้าร่วมจะไม่สามารถแก้ไขใบสมัครได้ โปรดตรวจสอบให้แน่ใจก่อนกดยืนยัน</h1>
+                    )}{' '}
+                    {step == 0 && <h1 className="text-md text-primary-500">* การบันทึกใบสมัครจะยังสามารถแก้ไขข้อมูลได้</h1>}
+                    {step == 1 && (
+                        <>
+                            <button
+                                onClick={() => dispatch(decreaseStep())}
+                                disabled={loading && true}
+                                className="px-6 py-3 border text-[21px]   rounded-md  hover:bg-primary-500 hover:text-white "
+                            >
+                                {loading ? <LoadingSpinner /> : 'ย้อนกลับ'}
+                            </button>
+                        </>
+                    )}
                     <button
-                        type="submit"
-                        className="px-6 py-3 border text-[20px] border-primary-500 text-primary-500  rounded-md text-sm hover:bg-primary-500 hover:text-white "
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={loading && true}
+                        className="px-6 py-3 border text-xl border-primary-500 text-primary-500  rounded-md  hover:bg-primary-500 hover:text-white "
                     >
-                        บันทึก
+                        {loading ? <LoadingSpinner /> : 'บันทึกใบสมัคร'}
                     </button>
                 </div>
             </div>
-        </form>
+        </div>
     );
 };
 

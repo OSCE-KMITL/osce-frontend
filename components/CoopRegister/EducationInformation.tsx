@@ -7,6 +7,7 @@ import { registerErrorSchema } from '@features/register-coop/interfaces';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import { RoleOption } from '@constants/RoleOptions';
 import { studentIdParser } from '../../utils/common';
+import { useAppSelector } from '../../store/index';
 
 const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
     const {
@@ -28,6 +29,8 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
             return null;
         }
     };
+
+    const disable = useAppSelector;
     return (
         <>
             <div className="flex flex-col justify-between w-full p-6 rounded-md bg-white my-6">
@@ -41,10 +44,12 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                             name={'student_id'}
                             type="text"
                             label={'รหัสนักศึกษา'}
+                            value={studentIdParser(me?.email)}
                             fullWidth
                             register={register}
                             isError={errors.student_id && true}
                             placeholder={me?.role === RoleOption.STUDENT ? student_id() : ' 63010000'}
+                            disable={me && true}
                             errors={errors}
                         />
                     </div>

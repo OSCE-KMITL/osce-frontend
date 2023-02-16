@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
+    "@heroicons/react": "^2.0.15",
     "@hookform/error-message": "^2.0.1",
     "@next/font": "^13.0.6",
     "@reduxjs/toolkit": "^1.9.1",

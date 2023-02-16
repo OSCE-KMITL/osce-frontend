@@ -21,6 +21,7 @@ const SideBar: FC = () => {
             onSelect={(action) => {
                 router.push(action.key);
             }}
+            selectedKeys={[router.pathname]}
             className="w-full h-screen text-md font-medium gap-4  font-primary_noto px-8 flex flex-col py-32 "
             mode={'inline'}
             items={roleChecking()}

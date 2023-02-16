@@ -2,8 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import announcementReducer from '@features/announcement/announcement.slice';
 import facultyState from '@features/register-coop/coopregister.slice';
+import studentState from '@features/student/student.slice';
 export const store = configureStore({
-    reducer: { announcement: announcementReducer, facultyState: facultyState },
+    reducer: { announcement: announcementReducer, facultyState: facultyState, studentState: studentState },
     devTools: process.env.NODE_ENV === 'development',
 });
 

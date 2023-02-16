@@ -9,6 +9,10 @@ export const inputStyle = cva('shadow-sm  text-[18px] rounded-lg  outline-0 bloc
             true: 'bg-red-50  border border-red-500 text-gray-900 placeholder-red-700 focus:border-red-500 shadow-red-300 shadow-md ',
             false: 'bg-gray-50 border border-gray-300 text-gray-900 focus:border-green-500 ',
         },
+        disable: {
+            false: 'bg-red-50  border border-red-500 text-gray-900 placeholder-red-700 focus:border-red-500 shadow-red-300 shadow-md ',
+            true: 'bg-gray-100 border border-gray-300 text-gray-900 focus:border-green-500 ',
+        },
         fullWidth: {
             true: 'w-full',
         },
@@ -29,16 +33,30 @@ interface InputProps extends VariantProps<typeof inputStyle> {
     placeholder?: string;
     step?: boolean | undefined;
     disable?: boolean;
+    value?: any;
 }
 
-const Input: FunctionComponent<InputProps> = ({ disable, step, validationSchema, name, errors, placeholder, register, type, label, fullWidth, isError }) => {
+const Input: FunctionComponent<InputProps> = ({
+    value,
+    disable,
+    step,
+    validationSchema,
+    name,
+    errors,
+    placeholder,
+    register,
+    type,
+    label,
+    fullWidth,
+    isError,
+}) => {
     return (
         <div className="mb-2 h-auto">
-            <label htmlFor={name} className={`block text-[18px] font-medium text-gray-900 `}>
+            <label htmlFor={name} className={`block text-[20px] font-medium text-gray-900 `}>
                 {label}
             </label>
             <input
-                className={inputStyle({ isError, fullWidth })}
+                className={inputStyle({ isError, fullWidth, disable })}
                 id={name}
                 name={name}
                 type={type}
@@ -46,6 +64,7 @@ const Input: FunctionComponent<InputProps> = ({ disable, step, validationSchema,
                 placeholder={placeholder}
                 step={step ? 0.01 : undefined}
                 disabled={disable}
+                value={disable && value}
             />
             <div className="h-5">
                 {errors && <ErrorMessage errors={errors} name={name} render={({ message }) => <p className={'text-red-500'}>{message}</p>} />}

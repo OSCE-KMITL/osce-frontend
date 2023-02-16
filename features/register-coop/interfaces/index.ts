@@ -3,15 +3,15 @@ import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/inte
 
 export interface ISkillState {
     skill_name: string;
-    leveL: string;
+    level: string;
 }
-export interface LanguageAbility {
-    skill_name: string;
-    leveL: string;
+export interface ILanguageAbility {
+    name: string;
+    level: string;
 }
 
 type SkillsState = ISkillState[] | null;
-type LanguageAbilityState = LanguageAbility[] | null;
+type LanguageAbilityState = ILanguageAbility[] | null;
 
 export interface IUserFacultyState {
     faculty: IFaculty | null;
@@ -23,6 +23,9 @@ export interface IUserFacultyState {
 }
 
 export interface RegisterCoopHookState {
+    height: string;
+    phone_number: string;
+    weight: string;
     name: string;
     lastname: string;
     student_id: string;
@@ -69,26 +72,27 @@ interface RegisterError {
 export const regExPattern = {
     gpa: new RegExp(/^[0-4]\.\d\d$/),
     only_thai: new RegExp('^[ก-๏s]+$'),
+    only_eng: new RegExp('^[A-Za-z]+$'),
     student_id: new RegExp('[0-9]{8}'),
     phone_number: new RegExp('[0]{1}[0-9]{9}'),
 };
 
-const onSelected = (value: string) => {
+export const checkIsSelected = (value: string) => {
     if (value === 'DEFAULT') {
         return 'กรุณาให้ข้อมูล';
     }
 };
 
 export const registerErrorSchema: RegisterError = {
-    emer_relation: { validate: (value) => onSelected(value) },
+    emer_relation: { validate: (value) => checkIsSelected(value) },
     emer_tel: {
         required: 'กรุณากรอกเบอร์โทรศัพท์',
         pattern: { value: regExPattern.phone_number, message: 'รูปแบบไม่ถูกต้อง eg: 0612345678' },
         minLength: { value: 10, message: 'กรอกเบอร์โทร 10 หลัก' },
         maxLength: { value: 10, message: 'กรอกเบอร์โทร 10 หลัก' },
     },
-    gender: { validate: (value) => onSelected(value) },
-    religion: { validate: (value) => onSelected(value) },
+    gender: { validate: (value) => checkIsSelected(value) },
+    religion: { validate: (value) => checkIsSelected(value) },
     phone_number: {
         required: 'กรุณากรอกเบอร์โทรศัพท์',
         pattern: { value: regExPattern.phone_number, message: 'รูปแบบไม่ถูกต้อง eg: 0612345678' },
