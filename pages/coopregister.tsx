@@ -17,7 +17,7 @@ import { REGISTER_COOP, useCoopRegister } from '../features/student/hooks/useCoo
 import NotificationService from '../lib/ant_service/NotificationService';
 import LoadingSpinner from '../components/common/Spinner/LoadingSpinner';
 import { useMutation } from '@apollo/client';
-import { decreaseStep, handleSavedStudentInfo, studentStatusStateSelector } from '@features/student/student.slice';
+import { decreaseStep, handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, studentStatusStateSelector } from '@features/student/student.slice';
 import { studentStepStateSelector } from '../features/student/student.slice';
 import AppliedStatus from '../components/CoopRegister/AppliedStatus';
 
@@ -83,20 +83,28 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
             languageAbilities: languages,
         };
 
-        dispatch(handleSavedStudentInfo(payload));
-
-        await register_coop({
-            variables: {
-                ...payload,
-            },
-            onCompleted: (result) => {
-                notification_instanst.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
-            },
-            onError(error, clientOptions) {
-                notification_instanst.error('พบข้อผิดพลาก', error.message);
-                console.log(JSON.stringify(error, null, 2));
-            },
-        });
+        // Check Context state is eequl to saved ?
+        // If state not equal to SAVED just saved to redux
+        // if state is SAVED will call doRegister()
+        if (apply_status !== 'SAVED') {
+            dispatch(handleSavedStudentInfo(payload));
+        } else {
+            await register_coop({
+                variables: {
+                    ...payload,
+                },
+                onCompleted: (result) => {
+                    notification_instanst.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
+                    dispatch(handleApplyStudentInfo());
+                    dispatch(increaseStep());
+                },
+                onError(error, clientOptions) {
+                    notification_instanst.error('พบข้อผิดพลาก', error.message);
+                    console.log(JSON.stringify(error, null, 2));
+                    dispatch(decreaseStep());
+                },
+            });
+        }
     };
 
     return (
@@ -104,11 +112,10 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
             <div className="flex items-center mb-6 w-full bg-primary-500  h-[150px] m-2 rounded-md px-4  text-gray-800">
                 <h1 className="font-semibold text-5xl text-white ">สมัครเข้าร่วมสหกิจศึกษา</h1>
             </div>
-            {/* <div className="flex items-center justify-center  px-6 py-2 ">
-                <Steps responsive={true} current={step} className={'mb-6 font-primary_noto'} items={step_items} />
-            </div>{' '} */}
-
-            {apply_status === 'APPLIED' ? (
+            <div className="flex items-center justify-center  px-6 py-2 ">
+                <Steps size="default" responsive={true} current={step} className={'mb-6 font-primary_noto text-[20px] '} items={step_items} />
+            </div>{' '}
+            {apply_status === 'SAVED' || apply_status === 'APPLIED' ? (
                 <AppliedStatus />
             ) : (
                 <>
@@ -122,33 +129,38 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
                     <TranscriptUpload />
                 </>
             )}
-
-            <div className="w-full   ">
-                <div className="flex gap-4 justify-end items-center">
+            {apply_status !== 'APPLIED' && (
+                <div className="w-full  flex flex-col justify-end items-end gap-y-4 ">
+                    <div className="flex gap-4 justify-end items-center">
+                        {step == 1 && (
+                            <>
+                                <button
+                                    onClick={() => dispatch(decreaseStep())}
+                                    disabled={loading && true}
+                                    className="px-6 py-3  text-[21px] rounded-md underline  "
+                                >
+                                    {loading ? <LoadingSpinner /> : 'ย้อนกลับ'}
+                                </button>
+                            </>
+                        )}
+                        <button
+                            onClick={handleSubmit(onSubmit)}
+                            disabled={loading && true}
+                            className={`px-6 py-3 border text-xl border-primary-500  rounded-md ${
+                                apply_status !== 'SAVED'
+                                    ? 'text-primary-500  hover:bg-primary-500 hover:text-white'
+                                    : 'text-white bg-primary-500  hover:bg-primary-700 hover:text-white '
+                            }  `}
+                        >
+                            {loading && <LoadingSpinner />}
+                            {apply_status !== 'SAVED' ? 'บันทึกใบสมัคร' : 'ส่งใบสมัคร'}
+                        </button>
+                    </div>
                     {step == 1 && (
-                        <h1 className="text-md text-primary-500">* * หากยืนยันสมัครเข้าร่วมจะไม่สามารถแก้ไขใบสมัครได้ โปรดตรวจสอบให้แน่ใจก่อนกดยืนยัน</h1>
+                        <h1 className="text-md text-red-500">* ส่งใบสมัครแล้วจะไม่สามารถแก้ไขใบสมัครได้ โปรดตรวจสอบข้อมูลให้ถูกต้องก่อนส่งใบสมัคร</h1>
                     )}{' '}
-                    {step == 0 && <h1 className="text-md text-primary-500">* การบันทึกใบสมัครจะยังสามารถแก้ไขข้อมูลได้</h1>}
-                    {step == 1 && (
-                        <>
-                            <button
-                                onClick={() => dispatch(decreaseStep())}
-                                disabled={loading && true}
-                                className="px-6 py-3 border text-[21px]   rounded-md  hover:bg-primary-500 hover:text-white "
-                            >
-                                {loading ? <LoadingSpinner /> : 'ย้อนกลับ'}
-                            </button>
-                        </>
-                    )}
-                    <button
-                        onClick={handleSubmit(onSubmit)}
-                        disabled={loading && true}
-                        className="px-6 py-3 border text-xl border-primary-500 text-primary-500  rounded-md  hover:bg-primary-500 hover:text-white "
-                    >
-                        {loading ? <LoadingSpinner /> : 'บันทึกใบสมัคร'}
-                    </button>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

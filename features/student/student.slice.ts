@@ -21,11 +21,12 @@ const student_info = createSlice({
     reducers: {
         handleSavedStudentInfo: (state, { payload }: PayloadAction<RegisterCoopPayload>) => {
             state.payload = payload;
-            state.status = 'APPLIED';
+            state.status = 'SAVED';
             state.step = 1;
         },
         handleApplyStudentInfo: (state, { payload }: PayloadAction<void>) => {
             state.status = 'APPLIED';
+            state.step = 4;
         },
         increaseStep: (state, { payload }: PayloadAction<void>) => {
             state.step = state.step + 1;
