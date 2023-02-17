@@ -7,6 +7,7 @@ import { router } from 'next/client';
 import { useRouter } from 'next/router';
 import { API_URI, ENDPOINT_URI } from '../constants';
 import axios from 'axios';
+import { IStudent } from '@features/student/interfaces/Student';
 
 interface Props {
     children: JSX.Element;
@@ -17,6 +18,8 @@ export interface UserAuthData {
     email: string;
     token?: string;
     role: RoleOption;
+    profile_image: string;
+    is_student: IStudent | null | undefined;
 }
 
 interface AuthContextValues {
@@ -37,6 +40,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     const { data } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
     const router = useRouter();
+    console.log(me);
 
     useEffect(() => {
         if (data?.getMe) {

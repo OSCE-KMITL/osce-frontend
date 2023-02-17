@@ -1,4 +1,5 @@
 import { ISkillState, ILanguageAbility } from '../../register-coop/interfaces/index';
+
 export interface CoopStudentInfo {
     level_id: string;
     curriculum_id: string;
@@ -27,6 +28,13 @@ export interface CoopStudentInfo {
     department_id: string;
     department_name_en: string;
     department_name_th: string;
+}
+
+export enum CoopStatus {
+    DEFAULT = 'DEFAULT',
+    APPLYING = 'APPLYING',
+    PASSED = 'PASSED',
+    REJECTED = 'REJECTED',
 }
 
 export type RegisterCoopPayload = {

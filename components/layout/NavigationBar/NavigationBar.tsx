@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AuthenticationContext } from '../../../context/AuthContextProvider';
 import NavLink from './NavLink';
+import { Avatar } from 'antd';
 
 const NavigationBar: React.FC = () => {
     const { me, useLogout } = useContext(AuthenticationContext);
+    console.log(me?.is_student?.student_id);
 
     return (
         <header className=" w-full h-[85px] bg-white py-4 mx-auto  fixed z-50 shadow-md  flex justify-center text-md font-[500]  font-primary_noto ">
@@ -25,6 +27,7 @@ const NavigationBar: React.FC = () => {
                                 <p className="text-sm font-primary_noto  font-semibold text-gray-800">{me.email.toLowerCase()}</p>
                                 {/* <UserAvatar email={user.email} />*/}
                             </span>
+                            <Avatar src={me.profile_image || 'A'} size={'large'} />
                         </>
                     )}
                 </div>
