@@ -24,6 +24,7 @@ export const GET_JOBS = gql`
             supervisor_email
             supervisor_phone_number
             company_id {
+                id
                 name_th
                 name_eng
                 address
@@ -69,6 +70,7 @@ export const GET_JOB_BY_ID = gql`
             createdAt
             updatedAt
             company_id {
+                id
                 name_th
                 name_eng
                 address
@@ -89,6 +91,11 @@ export const GET_JOB_BY_ID = gql`
                 url
                 createdAt
                 updatedAt
+            }
+            students {
+                student_id
+                name
+                lastname
             }
         }
     }
@@ -115,6 +122,7 @@ export interface JobProps {
     supervisor_email: string;
     supervisor_phone_number: string;
     company_id: {
+        id: string;
         name_th: string;
         name_eng: string;
         address: string;
@@ -138,6 +146,13 @@ export interface JobProps {
             updatedAt: string;
         }
     ];
+    students: [
+        {
+            student_id: string;
+            name: string;
+            lastname: string;
+        }
+    ];
 }
 export interface JobResponse {
     getJobById: JobProps | null;
@@ -156,7 +171,7 @@ export function useGetJobs() {
 
 export function useGetJob({ jobId: string }) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery<JobResponse>(GET_JOB_BY_ID, { variables: { jobId: string } });
+    const { data, loading, error, refetch } = useQuery<JobResponse>(GET_JOB_BY_ID, { variables: { jobId: string }, pollInterval: 2000 });
 
-    return { data, loading, error };
+    return { data, loading, error, refetch };
 }

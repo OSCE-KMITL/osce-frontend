@@ -13,10 +13,9 @@ import Input from '@ui/Input';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
-import { AutoComplete, Cascader, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
+import { AutoComplete, Button, Cascader, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import client from 'lib/apollo/apollo-client';
-import Button from '@ui/Button';
 import { ErrorMessage } from '@hookform/error-message';
 import { useDropzone, FileWithPath } from 'react-dropzone';
 import { UploadFileInput, UPLOAD_FILE, useUploadFile } from 'features/upload/hooks/useUploadFile';
@@ -59,120 +58,23 @@ const CreateJobPage: FC = () => {
     // set prop require major
     const require_major = [
         {
-            label: 'ไม่ระบุ',
-            value: 'ไม่ระบุ',
+            label: 'ไม่จำกัดหลักสูตร',
+            value: 'ไม่จำกัดหลักสูตร',
         },
         {
-            label: 'ไม่จำกัดภาควิชาหรือหลักสูตร',
-            value: 'ไม่จำกัดภาควิชาหรือหลักสูตร',
-        },
-        {
-            label: 'วิศวกรรมโทรคมนาคม',
-            options: [
-                {
-                    label: 'วิศวกรรมโทรคมนาคม',
-                    value: 'วิศวกรรมโทรคมนาคม',
-                },
-                {
-                    label: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
-                    value: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
-                },
-                {
-                    label: 'อิเล็กทรอนิกส์',
-                    value: 'อิเล็กทรอนิกส์',
-                },
-                {
-                    label: 'เทคโนโลยีโทรคมนาคม',
-                    value: 'เทคโนโลยีโทรคมนาคม',
-                },
-                {
-                    label: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
-                    value: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมไฟฟ้า',
-            options: [
-                {
-                    label: 'วิศวกรรมไฟฟ้า',
-                    value: 'วิศวกรรมไฟฟ้า',
-                },
-                {
-                    label: 'วิศวกรรมพลังงานไฟฟ้า',
-                    value: 'วิศวกรรมพลังงานไฟฟ้า',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมอิเล็กทรอนิกส์',
-            options: [
-                {
-                    label: 'วิศวกรรมอิเล็กทรอนิกส์',
-                    value: 'วิศวกรรมอิเล็กทรอนิกส์',
-                },
-                {
-                    label: 'เทคโนโลยีอิเล็กทรอนิกส์',
-                    value: 'เทคโนโลยีอิเล็กทรอนิกส์',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมคอมพิวเตอร์',
-            options: [
-                {
-                    label: 'วิศวกรรมคอมพิวเตอร์',
-                    value: 'วิศวกรรมคอมพิวเตอร์',
-                },
-                {
-                    label: 'วิศวกรรมสารสนเทศ',
-                    value: 'วิศวกรรมสารสนเทศ',
-                },
-                {
-                    label: 'Software Engineering',
-                    value: 'Software Engineering',
-                },
-                {
-                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
-                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
-                },
-                {
-                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศและฟิสิกส์อุตสาหกรรม',
-                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศและฟิสิกส์อุตสาหกรรม',
-                },
-                {
-                    label: 'วิศวกรรมดนตรีและสื่อประสม',
-                    value: 'วิศวกรรมดนตรีและสื่อประสม',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมเครื่องกล',
-            options: [
-                {
-                    label: 'วิศวกรรมเครื่องกล',
-                    value: 'วิศวกรรมเครื่องกล',
-                },
-                {
-                    label: 'วิศวกรรมขนส่งทางราง',
-                    value: 'วิศวกรรมขนส่งทางราง',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมการวัดและควบคุม',
+            label: 'วิศวกรรมศาสตร์',
             options: [
                 {
                     label: 'วิศวกรรมการวัดคุม',
                     value: 'วิศวกรรมการวัดคุม',
                 },
                 {
-                    label: 'วิศวกรรมระบบควบคุม',
-                    value: 'วิศวกรรมระบบควบคุม',
-                },
-                {
                     label: 'วิศวกรรมอัตโนมัติ',
                     value: 'วิศวกรรมอัตโนมัติ',
+                },
+                {
+                    label: 'วิศวกรรมระบบควบคุม',
+                    value: 'วิศวกรรมระบบควบคุม',
                 },
                 {
                     label: 'วิศวกรรมแมคคาทรอนิกส์',
@@ -182,20 +84,82 @@ const CreateJobPage: FC = () => {
                     label: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
                     value: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
                 },
-            ],
-        },
-        {
-            label: 'วิศวกรรมโยธา',
-            options: [
+                {
+                    label: 'วิศวกรรมคอมพิวเตอร์',
+                    value: 'วิศวกรรมคอมพิวเตอร์',
+                },
+                {
+                    label: 'วิศวกรรมสารสนเทศ',
+                    value: 'วิศวกรรมสารสนเทศ',
+                },
+                {
+                    label: 'วิศวกรรมดนตรีและสื่อประสม',
+                    value: 'วิศวกรรมดนตรีและสื่อประสม',
+                },
+                {
+                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
+                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
+                },
+                {
+                    label: 'วิศวกรรมเครื่องกล',
+                    value: 'วิศวกรรมเครื่องกล',
+                },
+                {
+                    label: 'วิศวกรรมขนส่งทางราง',
+                    value: 'วิศวกรรมขนส่งทางราง',
+                },
+                {
+                    label: 'วิศวกรรมเคมี',
+                    value: 'วิศวกรรมเคมี',
+                },
+                {
+                    label: 'วิศวกรรมปิโตรเคมี',
+                    value: 'วิศวกรรมปิโตรเคมี',
+                },
+                {
+                    label: 'วิศวกรรมไฟฟ้า',
+                    value: 'วิศวกรรมไฟฟ้า',
+                },
+                {
+                    label: 'วิศวกรรมพลังงานไฟฟ้า',
+                    value: 'วิศวกรรมพลังงานไฟฟ้า',
+                },
+                {
+                    label: 'วิศวกรรมอุตสาหการ',
+                    value: 'วิศวกรรมอุตสาหการ',
+                },
+                {
+                    label: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
+                    value: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
+                },
+                {
+                    label: 'วิศวกรรมอาหาร',
+                    value: 'วิศวกรรมอาหาร',
+                },
+                {
+                    label: 'วิศวกรรมอิเล็กทรอนิกส์',
+                    value: 'วิศวกรรมอิเล็กทรอนิกส์',
+                },
+                {
+                    label: 'วิศวกรรมโทรคมนาคม',
+                    value: 'วิศวกรรมโทรคมนาคม',
+                },
+                {
+                    label: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
+                    value: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
+                },
+                {
+                    label: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
+                    value: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
+                },
+                {
+                    label: 'วิศวกรรมไฟฟ้าสื่อสารและเครือข่าย',
+                    value: 'วิศวกรรมไฟฟ้าสื่อสารและเครือข่าย',
+                },
                 {
                     label: 'วิศวกรรมโยธา',
                     value: 'วิศวกรรมโยธา',
                 },
-            ],
-        },
-        {
-            label: 'วิศวกรรมเกษตร',
-            options: [
                 {
                     label: 'วิศวกรรมเกษตร',
                     value: 'วิศวกรรมเกษตร',
@@ -207,59 +171,6 @@ const CreateJobPage: FC = () => {
                 {
                     label: 'วิศวกรรมเกษตรอัจฉริยะ',
                     value: 'วิศวกรรมเกษตรอัจฉริยะ',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมเคมี',
-            options: [
-                {
-                    label: 'วิศวกรรมเคมี',
-                    value: 'วิศวกรรมเคมี',
-                },
-                {
-                    label: 'วิศวกรรมปิโตรเคมี',
-                    value: 'วิศวกรรมปิโตรเคมี',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมอาหาร',
-            options: [
-                {
-                    label: 'วิศวกรรมอาหาร',
-                    value: 'วิศวกรรมอาหาร',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมอุตสาหการ',
-            options: [
-                {
-                    label: 'วิศวกรรมอุตสาหการ',
-                    value: 'วิศวกรรมอุตสาหการ',
-                },
-                {
-                    label: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
-                    value: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมชีวการแพทย์',
-            options: [
-                {
-                    label: 'วิศวกรรมชีวการแพทย์',
-                    value: 'วิศวกรรมชีวการแพทย์',
-                },
-            ],
-        },
-        {
-            label: 'วิศวกรรมการบินและนักบินพาณิชย์',
-            options: [
-                {
-                    label: 'วิศวกรรมการบินและนักบินพาณิชย์',
-                    value: 'วิศวกรรมการบินและนักบินพาณิชย์',
                 },
             ],
         },
@@ -369,6 +280,7 @@ const CreateJobPage: FC = () => {
         handleSubmit,
         formState: { errors },
         reset,
+        setValue,
     } = useForm<JobInputCommittee>({ mode: 'onChange' });
 
     function clearForm() {
@@ -420,10 +332,11 @@ const CreateJobPage: FC = () => {
         if (!file) return;
         const file_type = file.name.substr(-3);
         if (file_type != 'pdf') {
-            notification.error('Error อัพโหลดไฟล์','อัพโหลดไฟล์สกุล .pdf เท่านั้น !!')
-            const file_input = document.getElementById("file") as HTMLInputElement;
-            file_input.value = null
-            return;}
+            notification.error('Error อัพโหลดไฟล์', 'อัพโหลดไฟล์สกุล .pdf เท่านั้น !!');
+            const file_input = document.getElementById('file') as HTMLInputElement;
+            file_input.value = null;
+            return;
+        }
         setFileRecive(file);
     };
     const onSubmit = async (data) => {
@@ -507,7 +420,7 @@ const CreateJobPage: FC = () => {
         }
         if (me?.role === RoleOption.COMMITTEE) {
             if (!company) {
-                return message.error('จำเป็นต้องกรอกบริษัท');
+                return message.error('จำเป็นต้องเลือกบริษัท');
             }
             if (fileRecive) {
                 await createJobByCommittee({
@@ -666,7 +579,7 @@ const CreateJobPage: FC = () => {
                                 ></Input>
                             </div>
                             <div className="mb-2">
-                                <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ภาควิชา/หลักสูตรที่รับ</label>
+                                <label className={`block mb-2 text-lg font-medium text-gray-900 `}>หลักสูตรที่รับ</label>
                                 <div>
                                     <Select
                                         className=" text-gray-900 w-full h-full "
@@ -735,7 +648,7 @@ const CreateJobPage: FC = () => {
                             <div className="col-span-2">
                                 <div className="grid grid-cols-12 gap-x-8 ">
                                     <div className="mb-4 h-auto col-span-2 ">
-                                        <label className={`block  text-lg font-medium text-gray-900 mb-1 `}>ระยะเวลาการฝึกงาน</label>
+                                        <label className={`block  text-lg font-medium text-gray-900 mb-1 `}>ระยะเวลาปฏิบัติงาน</label>
                                         <Radio.Group onChange={internShipPeriodOnChange} value={internshipPeriod} className="grid grid-flow-row">
                                             <Radio value={'ฝึกงาน (2 เดือน)'}>ฝึกงาน (2 เดือน)</Radio>
                                             <Radio value={'สหกิจศึกษา (4 เดือน)'}>สหกิจศึกษา (4 เดือน)</Radio>
@@ -850,6 +763,7 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={coordinatorNameOnSelect}
                                     onChange={coordinatorNameOnChange}
+                                    placeholder="นาง พรประภา ชินตะวัน"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                                     }
@@ -867,6 +781,7 @@ const CreateJobPage: FC = () => {
                                     type="text"
                                     name="coordinator_position"
                                     value={coordinatorPosition}
+                                    placeholder="Human resource manager"
                                     onChange={(e) => {
                                         setCoordinatorPosition(e.target.value);
                                     }}
@@ -884,6 +799,7 @@ const CreateJobPage: FC = () => {
                                     type="text"
                                     name="coordinator_email"
                                     value={coordinatorEmail}
+                                    placeholder="pornprapa@company.co.th"
                                     onChange={(e) => {
                                         setCoordinatorEmail(e.target.value);
                                     }}
@@ -900,6 +816,7 @@ const CreateJobPage: FC = () => {
                                     id="coordinator_phone"
                                     type="text"
                                     name="coordinator_phone"
+                                    placeholder="0812345678"
                                     value={coordinatorPhoneNum}
                                     onChange={(e) => {
                                         setCoordinatorPhoneNum(e.target.value);
@@ -921,6 +838,7 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={supervisorNameOnSelect}
                                     onChange={supervisorNameOnChange}
+                                    placeholder="นาง เทธิกา จริงกิจจานุกูล"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                                     }
@@ -937,6 +855,7 @@ const CreateJobPage: FC = () => {
                                     id="supervisor_position"
                                     type="text"
                                     name="supervisor_position"
+                                    placeholder="Project coordinator "
                                     value={supervisorPosition}
                                     onChange={(e) => {
                                         setSupervisorPosition(e.target.value);
@@ -954,6 +873,7 @@ const CreateJobPage: FC = () => {
                                     id="supervisor_email"
                                     type="text"
                                     name="supervisor_email"
+                                    placeholder="tawika@company.co.th"
                                     value={supervisorEmail}
                                     onChange={(e) => {
                                         setSupervisorEmail(e.target.value);
@@ -972,6 +892,7 @@ const CreateJobPage: FC = () => {
                                     type="text"
                                     name="supervisor_phone"
                                     value={supervisorPhoneNum}
+                                    placeholder="0812345678"
                                     onChange={(e) => {
                                         setSupervisorPhoneNum(e.target.value);
                                     }}
@@ -983,13 +904,16 @@ const CreateJobPage: FC = () => {
                     <div>
                         <label className={`block mb-2 text-xl font-medium text-gray-900 `}>เพิ่มเอกสาร (.pdf)</label>
                         <div>
-                            <input accept="application/pdf" type="file" onChange={handleFileChange} defaultValue={null} id='file' />
+                            <input accept="application/pdf" type="file" onChange={handleFileChange} defaultValue={null} id="file" />
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-row w-full justify-end gap-4  ">
-                    <Button type={'submit'} intent="primary">
+                <div className="flex flex-row w-full justify-end gap-4   ">
+                    <button
+                        type="submit"
+                        className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
+                    >
                         {(!committee_loading || !company_loading) && 'บันทึก'}
                         {(committee_loading || company_loading) && (
                             <span>
@@ -997,7 +921,7 @@ const CreateJobPage: FC = () => {
                                 loading...
                             </span>
                         )}
-                    </Button>
+                    </button>
                 </div>
             </form>
         </div>

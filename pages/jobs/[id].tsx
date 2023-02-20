@@ -2,20 +2,29 @@ import { useRouter } from 'next/router';
 import { useGetJob } from '../../features/job/hooks/useGetJobs';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
 import Link from 'next/link';
 import Button from '@ui/Button';
+import { useApplyJob } from 'features/job/hooks/useApplyJob';
+import { useGetMe } from 'features/auth/hooks/useGetMe';
+import NotificationService from 'lib/ant_service/NotificationService';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 interface OwnProps {}
 
 type Props = OwnProps;
 const JobDetail: FunctionComponent<Props> = () => {
     const router = useRouter();
+    const notification = NotificationService.getInstance();
     const { id } = router.query;
-    const { data, loading, error } = useGetJob({ jobId: id as string });
+    const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
     const { me } = useContext(AuthenticationContext);
+    const { data: dataGetMe } = useGetMe();
+    const [applyJob, { loading: apply_job_loading }] = useApplyJob();
+    const [onApply, setOnApply] = useState(false);
 
     if (error) {
         return <h1>{error.message || 'พบข้อผิดพลาดบางประการ'}</h1>;
@@ -24,15 +33,41 @@ const JobDetail: FunctionComponent<Props> = () => {
         return <SkeletonLoading></SkeletonLoading>;
     }
 
+    const stu_id = dataGetMe?.getMe?.is_student?.student_id;
+    const obj_stu_apply = data?.getJobById?.students;
+    const on_apply = obj_stu_apply.findIndex((obj) => obj.student_id === stu_id);
+    console.log(on_apply);
+
+    const handleApply = async () => {
+        await applyJob({
+            variables: {
+                applyInfo: { job_id: data?.getJobById?.id },
+            },
+            onCompleted: (result) => {
+                if (result) {
+                    notification.success('Success', 'สมัครงานเสร็จสิ้น');
+                }
+            },
+            onError: (error) => {
+                console.log(error);
+                if (error) {
+                    notification.error('Error', error.message);
+                }
+            },
+        });
+
+        await refetch();
+    };
+
     return (
         <ContentContainer>
-            <div className="w-[80%] h-fit">
+            <div className="w-[80%] h-fit font-primary_noto">
                 <BreadcrumbComponent />
                 <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> รายละเอียดงาน</h1>
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
             {data && (
-                <div className="grid grid-cols-8 w-full gap-x-4">
+                <div className="grid grid-cols-8 w-full gap-x-4 font-primary_noto">
                     <div className="col-span-6 overflow-hidden bg-white shadow sm:rounded-lg w-full px-8 border-solid border-2 border-gray-300 ">
                         <div className="px-4 py-5 sm:px-6">
                             <h3 className="text-2xl font-medium leading-6 text-gray-900 mb-2">
@@ -52,13 +87,13 @@ const JobDetail: FunctionComponent<Props> = () => {
                                     </div>
                                 </div>
                                 <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-md font-medium text-gray-500">ภาควิชา/หลักสูตรที่รับ</dt>
+                                    <dt className="text-md font-medium text-gray-500">หลักสูตรที่รับ</dt>
                                     <dd className="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">
                                         {data.getJobById.required_major ? data.getJobById.required_major : '-'}
                                     </dd>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <div className="text-md font-medium text-gray-500">ระยะเวลาการฝึกงาน</div>
+                                    <div className="text-md font-medium text-gray-500">ระยะเวลาปฏิบัติงาน</div>
                                     <div className="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">
                                         {data.getJobById.internship_period ? data.getJobById.internship_period : '-'}
                                     </div>
@@ -123,13 +158,15 @@ const JobDetail: FunctionComponent<Props> = () => {
                                                 <ul role="list" className="divide-y divide-gray-200 rounded-md border border-gray-200">
                                                     <li className="flex items-center justify-between py-3 pl-3 pr-4 text-md">
                                                         <div className="flex w-0 flex-1 items-center">
-                                                            <span className="ml-2 w-0 flex-1 truncate">{file.original_name ? file.original_name : ''}</span>
+                                                            <span className="ml-2 w-0 flex-1 truncate font-primary_noto text-md">
+                                                                {file.original_name ? file.original_name : ''}
+                                                            </span>
                                                         </div>
                                                         <div className="ml-4 flex-shrink-0">
                                                             <Link
                                                                 target={'_blank'}
                                                                 href={file.url}
-                                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                className="font-primary_noto text-indigo-600 hover:text-indigo-500"
                                                             >
                                                                 {'Download'}
                                                             </Link>
@@ -148,7 +185,7 @@ const JobDetail: FunctionComponent<Props> = () => {
                     <div className="col-span-2  flex flex-col gap-y-4">
                         <div className="overflow-hidden bg-white shadow sm:rounded-lg w-full h-fit px-8 border-solid border-2 border-gray-300 ">
                             <div className="py-5">
-                                <h3 className="text-2xl font-medium leading-6 text-gray-900 mb-2">
+                                <h3 className="text-2xl font-medium leading-7 text-gray-900 mb-2">
                                     {data.getJobById?.company_id?.name_eng ? data.getJobById?.company_id?.name_eng : '-'}
                                 </h3>
 
@@ -167,7 +204,21 @@ const JobDetail: FunctionComponent<Props> = () => {
                                 <p className="mb-1">
                                     รหัสไปรษณีย์ : {data.getJobById?.company_id?.postal_code ? data.getJobById?.company_id?.postal_code : '-'}{' '}
                                 </p>
-                                <p className="mb-1">เว็บไซต์ : {data.getJobById?.company_id?.website_url ? data.getJobById?.company_id?.website_url : '-'} </p>
+                                <p className="mb-1">
+                                    เว็บไซต์ :{' '}
+                                    {data.getJobById?.company_id?.website_url ? (
+                                        <Link
+                                            rel="noopener noreferrer"
+                                            target={'_blank'}
+                                            href={"https://"+data.getJobById?.company_id?.website_url}
+                                            className="font-primary_noto text-blue-600 hover:text-blue-300"
+                                        >
+                                            {data.getJobById?.company_id?.website_url}
+                                        </Link>
+                                    ) : (
+                                        '-'
+                                    )}{' '}
+                                </p>
                                 <p className="mb-1">
                                     โทรศัพท์ : {data.getJobById?.company_id?.phone_number ? data.getJobById?.company_id?.phone_number : '-'}{' '}
                                 </p>
@@ -189,12 +240,26 @@ const JobDetail: FunctionComponent<Props> = () => {
                         {me?.role === RoleOption.STUDENT ? (
                             <div className="col-span-2 overflow-hidden sm:rounded-lg w-full h-fit ">
                                 <div className="flex flex-row w-full justify-center gap-4 p-1 rounded-md ">
-                                    <button
-                                        type={'button'}
-                                        className="bg-orange-400 px-2 py-2 rounded-md w-[60%] h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
-                                    >
-                                        สมัคร
-                                    </button>
+                                    {on_apply === -1 ? (
+                                        <button
+                                            onClick={handleApply}
+                                            type={'button'}
+                                            className={`${
+                                                apply_job_loading ? 'bg-gray-400' : 'bg-orange-400'
+                                            } px-2 py-2 rounded-md w-full h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100 hover:bg-orange-300`}
+                                        >
+                                            {apply_job_loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} /> : 'สมัคร'}
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={handleApply}
+                                            type={'button'}
+                                            disabled={true}
+                                            className="bg-gray-300 px-2 py-2 rounded-md w-full h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-200"
+                                        >
+                                            สมัคร
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ) : (
