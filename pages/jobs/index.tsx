@@ -8,11 +8,16 @@ import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
+import { Dropdown, Menu } from 'antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 
 const Jobs: React.FC = () => {
     const { data, loading, error } = useGetJobs();
+    const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const message = MessageService.getInstance();
     const { me } = useContext(AuthenticationContext);
+    const notification = NotificationService.getInstance();
 
     if (error) {
         message.error(error.message);
@@ -22,6 +27,37 @@ const Jobs: React.FC = () => {
             </>
         );
     }
+
+    const handleDelete = (id: string) => {
+        console.log('delete id:', id);
+
+        if (id) {
+            deleteJob({
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ลบงานเสร็จสิ้น');
+                    }
+                },
+                onError: (error) => {
+                    if (error) {
+                        notification.error('Error', error.message);
+                    }
+                },
+                variables: { jobId: id },
+            });
+        }
+    };
+
+    const menu = (id_job: string) => (
+        <Menu>
+            <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleDelete(id_job)}>
+                แก้ไข
+            </Menu.Item>
+            <Menu.Item key="1" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
+                ลบ
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <ContentContainer>
@@ -47,6 +83,10 @@ const Jobs: React.FC = () => {
                         key={job.id}
                         className=" w-full h-auto px-6 py-6 grid grid-cols-5  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
                     >
+                        <Dropdown overlay={menu(job?.id)} placement="topCenter" trigger={['click']} className="absolute flex justify-self-end">
+                            <MoreOutlined />
+                        </Dropdown>
+
                         <div className=" w-full h-full col-span-3 gap-4 grid grid-rows-2">
                             <div className=" w-full h-full grid md:items-center">
                                 <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : 'ไม่ระบุตำแหน่งงาน'}</h1>
