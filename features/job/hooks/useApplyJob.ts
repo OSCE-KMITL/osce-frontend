@@ -1,4 +1,3 @@
-import { IStudent } from './../../student/interfaces/Student';
 import { GET_JOBS } from './useGetJobs';
 import { gql, useMutation } from '@apollo/client';
 

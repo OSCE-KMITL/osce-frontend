@@ -1,7 +1,7 @@
 import ContentContainer from '@ui/ContentContainer';
 import { Link } from '@ui/Link';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
-import { useGetMe } from 'features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React from 'react';
 import { Space, Tag } from 'antd';
 

@@ -84,6 +84,7 @@ export const GET_ME = gql`
                 updated_at
             }
             is_company {
+                company_person_id
                 company_id {
                     id
                     job {
@@ -103,5 +104,5 @@ export const GET_ME = gql`
 `;
 
 export const useGetMe = () => {
-    return useQuery<GetMeResponse>(GET_ME, { pollInterval: 2000 });
+    return useQuery<GetMeResponse>(GET_ME);
 };

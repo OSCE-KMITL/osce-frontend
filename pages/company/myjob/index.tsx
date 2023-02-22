@@ -5,7 +5,7 @@ import { Dropdown, Menu, Space, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { RoleOption } from 'constants/RoleOptions';
 import { AuthenticationContext } from 'context/AuthContextProvider';
-import { useGetMe } from 'features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React, { useContext } from 'react';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
