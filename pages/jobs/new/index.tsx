@@ -13,13 +13,12 @@ import Input from '@ui/Input';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
-import { AutoComplete, Button, Cascader, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
+import { AutoComplete, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import client from 'lib/apollo/apollo-client';
-import { ErrorMessage } from '@hookform/error-message';
-import { useDropzone, FileWithPath } from 'react-dropzone';
-import { UploadFileInput, UPLOAD_FILE, useUploadFile } from 'features/upload/hooks/useUploadFile';
+import { UploadFileInput, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
+import { require_major, welfare_options } from 'constants/Job/jobData';
 
 const CreateJobPage: FC = () => {
     const notification = NotificationService.getInstance();
@@ -54,127 +53,6 @@ const CreateJobPage: FC = () => {
     const internShipPeriodOnChange = (e: RadioChangeEvent) => {
         setInternshipPeriod(e.target.value);
     };
-
-    // set prop require major
-    const require_major = [
-        {
-            label: 'ไม่จำกัดหลักสูตร',
-            value: 'ไม่จำกัดหลักสูตร',
-        },
-        {
-            label: 'วิศวกรรมศาสตร์',
-            options: [
-                {
-                    label: 'วิศวกรรมการวัดคุม',
-                    value: 'วิศวกรรมการวัดคุม',
-                },
-                {
-                    label: 'วิศวกรรมอัตโนมัติ',
-                    value: 'วิศวกรรมอัตโนมัติ',
-                },
-                {
-                    label: 'วิศวกรรมระบบควบคุม',
-                    value: 'วิศวกรรมระบบควบคุม',
-                },
-                {
-                    label: 'วิศวกรรมแมคคาทรอนิกส์',
-                    value: 'วิศวกรรมแมคคาทรอนิกส์',
-                },
-                {
-                    label: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
-                    value: 'วิศวกรรมเมคคาทรอนิกส์และออโตเมชัน',
-                },
-                {
-                    label: 'วิศวกรรมคอมพิวเตอร์',
-                    value: 'วิศวกรรมคอมพิวเตอร์',
-                },
-                {
-                    label: 'วิศวกรรมสารสนเทศ',
-                    value: 'วิศวกรรมสารสนเทศ',
-                },
-                {
-                    label: 'วิศวกรรมดนตรีและสื่อประสม',
-                    value: 'วิศวกรรมดนตรีและสื่อประสม',
-                },
-                {
-                    label: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
-                    value: 'วิศวกรรมระบบไอโอทีและสารสนเทศ',
-                },
-                {
-                    label: 'วิศวกรรมเครื่องกล',
-                    value: 'วิศวกรรมเครื่องกล',
-                },
-                {
-                    label: 'วิศวกรรมขนส่งทางราง',
-                    value: 'วิศวกรรมขนส่งทางราง',
-                },
-                {
-                    label: 'วิศวกรรมเคมี',
-                    value: 'วิศวกรรมเคมี',
-                },
-                {
-                    label: 'วิศวกรรมปิโตรเคมี',
-                    value: 'วิศวกรรมปิโตรเคมี',
-                },
-                {
-                    label: 'วิศวกรรมไฟฟ้า',
-                    value: 'วิศวกรรมไฟฟ้า',
-                },
-                {
-                    label: 'วิศวกรรมพลังงานไฟฟ้า',
-                    value: 'วิศวกรรมพลังงานไฟฟ้า',
-                },
-                {
-                    label: 'วิศวกรรมอุตสาหการ',
-                    value: 'วิศวกรรมอุตสาหการ',
-                },
-                {
-                    label: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
-                    value: 'วิศวกรรมออกแบบการผลิตและวัสดุ',
-                },
-                {
-                    label: 'วิศวกรรมอาหาร',
-                    value: 'วิศวกรรมอาหาร',
-                },
-                {
-                    label: 'วิศวกรรมอิเล็กทรอนิกส์',
-                    value: 'วิศวกรรมอิเล็กทรอนิกส์',
-                },
-                {
-                    label: 'วิศวกรรมโทรคมนาคม',
-                    value: 'วิศวกรรมโทรคมนาคม',
-                },
-                {
-                    label: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
-                    value: 'วิศวกรรมโทรคมนาคมและโครงข่าย',
-                },
-                {
-                    label: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
-                    value: 'วิศวกรรมไฟฟ้าสื่อสารและอิเล็กทรอนิกส์',
-                },
-                {
-                    label: 'วิศวกรรมไฟฟ้าสื่อสารและเครือข่าย',
-                    value: 'วิศวกรรมไฟฟ้าสื่อสารและเครือข่าย',
-                },
-                {
-                    label: 'วิศวกรรมโยธา',
-                    value: 'วิศวกรรมโยธา',
-                },
-                {
-                    label: 'วิศวกรรมเกษตร',
-                    value: 'วิศวกรรมเกษตร',
-                },
-                {
-                    label: 'วิศวกรรมระบบอุตสาหกรรมการเกษตร',
-                    value: 'วิศวกรรมระบบอุตสาหกรรมการเกษตร',
-                },
-                {
-                    label: 'วิศวกรรมเกษตรอัจฉริยะ',
-                    value: 'วิศวกรรมเกษตรอัจฉริยะ',
-                },
-            ],
-        },
-    ];
 
     const selectRequireMajorOnChange = (value: string[]) => {
         setSelectRequireMajor(value);
@@ -312,14 +190,6 @@ const CreateJobPage: FC = () => {
         setDateSelect(secon_array);
         setPeriodWork(secon_array[0] + ' - ' + secon_array[1]);
     };
-
-    const welfare_options = [
-        { label: 'ที่พัก', value: 'ที่พัก' },
-        { label: 'รถรับส่ง', value: 'รถรับส่ง' },
-        { label: 'ชุดทำงาน', value: 'ชุดทำงาน' },
-        { label: 'อาหารกลางวัน', value: 'อาหารกลางวัน' },
-        { label: 'ค่าเดินทาง', value: 'ค่าเดินทาง' },
-    ];
 
     // suffix of compensation
     const compensationSuffixOnChange = (e: RadioChangeEvent) => {

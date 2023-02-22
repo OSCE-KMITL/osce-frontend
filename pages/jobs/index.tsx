@@ -11,6 +11,7 @@ import { Link } from '@ui/Link';
 import { Dropdown, Menu } from 'antd';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
+import { useRouter } from 'next/router';
 
 const Jobs: React.FC = () => {
     const { data, loading, error } = useGetJobs();
@@ -18,6 +19,7 @@ const Jobs: React.FC = () => {
     const message = MessageService.getInstance();
     const { me } = useContext(AuthenticationContext);
     const notification = NotificationService.getInstance();
+    const router = useRouter();
 
     if (error) {
         message.error(error.message);
@@ -48,12 +50,18 @@ const Jobs: React.FC = () => {
         }
     };
 
+    const handleEdit = (id: string) => {
+        if (id) {
+            router.push(`jobs/update/${id}`);
+        }
+    };
+
     const menu = (id_job: string) => (
         <Menu>
-            <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleDelete(id_job)}>
+            <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleEdit(id_job)}>
                 แก้ไข
             </Menu.Item>
-            <Menu.Item key="1" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
+            <Menu.Item key="2" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
                 ลบ
             </Menu.Item>
         </Menu>
@@ -83,11 +91,11 @@ const Jobs: React.FC = () => {
                         key={job.id}
                         className=" w-full h-auto px-6 py-6 grid grid-cols-5  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
                     >
-                        {me?.role === RoleOption.COMMITTEE &&
-                        <Dropdown overlay={menu(job?.id)} placement="topCenter" trigger={['click']} className="absolute flex justify-self-end">
-                            <MoreOutlined />
-                        </Dropdown>
-                        }
+                        {me?.role === RoleOption.COMMITTEE && (
+                            <Dropdown overlay={menu(job?.id)} placement="topCenter" trigger={['click']} className="absolute flex justify-self-end">
+                                <MoreOutlined />
+                            </Dropdown>
+                        )}
                         <div className=" w-full h-full col-span-3 gap-4 grid grid-rows-2">
                             <div className=" w-full h-full grid md:items-center">
                                 <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : 'ไม่ระบุตำแหน่งงาน'}</h1>

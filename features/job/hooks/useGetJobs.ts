@@ -32,6 +32,14 @@ export const GET_JOBS = gql`
                 district
                 province
                 postal_code
+                company_persons {
+                    full_name
+                    company_person_id
+                    job_title
+                    is_coordinator
+                    phone_number
+                    email
+                }
             }
             file_upload {
                 id
@@ -83,6 +91,14 @@ export const GET_JOB_BY_ID = gql`
                 business_type
                 created_at
                 updated_at
+                company_persons {
+                    full_name
+                    company_person_id
+                    job_title
+                    is_coordinator
+                    phone_number
+                    email
+                }
             }
             file_upload {
                 id
@@ -135,6 +151,16 @@ export interface JobProps {
         business_type: string;
         created_at: string;
         updated_at: string;
+        company_persons: [
+            {
+                full_name: string;
+                company_person_id: string;
+                job_title: string;
+                is_coordinator: string;
+                phone_number: string;
+                email: string;
+            }
+        ];
     };
     file_upload: [
         {

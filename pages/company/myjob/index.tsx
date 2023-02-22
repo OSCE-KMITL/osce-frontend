@@ -10,12 +10,15 @@ import React, { useContext } from 'react';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import NotificationService from 'lib/ant_service/NotificationService';
+import { useRouter } from 'next/router';
+
 
 export default function Myjob() {
     const { data, loading, error } = useGetMe();
     const { me } = useContext(AuthenticationContext);
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const notification = NotificationService.getInstance();
+    const router = useRouter();
 
     const handleDelete = (id: string) => {
         console.log('delete id:', id);
@@ -37,9 +40,15 @@ export default function Myjob() {
         }
     };
 
+    const handleEdit = (id: string) => {
+        if (id) {
+            router.push(`/jobs/update/${id}`);
+        }
+    };
+
     const menu = (id_job: string) => (
         <Menu>
-            <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleDelete(id_job)}>
+            <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleEdit(id_job)}>
                 แก้ไข
             </Menu.Item>
             <Menu.Item key="1" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
