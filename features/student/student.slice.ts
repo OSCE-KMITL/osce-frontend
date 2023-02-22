@@ -6,12 +6,12 @@ import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/inte
 import { ILanguageAbility, ISkillState, IUserFacultyState } from '@features/register-coop/interfaces';
 import { RegisterCoopPayload } from './interfaces/index';
 
-type Status = 'SAVED' | 'APPLIED' | 'DEFUALT';
-export type StudentInfoState = { payload: RegisterCoopPayload | null; status: Status; step: number };
+type Status = 'SAVED' | 'APPLIED' | 'DEFAULT';
+export type StudentInfoState = { payload?: RegisterCoopPayload | null; status: Status; step: number };
 
 const initialState: StudentInfoState = {
     payload: null,
-    status: 'DEFUALT',
+    status: 'DEFAULT',
     step: 0,
 };
 
@@ -33,7 +33,7 @@ const student_info = createSlice({
         },
         decreaseStep: (state, { payload }: PayloadAction<void>) => {
             state.step = state.step - 1;
-            state.status = 'DEFUALT';
+            state.status = 'DEFAULT';
         },
     },
 });
@@ -42,7 +42,7 @@ export const { handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, dec
 
 // Other code such as selectors can use the imported `RootState` type
 // export common user selector
-export const studentInfoStateSelector = (store: RootState) => store.studentState.payload;
+export const studentInfoStateSelector = (store: RootState) => store.studentState?.payload;
 export const studentStatusStateSelector = (store: RootState) => store.studentState.status;
 export const studentStepStateSelector = (store: RootState) => store.studentState.step;
 

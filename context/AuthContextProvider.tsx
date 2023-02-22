@@ -18,8 +18,8 @@ export interface UserAuthData {
     email: string;
     token?: string;
     role: RoleOption;
-    profile_image: string;
-    is_student: IStudent | null | undefined;
+    profile_image?: string;
+    is_student?: IStudent | null | undefined;
 }
 
 interface AuthContextValues {
@@ -37,16 +37,15 @@ const initialState: AuthContextValues = {
 export const AuthenticationContext = createContext<AuthContextValues>(initialState);
 
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
-    const { data } = useGetMe();
+    const { data, refetch } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
     const router = useRouter();
-    console.log(me);
 
     useEffect(() => {
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });
         }
-    }, [data?.getMe]);
+    }, [data?.getMe, router]);
 
     function setAuthUser(user: UserAuthData | null) {
         setMe(user);

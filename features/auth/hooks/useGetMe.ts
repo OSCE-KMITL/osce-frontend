@@ -19,7 +19,6 @@ export const GET_ME = gql`
                 citizen_id
                 coop_status
                 created_at
-                student_id
                 department {
                     id
                     faculty_id
@@ -27,11 +26,39 @@ export const GET_ME = gql`
                     department_name_en
                     department_id
                 }
+                curriculum {
+                    curriculum_id
+                    curriculum_name_en
+                    curriculum_name_th
+                }
+                driver_license
+                emer_lastname
+                emer_name
+                emer_relation
+                emer_tel
+                faculty {
+                    faculty_name_th
+                    faculty_name_en
+                    faculty_id
+                }
+                military_status
+                name_eng
+                name_th
+                phone_number
+                religion
+                student_id
+                updated_at
+                weight
+                lastname_th
+                lastname_eng
+                height
+                gpa
+                gender
             }
         }
     }
 `;
 
 export const useGetMe = () => {
-    return useQuery<GetMeResponse>(GET_ME);
+    return useQuery<GetMeResponse>(GET_ME, { pollInterval: 2000 });
 };

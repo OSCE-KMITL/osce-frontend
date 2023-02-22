@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
     return (
         <ContentContainer>
             <div className="w-full min-h-screen grid xl:grid-cols-2 grid-rows-1 gap-6 px-4 ">
-                <div className="grid grid-rows-3 gap-4">
+                <div className="grid grid-rows-3 gap-2">
                     <div
                         onClick={() => {
                             if (me) {
@@ -37,9 +37,9 @@ const HomePage: React.FC = () => {
                             }
                         }}
                     >
-                        <ActionCard goto={''} hero_content="สมัครเข้าร่วมสกิจศึกษา" button_title={'สมัครเข้าร่วมสกิจ'} description={''} />{' '}
+                        <ActionCard goto={''} hero_content="สมัครเข้าร่วมสกิจศึกษา" button_title={'สมัครเข้าร่วมสหกิจ'} description={''} />
                     </div>{' '}
-                    <ActionCard hero_content="ประกาศรายชื่อผู้มีสิทธิ์สหกิจศึกษา" goto={'/jobs'} button_title={'ประกาศรายชื่อ'} description={''} />{' '}
+                    <ActionCard hero_content="ประกาศรายชื่อผู้มีสิทธิ์สหกิจศึกษา" goto={'/jobs'} button_title={'ประกาศรายชื่อ'} description={''} />
                     <ActionCard hero_content="งานที่เปิดรับ" goto={'/jobs'} button_title={'งานที่เปิดรับอยู่ในปัจจุบัน'} description={''} />
                 </div>
             </div>

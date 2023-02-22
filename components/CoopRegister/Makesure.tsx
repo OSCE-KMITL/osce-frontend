@@ -3,39 +3,20 @@ import { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { studentIdParser } from 'utils/common';
-import SkeletonLoading from '../ui/SkeletonLoading';
-import { CoopStatus } from '@features/student/interfaces';
 
 interface AppliedStatusProps {}
 
-const AppliedStatus: FC<AppliedStatusProps> = ({}) => {
+const MakeSure: FC<AppliedStatusProps> = ({}) => {
     const apply_status = useSelector(studentStatusStateSelector);
+    const { registerCoopInput: student_data } = useSelector(studentInfoStateSelector);
     const { me } = useContext(AuthenticationContext);
-    const student_data = me?.is_student;
-    if (!me) {
+    if (!student_data) {
         return (
             <>
-                <SkeletonLoading />
+                <p>null</p>
             </>
         );
     }
-    if (!me.is_student) {
-        return (
-            <>
-                <SkeletonLoading />
-            </>
-        );
-    }
-
-    const status = () => {
-        if (student_data.coop_status === CoopStatus.APPLYING) {
-            return <h1 className="px-6 py-2 bg-blue-50 text-blue-800">ส่งใบสมัครแล้ว</h1>;
-        } else if (student_data.coop_status === CoopStatus.PASSED) {
-            return <h1 className="px-6 py-2 bg-green-50 text-green-800">ผ่านการคัดเลือก</h1>;
-        } else if (student_data.coop_status === CoopStatus.REJECTED) {
-            <h1 className="px-6 py-2 bg-red-50 text-red-800">ไม่ผ่านการคัดเลือก</h1>;
-        }
-    };
     return (
         <div className="w-full mb-6 flex flex-col  ">
             {apply_status === 'APPLIED' && (
@@ -43,7 +24,9 @@ const AppliedStatus: FC<AppliedStatusProps> = ({}) => {
                     <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
                         <h1 className="mb-4 mt-5 text-xl">สถานะการสมัคร</h1>
                     </div>
-                    <div className="col-span-3 grid grid-rows-1 gap-y-4 justify-start align-middle items-center">{status()}</div>
+                    <div className="col-span-3 grid grid-rows-1 gap-y-4 justify-start align-middle items-center">
+                        <h1 className="px-6 py-2 bg-blue-50 text-blue-800">ส่งใบสมัครแล้ว</h1>
+                    </div>
                 </div>
             )}
             <h1 className="mb-4 mt-5 text-3xl">ข้อมูลนักศึกษา</h1>
@@ -58,9 +41,9 @@ const AppliedStatus: FC<AppliedStatusProps> = ({}) => {
                 <div className="col-span-3 grid grid-rows-1 gap-y-4">
                     <h1>{studentIdParser(me?.email)}</h1>
                     <h1>{student_data.name_th + ' ' + student_data.lastname_th}</h1>
-                    <h1>{student_data.faculty?.faculty_name_th}</h1>
-                    <h1>{student_data.department?.department_name_th}</h1>
-                    <h1>{student_data.curriculum?.curriculum_name_th}</h1>
+                    <h1>{student_data.faculty_name_th}</h1>
+                    <h1>{student_data.department_name_th}</h1>
+                    <h1>{student_data.curriculum_name_th}</h1>
                 </div>
             </div>{' '}
             <h1 className="mb-4 mt-5 text-3xl">ข้อมูลส่วนตัว</h1>
@@ -94,4 +77,4 @@ const AppliedStatus: FC<AppliedStatusProps> = ({}) => {
     );
 };
 
-export default AppliedStatus;
+export default MakeSure;

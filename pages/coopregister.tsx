@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Steps, notification } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import PersonalSkill from '@components/CoopRegister/PersonalSkill';
 import LanguageAbility from '@components/CoopRegister/LanguageAbility';
 import TranscriptUpload from '@components/CoopRegister/TranscriptUpload';
 import { departmentStateSelector, skillsStateSelector, languageAbilitiesStateSelector } from '../features/register-coop/coopregister.slice';
-import { CoopStudentInfo, RegisterCoopPayload } from '../features/student/interfaces/index';
+import { CoopStatus, CoopStudentInfo, RegisterCoopPayload } from '../features/student/interfaces/index';
 import { REGISTER_COOP, useCoopRegister } from '../features/student/hooks/useCoopRegister';
 import NotificationService from '../lib/ant_service/NotificationService';
 import LoadingSpinner from '../components/common/Spinner/LoadingSpinner';
@@ -20,6 +20,9 @@ import { useMutation } from '@apollo/client';
 import { decreaseStep, handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, studentStatusStateSelector } from '@features/student/student.slice';
 import { studentStepStateSelector } from '../features/student/student.slice';
 import AppliedStatus from '../components/CoopRegister/AppliedStatus';
+import { AuthenticationContext } from '@context/AuthContextProvider';
+import MakeSure from '@components/CoopRegister/Makesure';
+import { GET_ME } from '@features/auth/hooks/useGetMe';
 
 interface OwnProps {}
 
@@ -43,8 +46,18 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
     const [register_coop, { data, error, loading }] = useCoopRegister();
     const notification_instanst = NotificationService.getInstance();
     const dispatch = useDispatch();
-
     const apply_status = useSelector(studentStatusStateSelector);
+    const { me } = useContext(AuthenticationContext);
+
+    React.useEffect(() => {
+        if (me) {
+            if (me.is_student) {
+                if (me.is_student.coop_status !== CoopStatus.DEFAULT) {
+                    dispatch(handleApplyStudentInfo());
+                }
+            }
+        }
+    }, []);
 
     const onSubmit = async (data: RegisterCoopHookState) => {
         const result: CoopStudentInfo = {
@@ -76,7 +89,6 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
             department_name_en: departments_obj.department_name_en,
             department_name_th: departments_obj.department_name_th,
         };
-
         const payload: RegisterCoopPayload = {
             registerCoopInput: { ...result },
             skills: skills,
@@ -93,6 +105,7 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
                 variables: {
                     ...payload,
                 },
+                refetchQueries: [GET_ME],
                 onCompleted: (result) => {
                     notification_instanst.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
                     dispatch(handleApplyStudentInfo());
@@ -115,9 +128,9 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
             <div className="flex items-center justify-center  px-6 py-2 ">
                 <Steps size="default" responsive={true} current={step} className={'mb-6 font-primary_noto text-[20px] '} items={step_items} />
             </div>{' '}
-            {apply_status === 'SAVED' || apply_status === 'APPLIED' ? (
-                <AppliedStatus />
-            ) : (
+            {apply_status === 'APPLIED' && <AppliedStatus />}
+            {apply_status === 'SAVED' && <MakeSure />}
+            {apply_status === 'DEFAULT' && (
                 <>
                     <form>
                         <EducationInformation register={register} errors={errors} />
