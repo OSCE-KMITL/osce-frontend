@@ -4,10 +4,15 @@ import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { useGetMe } from 'features/auth/hooks/useGetMe';
 import React from 'react';
 import { Space, Tag } from 'antd';
+import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 
 export default function JobApply() {
     const { data, loading, error } = useGetMe();
+    const [cancelApplyJob, { loading: cancel_job_loading }] = useCancelApplyJob();
 
+    const handleCancelApplyJob = () => {
+        // cancelApplyJob()
+    }
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
