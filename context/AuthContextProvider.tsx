@@ -5,6 +5,7 @@ import client from '@lib/apollo';
 import { RoleOption } from '@constants/RoleOptions';
 import { useRouter } from 'next/router';
 import { IStudent } from '@features/student/interfaces/Student';
+import { JobProps } from '@features/job/hooks/useGetJobs';
 
 interface Props {
     children: JSX.Element;
@@ -20,6 +21,14 @@ export interface UserAuthData {
     is_company?: {
         company_id?: {
             id: string;
+            job: [
+                {
+                    id: string;
+                    job_title: string;
+                    internship_period: string;
+                    created_at: string;
+                }
+            ];
         };
     };
 }

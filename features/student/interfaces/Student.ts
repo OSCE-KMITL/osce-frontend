@@ -1,3 +1,4 @@
+import { JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
 import { CoopStatus } from './index';
@@ -57,4 +58,6 @@ export interface IStudent {
     created_at: Date;
 
     updated_at: Date;
+
+    job: JobProps[] | null | undefined;
 }

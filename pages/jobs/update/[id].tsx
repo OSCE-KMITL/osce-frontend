@@ -9,7 +9,6 @@ import { JobInputCommittee } from 'features/job/hooks/useCreateJob';
 import { useGetJob } from 'features/job/hooks/useGetJobs';
 import { useUpdateJob } from 'features/job/hooks/useUpdateJob';
 import NotificationService from 'lib/ant_service/NotificationService';
-import client from 'lib/apollo/apollo-client';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -186,7 +185,6 @@ export default function Update() {
                 if (result) {
                     notification.success('Success', 'แก้ไขงานเสร็จสิ้น');
                     clearForm();
-                    client.clearStore();
                     if (me?.role === RoleOption.COMMITTEE) {
                         router.push(`/jobs`);
                     } else if (me?.role === RoleOption.COMPANY) {

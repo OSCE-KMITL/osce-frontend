@@ -1,3 +1,4 @@
+import { IStudent } from '@features/student/interfaces/Student';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 import jobs from '../../../pages/jobs';
 
@@ -75,8 +76,8 @@ export const GET_JOB_BY_ID = gql`
             supervisor_job_title
             supervisor_email
             supervisor_phone_number
-            createdAt
-            updatedAt
+            created_at
+            updated_at
             company_id {
                 id
                 name_th
@@ -110,8 +111,8 @@ export const GET_JOB_BY_ID = gql`
             }
             students {
                 student_id
-                name
-                lastname
+                name_th
+                lastname_th
             }
         }
     }
@@ -137,6 +138,8 @@ export interface JobProps {
     supervisor_job_title: string;
     supervisor_email: string;
     supervisor_phone_number: string;
+    created_at: string;
+    updated_at: string;
     company_id: {
         id: string;
         name_th: string;
@@ -161,6 +164,7 @@ export interface JobProps {
                 email: string;
             }
         ];
+        job: JobProps[] | null | undefined;
     };
     file_upload: [
         {
@@ -172,13 +176,7 @@ export interface JobProps {
             updatedAt: string;
         }
     ];
-    students: [
-        {
-            student_id: string;
-            name: string;
-            lastname: string;
-        }
-    ];
+    students: IStudent[] | null | undefined;
 }
 export interface JobResponse {
     getJobById: JobProps | null;

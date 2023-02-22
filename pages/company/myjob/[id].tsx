@@ -59,7 +59,7 @@ export default function DetailMyJob() {
                                                 </td>
                                                 <td>
                                                     <p className="text-sm leading-3 text-gray-600 pl-8 flex justify-center">
-                                                        {students?.name ? students?.name : ''} {students?.lastname ? students?.lastname : ''}
+                                                        {students?.name_th ? students?.name_th : ''} {students?.lastname_th ? students?.lastname_th : ''}
                                                     </p>
                                                 </td>
                                                 <td>
