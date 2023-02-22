@@ -13,6 +13,17 @@ export const GET_ME = gql`
             email
             role
             profile_image
+             is_company {
+                company_id {
+                    id
+                    job {
+                        id
+                        job_title
+                        internship_period
+                        createdAt
+                    }
+                }
+            }
             is_student {
                 address
                 birth_date

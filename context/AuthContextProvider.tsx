@@ -20,6 +20,11 @@ export interface UserAuthData {
     role: RoleOption;
     profile_image?: string;
     is_student?: IStudent | null | undefined;
+    is_company?: {
+        company_id?: {
+            id: string;
+        };
+    };
 }
 
 interface AuthContextValues {
