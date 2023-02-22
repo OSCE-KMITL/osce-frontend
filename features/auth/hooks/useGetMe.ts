@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { RoleOption } from '../../../constants/RoleOptions';
-import { UserAuthData } from '../../../context/AuthContextProvider';
+import { UserAuthData } from '@context/AuthContextProvider';
 
 export interface GetMeResponse {
     getMe: UserAuthData;
@@ -13,17 +12,6 @@ export const GET_ME = gql`
             email
             role
             profile_image
-             is_company {
-                company_id {
-                    id
-                    job {
-                        id
-                        job_title
-                        internship_period
-                        createdAt
-                    }
-                }
-            }
             is_student {
                 address
                 birth_date
@@ -71,5 +59,5 @@ export const GET_ME = gql`
 `;
 
 export const useGetMe = () => {
-    return useQuery<GetMeResponse>(GET_ME, { pollInterval: 2000 });
+    return useQuery<GetMeResponse>(GET_ME);
 };

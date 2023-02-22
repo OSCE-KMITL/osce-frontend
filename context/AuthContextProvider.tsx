@@ -1,12 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useGetMe } from '../features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { CookieManager } from '../utils/CookieManager';
 import client from '@lib/apollo';
-import { RoleOption } from '../constants/RoleOptions';
-import { router } from 'next/client';
+import { RoleOption } from '@constants/RoleOptions';
 import { useRouter } from 'next/router';
-import { API_URI, ENDPOINT_URI } from '../constants';
-import axios from 'axios';
 import { IStudent } from '@features/student/interfaces/Student';
 
 interface Props {
@@ -45,7 +42,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     const { data, refetch } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
     const router = useRouter();
-
+    console.log(me, ' ===========>');
     useEffect(() => {
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });
