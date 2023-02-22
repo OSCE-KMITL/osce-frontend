@@ -41,9 +41,7 @@ export default function JobApply() {
                         <div className=" w-full h-full col-span-4 gap-4 grid grid-rows-1 border-l-2 pl-4">
                             <div className=" flex justify-end gap-x-4 items-center">
                                 <div className="text-right items-end">
-                                    <Link href={`/jobs/` + job.id} className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer">
-                                        {'ยกเลิกการสมัคร'}
-                                    </Link>
+                                    <button className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer">ยกเลิกการสมัคร</button>
                                 </div>
                                 <div className="text-right items-end">
                                     <Link href={`/jobs/` + job.id} className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer">

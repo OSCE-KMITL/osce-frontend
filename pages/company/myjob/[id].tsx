@@ -37,7 +37,7 @@ export default function DetailMyJob() {
                             <div className="overflow-x-auto rounded-md">
                                 <table className="w-full whitespace-nowrap  rounded-xl">
                                     <tbody>
-                                        <tr className="bg-primary-500 h-12 text-white text-md">
+                                        <tr className="bg-primary-400 h-12 text-white text-md">
                                             <th></th>
                                             <th className="  pl-8">ชื่อ-นามสกุล</th>
                                             <th className="  pl-8">หลักสูตร</th>
