@@ -1,6 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { MutationSignInArgs } from '../../../src/__generated__/graphql';
-import { RoleOption } from '../../../constants/RoleOptions';
+import { RoleOption } from '@constants/RoleOptions';
 
 export interface AuthResponse {
     signIn: {
@@ -8,6 +7,8 @@ export interface AuthResponse {
         email: string;
         token: string;
         role: RoleOption;
+        name: string;
+        last_name: string;
     };
 }
 
@@ -27,5 +28,5 @@ export const LOGIN = gql`
 `;
 
 export const useLogin = () => {
-    return useMutation<AuthResponse, MutationSignInArgs>(LOGIN);
+    return useMutation<AuthResponse, LoginInput>(LOGIN);
 };

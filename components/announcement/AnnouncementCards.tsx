@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { GetAnnouncementsResponse } from '../../features/announcement/types';
+import { GetAnnouncementsResponse } from '../../features/announcement/interfaces';
 import Link from 'next/link';
 import { ClockCircleOutlined, FilePdfOutlined, UserOutlined } from '@ant-design/icons';
 

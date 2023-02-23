@@ -66,11 +66,11 @@ export interface CreateJobInputCompanyNoFile {
 export const CREATE_JOB_BY_COMMITTEE = gql`
     mutation CreateJobByCommittee($file: Upload!, $jobInfo: JobInputByCommittee!) {
         createJobByCommittee(file: $file, job_info: $jobInfo) {
-            createdAt
+            created_at
             id
             job_title
             limit
-            updatedAt
+            updated_at
         }
     }
 `;
@@ -78,11 +78,11 @@ export const CREATE_JOB_BY_COMMITTEE = gql`
 export const CREATE_JOB_BY_COMMITTEE_NO_FILE = gql`
     mutation CreateJobByCommitteeNoFile($jobInfo: JobInputByCommittee!) {
         createJobByCommitteeNoFile(job_info: $jobInfo) {
-            createdAt
+            created_at
             id
             job_title
             limit
-            updatedAt
+            updated_at
         }
     }
 `;
@@ -90,11 +90,11 @@ export const CREATE_JOB_BY_COMMITTEE_NO_FILE = gql`
 export const CREATE_JOB_BY_COMPANY = gql`
     mutation createJobByCompany($file: Upload!, $jobInfo: JobInputByCompany!) {
         createJobByCompany(file: $file, job_info: $jobInfo) {
-            createdAt
+            created_at
             id
             job_title
             limit
-            updatedAt
+            updated_at
         }
     }
 `;
@@ -102,11 +102,11 @@ export const CREATE_JOB_BY_COMPANY = gql`
 export const CREATE_JOB_BY_COMPANY_NO_FILE = gql`
     mutation createJobByCompanyNoFile($jobInfo: JobInputByCompany!) {
         createJobByCompanyNoFile(job_info: $jobInfo) {
-            createdAt
+            created_at
             id
             job_title
             limit
-            updatedAt
+            updated_at
         }
     }
 `;

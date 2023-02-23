@@ -5,7 +5,7 @@ export const APPLY_JOB = gql`
     mutation ApplyJob($applyInfo: StudentApplyJobInput!) {
         applyJob(apply_info: $applyInfo) {
             student_id
-            name
+            name_eng
         }
     }
 `;
@@ -13,11 +13,7 @@ export const APPLY_JOB = gql`
 export interface ApplyResponse {
     applyJob: {
         student_id: string;
-        name: string;
-        // lastname: string;
-        // job_id: {
-        //     id: string;
-        // };
+        name_eng: string;
     };
 }
 export interface ApplyJobInput {

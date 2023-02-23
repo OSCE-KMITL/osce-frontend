@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { AnnouncementProps } from '../types';
+import { AnnouncementProps } from '../interfaces';
 
 export interface GetAnnouncementInput {
     withKey: {

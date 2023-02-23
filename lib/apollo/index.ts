@@ -1,5 +1,5 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { API_URI, TOKEN_NAME } from '../../constants';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { API_URI } from '@constants';
 import { setContext } from '@apollo/client/link/context';
 import { CookieManager } from '../../utils/CookieManager';
 import { createUploadLink } from 'apollo-upload-client';
@@ -26,7 +26,6 @@ const auth_link = setContext((_, { headers }) => {
         },
     };
 });
-const uploadLink = createUploadLink({headers:{}})
 const client = new ApolloClient({
     link: auth_link.concat(http_link),
     cache: new InMemoryCache(),

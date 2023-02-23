@@ -1,7 +1,7 @@
 import ContentContainer from '@ui/ContentContainer';
 import { Link } from '@ui/Link';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
-import { useGetMe } from 'features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React from 'react';
 import { Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
@@ -20,9 +20,8 @@ export default function JobApply() {
                 <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold">งานที่สมัคร</h1>
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
-
             {data ? (
-                data?.getMe?.is_student?.job.map((job) => (
+                data?.getMe?.is_student?.job?.map((job) => (
                     <div
                         key={job.id}
                         className=" w-[80%] h-fit p-8 grid grid-cols-12  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"

@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { GET_ANNOUNCEMENTS, GetAnnouncementsResponse } from '../types';
+import { GET_ANNOUNCEMENTS, GetAnnouncementsResponse } from '../interfaces';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { storeAnnouncement } from '../announcement-slice';
+import { storeAnnouncement } from '../announcement.slice';
 
 export const useGetAnnouncements = () => {
     const dispatch = useDispatch();

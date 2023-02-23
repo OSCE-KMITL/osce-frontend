@@ -5,13 +5,12 @@ import { Dropdown, Menu, Space, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { RoleOption } from 'constants/RoleOptions';
 import { AuthenticationContext } from 'context/AuthContextProvider';
-import { useGetMe } from 'features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React, { useContext } from 'react';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import NotificationService from 'lib/ant_service/NotificationService';
 import { useRouter } from 'next/router';
-
 
 export default function Myjob() {
     const { data, loading, error } = useGetMe();
@@ -75,7 +74,7 @@ export default function Myjob() {
                 ''
             )}
             {data ? (
-                data?.getMe?.is_company?.company_id?.job.map((job) => (
+                data?.getMe?.is_company?.company_id?.job?.map((job) => (
                     <div
                         key={job.id}
                         className=" w-[80%] h-auto p-4 grid grid-cols-12  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
@@ -89,7 +88,7 @@ export default function Myjob() {
                                     <Tag color="processing">เปิดรับสมัคร</Tag>
                                 </Space>
                                 <div className=" w-full h-full grid items-center justify-end  pr-4">
-                                    <h1 className="text-sm font-medium leading-6 text-gray-700"> {job.createdAt ? job.createdAt.slice(0, 10) : ''}</h1>
+                                    <h1 className="text-sm font-medium leading-6 text-gray-700"> {job.created_at ? job.created_at.slice(0, 10) : ''}</h1>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 w-full align-top items-center   ">

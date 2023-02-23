@@ -1,23 +1,21 @@
 import { Table } from 'antd';
 import React from 'react';
-import { Account } from '../../src/__generated__/graphql';
-import { column_type } from './column-type';
+import { AuthResponse } from '@features/auth/hooks/useLogin';
 
 interface AccountTable {
-    data_source: Account[];
+    datasource: AuthResponse[];
     loading: boolean;
 }
 
 type AccountTableProps = AccountTable;
 
-const UserAccountTable: React.FC<AccountTableProps> = ({ data_source, loading }) => {
+const UserAccountTable: React.FC<AccountTableProps> = ({ datasource, loading }) => {
     return (
         <Table
             className="shadow-2xl bg-amber-400 rounded-xl "
             rowClassName={'odd:bg-white even:bg-stone-100 text-[16px]'}
             rowKey="email"
-            dataSource={data_source}
-            columns={column_type}
+            dataSource={datasource}
             loading={loading}
             size="middle"
             showHeader

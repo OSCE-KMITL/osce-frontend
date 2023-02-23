@@ -9,7 +9,7 @@ import { RoleOption } from 'constants/RoleOptions';
 import Link from 'next/link';
 import Button from '@ui/Button';
 import { useApplyJob } from 'features/job/hooks/useApplyJob';
-import { useGetMe } from 'features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import NotificationService from 'lib/ant_service/NotificationService';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
@@ -210,7 +210,7 @@ const JobDetail: FunctionComponent<Props> = () => {
                                         <Link
                                             rel="noopener noreferrer"
                                             target={'_blank'}
-                                            href={"https://"+data.getJobById?.company_id?.website_url}
+                                            href={'https://' + data.getJobById?.company_id?.website_url}
                                             className="font-primary_noto text-blue-600 hover:text-blue-300"
                                         >
                                             {data.getJobById?.company_id?.website_url}

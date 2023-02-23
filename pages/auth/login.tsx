@@ -95,17 +95,3 @@ const Login: React.FC = () => {
     );
 };
 export default Login;
-
-export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
-    const token = req.cookies[TOKEN_NAME];
-    if (token) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: true,
-            },
-        };
-    } else {
-        return { props: {} };
-    }
-};

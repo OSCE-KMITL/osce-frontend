@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AnnouncementProps, GetAnnouncementsResponse } from './types';
+import { AnnouncementProps, GetAnnouncementsResponse } from './interfaces';
+import { RootState } from '../../store';
+import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 
 interface AnnouncementsState {
     announcements: AnnouncementProps[] | null;

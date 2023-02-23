@@ -1,8 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useGetMe } from '../features/auth/hooks/useGetMe';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { CookieManager } from '../utils/CookieManager';
-import client from '../lib/apollo/apollo-client';
-import { RoleOption } from '../constants/RoleOptions';
+import client from '@lib/apollo';
+import { RoleOption } from '@constants/RoleOptions';
+import { useRouter } from 'next/router';
+import { IStudent } from '@features/student/interfaces/Student';
+import { ICompanyPerson } from '@features/company/interfaces';
 
 interface Props {
     children: JSX.Element;
@@ -13,11 +16,9 @@ export interface UserAuthData {
     email: string;
     token?: string;
     role: RoleOption;
-    is_company?: {
-        company_id?: {
-            id: string;
-        };
-    };
+    profile_image?: string;
+    is_student?: IStudent | null | undefined;
+    is_company?: ICompanyPerson | null | undefined;
 }
 
 interface AuthContextValues {
@@ -35,14 +36,15 @@ const initialState: AuthContextValues = {
 export const AuthenticationContext = createContext<AuthContextValues>(initialState);
 
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
-    const { data } = useGetMe();
+    const { data, refetch } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
-
+    const router = useRouter();
+    console.log(me, ' ===========>');
     useEffect(() => {
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });
         }
-    }, [data?.getMe]);
+    }, [data?.getMe, router]);
 
     function setAuthUser(user: UserAuthData | null) {
         setMe(user);

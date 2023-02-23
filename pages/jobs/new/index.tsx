@@ -15,7 +15,6 @@ import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
 import { AutoComplete, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
-import client from 'lib/apollo/apollo-client';
 import { UploadFileInput, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
 import { require_major, welfare_options } from 'constants/Job/jobData';
@@ -87,8 +86,8 @@ const CreateJobPage: FC = () => {
         if (me?.role === 'COMPANY') {
             setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
         }
-    }, [me?.role, me?.is_company?.company_id.id]),
-        [me?.role, me?.is_company?.company_id.id, companyPersonObj];
+    }, []),
+        [companyPersonObj];
 
     //object company person after selected company
     const company_person_array = companyPersonObj?.company_person.map((obj) => {
@@ -298,14 +297,12 @@ const CreateJobPage: FC = () => {
                         if (result) {
                             notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
                             clearForm();
-                            client.clearStore();
                         }
                     },
                     onError: (error) => {
                         console.log(error);
                         if (error) {
                             notification.error('Error', error.message);
-                            client.clearStore();
                         }
                     },
                     variables: {
@@ -339,14 +336,12 @@ const CreateJobPage: FC = () => {
                         if (result) {
                             notification.success('Success', 'เพิ่มงานเสร็จสิ้น');
                             clearForm();
-                            client.clearStore();
                         }
                     },
                     onError: (error) => {
                         console.log(error);
                         if (error) {
                             notification.error('Error', error.message);
-                            client.clearStore();
                         }
                     },
                     variables: {

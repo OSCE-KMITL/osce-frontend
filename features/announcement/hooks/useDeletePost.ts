@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { AnnouncementProps } from '../types';
+import { AnnouncementProps } from '../interfaces';
 
 const DELETE_POST = gql`
     mutation DeletePost($announcementId: String!) {
