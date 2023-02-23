@@ -1,5 +1,6 @@
 import { RegisterOptions } from 'react-hook-form';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
+import { UploadFileInput } from '@features/upload/hooks/useUploadFile';
 
 export interface ISkillState {
     skill_name: string;
@@ -12,6 +13,7 @@ export interface ILanguageAbility {
 
 type SkillsState = ISkillState[] | null;
 type LanguageAbilityState = ILanguageAbility[] | null;
+export type TranscriptState = UploadFileInput | null | undefined;
 
 export interface IUserFacultyState {
     faculty: IFaculty | null;
@@ -43,6 +45,7 @@ export interface RegisterCoopHookState {
     emer_tel: string;
     emer_relation: string;
     emer_lastname: string;
+    name_prefix: string;
 }
 
 interface RegisterError {
@@ -58,6 +61,7 @@ interface RegisterError {
     height: RegisterOptions;
     citizen_id: RegisterOptions;
     address: RegisterOptions;
+    name_prefix: RegisterOptions;
     // curriculum: RegisterOptions;
     // department: RegisterOptions;
     // driver_license: RegisterOptions;
@@ -92,6 +96,7 @@ export const registerErrorSchema: RegisterError = {
         maxLength: { value: 10, message: 'กรอกเบอร์โทร 10 หลัก' },
     },
     gender: { validate: (value) => checkIsSelected(value) },
+    name_prefix: { validate: (value) => checkIsSelected(value) },
     religion: { validate: (value) => checkIsSelected(value) },
     phone_number: {
         required: 'กรุณากรอกเบอร์โทรศัพท์',

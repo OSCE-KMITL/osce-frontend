@@ -37,8 +37,8 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                 <div className="w-[30%]">
                     <p className="text-3xl mb-6 font-bold ">กรอกข้อมูลนักศึกษา</p>
                 </div>
-                <div className="grid grid-cols-3 gap-x-6 ">
-                    <div className="col-span-1">
+                <div className="grid grid-cols-12 gap-x-6 ">
+                    <div className="col-span-3">
                         {' '}
                         <Input
                             name={'student_id'}
@@ -55,6 +55,33 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                     </div>
                     <div className="col-span-1 ">
                         {' '}
+                        <div>
+                            <label htmlFor="relation" className="block text-[18px] font-medium text-gray-900 dark:text-white">
+                                คำนำหน้า
+                            </label>
+                            <select
+                                id="relation"
+                                defaultValue={'DEFAULT'}
+                                {...register('name_prefix', registerErrorSchema.name_prefix)}
+                                className="bg-gray-50 border text-[18px] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
+                                <option value={'DEFAULT'} hidden disabled>
+                                    เลือกคำนำหน้า
+                                </option>
+                                <option key={'mr.'} value={'นาย'}>
+                                    นาย
+                                </option>
+                                <option key={'ms.'} value={'นายสาว'}>
+                                    นางสาว
+                                </option>
+                                <option key={'m.'} value={'นาง'}>
+                                    นาง
+                                </option>
+                            </select>{' '}
+                        </div>
+                    </div>{' '}
+                    <div className="col-span-4 ">
+                        {' '}
                         <Input
                             name={'name'}
                             type="text"
@@ -67,7 +94,7 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                             errors={errors}
                         />{' '}
                     </div>{' '}
-                    <div className="col-span-1 ">
+                    <div className="col-span-4 ">
                         {' '}
                         <Input
                             name={'lastname'}
@@ -81,7 +108,7 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                             errors={errors}
                         />{' '}
                     </div>
-                    <div className="col-span-3 ">
+                    <div className="col-span-12 ">
                         <div className="grid grid-cols-4 gap-x-6 items-start">
                             <div className="w-full">
                                 <label htmlFor="faculty" className="block text-[18px] font-medium text-gray-900 dark:text-white">

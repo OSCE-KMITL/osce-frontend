@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PersonalInformation from '@components/CoopRegister/PersonalInformation';
 import EducationInformation from '@components/CoopRegister/EducationInformation';
 import { step_items } from '@components/CoopRegister/steps';
-import { RegisterCoopHookState } from '@features/register-coop/interfaces';
+import { RegisterCoopHookState, TranscriptState } from '@features/register-coop/interfaces';
 import { birthDateStateSelector, curriculumStateSelector, facultyInfoStateSelector, facultyStateSelector } from '@features/register-coop/coopregister.slice';
 import EmergencyContact from '@components/CoopRegister/EmergencyContact';
 import PersonalSkill from '@components/CoopRegister/PersonalSkill';
@@ -23,6 +23,7 @@ import AppliedStatus from '../components/CoopRegister/AppliedStatus';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import MakeSure from '@components/CoopRegister/Makesure';
 import { GET_ME } from '@features/auth/hooks/useGetMe';
+import { useFacultyState } from '@features/register-coop/hooks/useFormState';
 
 interface OwnProps {}
 
@@ -44,10 +45,11 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
     const birth_date_state = useSelector(birthDateStateSelector);
     const step = useSelector(studentStepStateSelector);
     const [register_coop, { data, error, loading }] = useCoopRegister();
-    const notification_instanst = NotificationService.getInstance();
+    const notification = NotificationService.getInstance();
     const dispatch = useDispatch();
     const apply_status = useSelector(studentStatusStateSelector);
     const { me } = useContext(AuthenticationContext);
+    const [transcriptFile, setTranscriptFile] = useState<TranscriptState>(null);
 
     React.useEffect(() => {
         if (me) {
@@ -61,6 +63,7 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
 
     const onSubmit = async (data: RegisterCoopHookState) => {
         const result: CoopStudentInfo = {
+            name_prefix: data.name_prefix,
             level_id: curriculums_obj.level_id,
             curriculum_id: curriculums_obj.curriculum_id,
             curriculum_name_th: curriculums_obj.curriculum_name_th,
@@ -93,10 +96,11 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
             registerCoopInput: { ...result },
             skills: skills,
             languageAbilities: languages,
+            transcriptFile: transcriptFile,
         };
 
-        // Check Context state is eequl to saved ?
-        // If state not equal to SAVED just saved to redux
+        // Check Context state is equal to saved or not ?
+        // If state not equal  SAVED just saved to redux
         // if state is SAVED will call doRegister()
         if (apply_status !== 'SAVED') {
             dispatch(handleSavedStudentInfo(payload));
@@ -107,12 +111,12 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
                 },
                 refetchQueries: [GET_ME],
                 onCompleted: (result) => {
-                    notification_instanst.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
+                    notification.success('ทำการสมัครเสร็จสิ้น', 'โปรดรอติดตามการประกาศผลการสมัคร');
                     dispatch(handleApplyStudentInfo());
                     dispatch(increaseStep());
                 },
                 onError(error, clientOptions) {
-                    notification_instanst.error('พบข้อผิดพลาก', error.message);
+                    notification.error('พบข้อผิดพลาด', error.message);
                     console.log(JSON.stringify(error, null, 2));
                     dispatch(decreaseStep());
                 },
@@ -139,7 +143,7 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
                     <EmergencyContact register={register} errors={errors} />
                     <PersonalSkill />
                     <LanguageAbility />
-                    <TranscriptUpload />
+                    <TranscriptUpload setTranscriptFile={setTranscriptFile} />
                 </>
             )}
             {apply_status !== 'APPLIED' && (

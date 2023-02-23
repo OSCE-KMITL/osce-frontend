@@ -4,6 +4,7 @@ import { curriculums, departments, faculties } from '@constants/faculty-info';
 import { RootState } from '@store';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState, IUserFacultyState } from '@features/register-coop/interfaces';
+import { UploadFileInput } from '@features/upload/hooks/useUploadFile';
 
 export type UserFacultyState = IUserFacultyState;
 
@@ -37,6 +38,7 @@ const facultyInfo = createSlice({
         handleBrithDateChange: (state, { payload }: PayloadAction<string>) => {
             state.birth_date = payload;
         },
+
         handleAddSkill: (state, { payload }: PayloadAction<ISkillState>) => {
             const already = state.skills.find((skill) => skill.skill_name === payload.skill_name);
             if (!already) {

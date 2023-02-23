@@ -83,18 +83,6 @@ export const GET_ME = gql`
                 created_at
                 updated_at
             }
-            is_company {
-                company_person_id
-                company_id {
-                    id
-                    job {
-                        id
-                        job_title
-                        internship_period
-                        created_at
-                    }
-                }
-            }
             status
             profile_image
             created_at
