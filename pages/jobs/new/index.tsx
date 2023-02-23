@@ -6,7 +6,7 @@ import {
     useCreateJobByCommitteeNoFile,
     useCreateJobByCompany,
     useCreateJobByCompanyNoFile,
-} from '../../../features/job/hooks/useCreateJob';
+} from '@features/job/hooks/useCreateJob';
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import NotificationService from '../../../lib/ant_service/NotificationService';
 import Input from '@ui/Input';

@@ -93,10 +93,11 @@ const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
                         </div>
                         <div className="col-span-1 mb-4 ">
                             <label htmlFor="countries" className="block text-[18px] font-medium text-gray-900 dark:text-white">
-                                วันเกิด
+                                วันเกิด (วัน/เดือน/ปี คศ.)
                             </label>
                             <DatePicker
                                 className={'py-3 w-full text-[20px] font-primary_noto'}
+                                format={'DD/MM/YYYY'}
                                 style={{ fontSize: '18px' }}
                                 disabledDate={disabledDate}
                                 placeholder={'เลือกวันเกิด'}

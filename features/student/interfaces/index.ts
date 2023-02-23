@@ -1,4 +1,5 @@
-import { ISkillState, ILanguageAbility } from '../../register-coop/interfaces/index';
+import { ISkillState, ILanguageAbility, TranscriptState } from '@features/register-coop/interfaces';
+import { UploadFileInput } from '@features/upload/hooks/useUploadFile';
 
 export interface CoopStudentInfo {
     level_id: string;
@@ -28,6 +29,7 @@ export interface CoopStudentInfo {
     department_id: string;
     department_name_en: string;
     department_name_th: string;
+    name_prefix: string;
 }
 
 export enum CoopStatus {
@@ -41,4 +43,5 @@ export type RegisterCoopPayload = {
     registerCoopInput: CoopStudentInfo;
     languageAbilities?: ILanguageAbility[];
     skills?: ISkillState[];
+    transcriptFile: UploadFileInput;
 };

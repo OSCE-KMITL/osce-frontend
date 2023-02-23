@@ -1,7 +1,6 @@
 // @ts-ignore
 import { SubmitHandler, useForm } from 'react-hook-form';
-import React from 'react';
-import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
+import React, { useState } from 'react';
 import { curriculums, departments, faculties } from '@constants/faculty-info';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -15,7 +14,9 @@ import { AppDispatch } from '@store';
 
 export function useFacultyState() {
     const { faculty, department, curriculum } = useSelector(facultyInfoStateSelector);
+
     const dispatch: AppDispatch = useDispatch();
+
     const faculties_option = faculties.map((item) => (
         <option className={'text-[18px]'} key={item.faculty_id} value={item.faculty_id}>
             {item.faculty_name_th}
