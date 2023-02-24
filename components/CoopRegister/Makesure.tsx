@@ -1,7 +1,7 @@
 import { studentInfoStateSelector, studentStatusStateSelector } from '@features/student/student.slice';
 import { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { AuthenticationContext } from '../../context/AuthContextProvider';
+import { AuthenticationContext } from '@context/AuthContextProvider';
 import { studentIdParser } from 'utils/common';
 
 interface AppliedStatusProps {}
@@ -70,7 +70,7 @@ const MakeSure: FC<AppliedStatusProps> = ({}) => {
                     <h1>{student_data.phone_number}</h1>
                     <h1>{student_data.religion}</h1>
                     <h1>{student_data.military_status ? 'ผ่าน/ได้รับยกเว้นการเกณฑ์หทาร' : 'อยู่ระหว่างผ่อนผัน/ยังไม่ผ่านการเกณฑ์หทาร'}</h1>
-                    <h1>{student_data.driver_license ? 'มีใบอณุญาตขับขี่รถยนต์' : 'ไม่มีมีใบอณุญาตขับขี่รถยนต์'}</h1>
+                    <h1>{student_data.driver_license ? 'มีใบอนุญาตขับขี่รถยนต์' : 'ไม่มีมีใบอนุญาตขับขี่รถยนต์'}</h1>
                 </div>
             </div>
         </div>
