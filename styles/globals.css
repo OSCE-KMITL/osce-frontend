@@ -1,6 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-*{
+
+* {
     outline: none;
+
+}
+
+@layer components {
+    .input-form-primary {
+        @apply w-full shadow-sm text-lg rounded-lg outline-none block p-2.5 bg-gray-50 border border-gray-300 text-gray-900;
+    }
+
+    .input-form-primary:focus {
+        @apply border-primary-300;
+    }
+
+    .input-form-primary::placeholder {
+        @apply opacity-50;
+    }
+
+    .label-form-primary {
+        @apply block text-[20px] font-medium text-gray-900;
+    }
+
+    .label-form-head-card {
+        @apply block mb-2 text-[24px] font-medium text-gray-900
+    }
+}
+
+
+
+
+
+
+
+/* หลักสูตรที่เปิดรับ ในหน้าสร้าง job */
+.ant-select-selection-overflow {
+    font-size: 18px;
+    padding: 6px;
+}
+
+/* ชื่อบริษัท ในหน้าสร้าง job */
+.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector {
+    height: 48px;
+    align-items: center;
+    font-size: 18px;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+    font-family: Noto Sans Thai, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* ชื่อผู้ประสานงานและผูนิเทศ ในหน้าสร้าง job */
+.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
+    font-family: Noto Sans Thai, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 18px;
+}
+
+.ant-select-single.ant-select-lg .ant-select-selector .ant-select-selection-search {
+    top: 4px;
+}
+
+
+/* สวัสดิการที่มี ในหน้าสร้าง job */
+.ant-checkbox-wrapper {
+    font-family: Noto Sans Thai, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 16px;
 }

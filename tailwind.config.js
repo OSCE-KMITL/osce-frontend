@@ -24,6 +24,7 @@ module.exports = {
                 primary_noto: ['Noto Sans Thai', ...fontFamily.sans],
                 secondary_sarabun: ['Sarabun', ...fontFamily.sans],
             },
+            applyComplexClasses: true,
         },
     },
     plugins: [],

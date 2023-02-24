@@ -87,6 +87,64 @@ export const GET_ME = gql`
             profile_image
             created_at
             updated_at
+            is_company {
+                company_person_id
+                full_name
+                job_title
+                email
+                phone_number
+                is_coordinator
+                created_at
+                updated_at
+                company_id {
+                    id
+                    name_th
+                    name_eng
+                    address
+                    sub_district
+                    district
+                    province
+                    postal_code
+                    phone_number
+                    website_url
+                    business_type
+                    created_at
+                    updated_at
+                    company_persons {
+                        company_person_id
+                        full_name
+                        job_title
+                        email
+                        phone_number
+                        is_coordinator
+                        created_at
+                        updated_at
+                    }
+                    job {
+                        id
+                        job_title
+                        required_major
+                        project_topic
+                        nature_of_work
+                        required_skills
+                        limit
+                        welfare
+                        compensation
+                        internship_period
+                        work_period
+                        coordinator_name
+                        coordinator_job_title
+                        coordinator_email
+                        coordinator_phone_number
+                        supervisor_name
+                        supervisor_job_title
+                        supervisor_email
+                        supervisor_phone_number
+                        created_at
+                        updated_at
+                    }
+                }
+            }
         }
     }
 `;

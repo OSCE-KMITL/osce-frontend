@@ -7,11 +7,11 @@ export const inputStyle = cva('shadow-sm  text-[18px] rounded-lg  outline-0 bloc
     variants: {
         isError: {
             true: 'bg-red-50  border border-red-500 text-gray-900 placeholder-red-700 focus:border-red-500 shadow-red-300 shadow-md ',
-            false: 'bg-gray-50 border border-gray-300 text-gray-900 focus:border-green-500 ',
+            false: 'bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300 ',
         },
         disable: {
             false: 'bg-red-50  border border-red-500 text-gray-900 placeholder-red-700 focus:border-red-500 shadow-red-300 shadow-md ',
-            true: 'bg-gray-100 border border-gray-300 text-gray-900 focus:border-green-500 ',
+            true: 'bg-gray-100 border border-gray-300 text-gray-900 focus:border-primary-300 ',
         },
         fullWidth: {
             true: 'w-full',

@@ -234,12 +234,12 @@ export default function Update() {
                 <form onSubmit={handleSubmit(onSubmit)} className=" rounded-md  font-primary_noto  ">
                     <div className="grid grid-rows-1 gap-8 mb-8">
                         <div>
-                            <label className={`block mb-2 text-xl font-medium text-gray-900 `}>รายละเอียดงานที่รับสมัคร</label>
+                            <label className={`label-form-head-card `}>รายละเอียดงานที่รับสมัคร</label>
                             <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                                <div className="col-span-2">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อหัวข้อโครงงานสหกิจศึกษา</label>
+                                <div className="mb-2 col-span-2">
+                                    <label className={`label-form-primary`}>ชื่อหัวข้อโครงงานสหกิจศึกษา</label>
                                     <input
-                                        className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         type={'text'}
                                         name={'project_topic'}
                                         defaultValue={data.getJobById?.project_topic ? data.getJobById?.project_topic : ''}
@@ -247,10 +247,10 @@ export default function Update() {
                                     ></input>
                                     <div className="h-5"></div>
                                 </div>
-                                <div className="">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ตำแหน่งงาน</label>
+                                <div className="mb-2">
+                                    <label className={`label-form-primary `}>ตำแหน่งงาน</label>
                                     <input
-                                        className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         type={'text'}
                                         name={'job_title'}
                                         defaultValue={data.getJobById?.job_title ? data.getJobById?.job_title : ''}
@@ -260,7 +260,7 @@ export default function Update() {
                                 </div>
 
                                 <div className="mb-2">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>หลักสูตรที่รับ</label>
+                                    <label className={`label-form-primary`}>หลักสูตรที่รับ</label>
                                     <div>
                                         <Select
                                             className=" text-gray-900 w-full h-full "
@@ -276,10 +276,10 @@ export default function Update() {
                                     </div>
                                 </div>
 
-                                <div className="col-span-2">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ลักษณะงานที่ต้องปฏิบัติ</label>
+                                <div className="mb-2 col-span-2">
+                                    <label className={`label-form-primary`}>ลักษณะงานที่ต้องปฏิบัติ</label>
                                     <input
-                                        className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         type={'text'}
                                         name={'nature_of_work'}
                                         defaultValue={data.getJobById?.nature_of_work ? data.getJobById?.nature_of_work : ''}
@@ -288,10 +288,10 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="col-span-2">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ทักษะที่นักศึกษาควรมี</label>
+                                <div className="mb-2 col-span-2">
+                                    <label className={`label-form-primary`}>ทักษะที่นักศึกษาควรมี</label>
                                     <input
-                                        className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         type={'text'}
                                         name={'required_skills'}
                                         defaultValue={data.getJobById?.required_skills ? data.getJobById?.required_skills : ''}
@@ -302,22 +302,28 @@ export default function Update() {
 
                                 <div className="col-span-2">
                                     <div className="grid grid-cols-12 gap-x-8 ">
-                                        <div className="mb-4 h-auto col-span-2 ">
-                                            <label className={`block  text-lg font-medium text-gray-900 mb-1 `}>ระยะเวลาปฏิบัติงาน</label>
+                                        <div className="h-auto col-span-2 ">
+                                            <label className={`label-form-primary`}>ระยะเวลาปฏิบัติงาน</label>
                                             <Radio.Group onChange={internShipPeriodOnChange} value={internshipPeriod} className="grid grid-flow-row">
-                                                <Radio value={'ฝึกงาน (2 เดือน)'}>ฝึกงาน (2 เดือน)</Radio>
-                                                <Radio value={'สหกิจศึกษา (4 เดือน)'}>สหกิจศึกษา (4 เดือน)</Radio>
-                                                <Radio value={'ฝึกงาน+สหกิจศึกษา (6 เดือน)'}>ฝึกงาน+สหกิจศึกษา (6 เดือน)</Radio>
+                                                <Radio className="font-primary_noto text-[16px]" value={'ฝึกงาน (2 เดือน)'}>
+                                                    ฝึกงาน (2 เดือน)
+                                                </Radio>
+                                                <Radio className="font-primary_noto text-[16px]" value={'สหกิจศึกษา (4 เดือน)'}>
+                                                    สหกิจศึกษา (4 เดือน)
+                                                </Radio>
+                                                <Radio className="font-primary_noto text-[16px]" value={'ฝึกงาน+สหกิจศึกษา (6 เดือน)'}>
+                                                    ฝึกงาน+สหกิจศึกษา (6 เดือน)
+                                                </Radio>
                                             </Radio.Group>
                                             <div className="h-5"></div>
                                         </div>
 
                                         <div className="w-auto col-span-3 ">
-                                            <label className={`block mb-2 text-lg font-medium text-gray-900 `}>
+                                            <label className={`label-form-primary`}>
                                                 ช่วงเวลาปฏิบัติงาน <span>(วันเริ่มต้น - วันสิ้นสุด)</span>
                                             </label>
                                             <RangePicker
-                                                className="xl:w-full"
+                                                className="py-3 w-full text-[20px] font-primary_noto"
                                                 format={dateFormat}
                                                 onChange={dateOnChange}
                                                 allowEmpty={[true, true]}
@@ -333,12 +339,12 @@ export default function Update() {
                                             />
                                         </div>
 
-                                        <div className="mb-4 h-auto col-span-2">
-                                            <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                        <div className=" h-auto col-span-2">
+                                            <label htmlFor="address" className="label-form-primary">
                                                 จำนวนที่รับสมัคร
                                             </label>
                                             <input
-                                                className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                                className="input-form-primary"
                                                 id="limit"
                                                 type="number"
                                                 min={1}
@@ -351,13 +357,13 @@ export default function Update() {
                                         </div>
 
                                         <div className="col-span-4 ">
-                                            <div className="w-auto mb-4 h-auto grid grid-cols-2 gap-x-2">
+                                            <div className="w-auto h-auto grid grid-cols-2 gap-x-2">
                                                 <div className="w-full">
-                                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                                    <label htmlFor="address" className="label-form-primary">
                                                         ค่าตอบแทน
                                                     </label>
                                                     <input
-                                                        className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                                        className="input-form-primary"
                                                         id="compensation"
                                                         type="number"
                                                         min={0}
@@ -374,8 +380,12 @@ export default function Update() {
                                                         onChange={compensationSuffixOnChange}
                                                         value={compensationSuffix}
                                                     >
-                                                        <Radio value={'วัน'}>ต่อวัน</Radio>
-                                                        <Radio value={'เดือน'}>ต่อเดือน</Radio>
+                                                        <Radio className="font-primary_noto text-[16px]" value={'วัน'}>
+                                                            ต่อวัน
+                                                        </Radio>
+                                                        <Radio className="font-primary_noto text-[16px]" value={'เดือน'}>
+                                                            ต่อเดือน
+                                                        </Radio>
                                                     </Radio.Group>
                                                 </div>
                                             </div>
@@ -384,8 +394,8 @@ export default function Update() {
                                 </div>
                                 <div className="col-span-2">
                                     <div className=" grid grid-cols-12 gap-x-8">
-                                        <div className="col-span-5 mb-4">
-                                            <label className={`block mb-4 text-lg font-medium text-gray-900 `}>สวัสดิการที่มี</label>
+                                        <div className="col-span-5 mb-2">
+                                            <label className={`label-form-primary mb-3`}>สวัสดิการที่มี</label>
                                             <div className="flex ">
                                                 <Checkbox.Group options={welfare_options} value={welfareList} onChange={welfareOnChange} className="" />
                                             </div>
@@ -393,11 +403,11 @@ export default function Update() {
                                             <div className="h-5"></div>
                                         </div>
                                         <div className="mb-4 h-auto col-span-4">
-                                            <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                            <label htmlFor="address" className="label-form-primary">
                                                 สวัสดิการอื่นๆ (ถ้ามี)
                                             </label>
                                             <input
-                                                className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                                className="input-form-primary"
                                                 id="other_welfare"
                                                 type="text"
                                                 defaultValue={otherWelfare}
@@ -414,10 +424,10 @@ export default function Update() {
                         </div>
 
                         <div className="">
-                            <label className={`block mb-2 text-xl font-medium text-gray-900 `}>ผู้ประสานงาน</label>
+                            <label className={`label-form-head-card `}>ผู้ประสานงาน</label>
                             <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                                <div className="mb-4 h-auto ">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
+                                <div className="mb-2 h-auto ">
+                                    <label className={`label-form-primary`}>ชื่อ-นามสกุล</label>
                                     <AutoComplete
                                         id="coordinator_name"
                                         className="w-full"
@@ -434,12 +444,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2  h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         ตำแหน่ง
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="coordinator_job_title"
                                         type="text"
                                         name="coordinator_job_title"
@@ -453,12 +463,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2  h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         อีเมล์
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="coordinator_email"
                                         type="text"
                                         name="coordinator_email"
@@ -472,12 +482,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2  h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         โทรศัพท์
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="coordinator_phone_number"
                                         type="text"
                                         name="coordinator_phone_number"
@@ -493,10 +503,10 @@ export default function Update() {
                             </div>
                         </div>
                         <div className="">
-                            <label className={`block mb-2 text-xl font-medium text-gray-900 `}>ผู้นิเทศงาน (หากมีข้อมูลกรุณาให้ข้อมูล)</label>
+                            <label className={`label-form-head-card `}>ผู้นิเทศงาน (หากมีข้อมูลกรุณาให้ข้อมูล)</label>
                             <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                                <div className="mb-4 h-auto">
-                                    <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
+                                <div className="mb-2 h-auto">
+                                    <label className={`label-form-primary`}>ชื่อ-นามสกุล</label>
                                     <AutoComplete
                                         id="supervisor_name"
                                         className="w-full"
@@ -513,12 +523,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2 h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         ตำแหน่ง
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="supervisor_position"
                                         type="text"
                                         name="supervisor_position"
@@ -532,12 +542,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2 h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         อีเมล์
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="supervisor_email"
                                         type="text"
                                         name="supervisor_email"
@@ -550,12 +560,12 @@ export default function Update() {
                                     <div className="h-5"></div>
                                 </div>
 
-                                <div className="mb-4 h-auto">
-                                    <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                <div className="mb-2 h-auto">
+                                    <label htmlFor="address" className="label-form-primary">
                                         โทรศัพท์
                                     </label>
                                     <input
-                                        className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                        className="input-form-primary"
                                         id="supervisor_phone"
                                         type="text"
                                         name="supervisor_phone"

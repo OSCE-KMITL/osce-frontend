@@ -27,6 +27,14 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                             Steps: {
                                 colorPrimary: '#FF813E',
                             },
+                            Select: {
+                                colorPrimary: '#FF813E',
+                                fontSize: 18,
+                                colorBgContainer: 'rgb(249 250 251 / var(--tw-bg-opacity));',
+                            },
+                            DatePicker: {
+                                colorBgContainer: 'rgb(249 250 251 / var(--tw-bg-opacity));',
+                            },
                         },
                         token: {
                             colorPrimary: '#FF813E',

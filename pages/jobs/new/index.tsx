@@ -382,15 +382,15 @@ const CreateJobPage: FC = () => {
             <form onSubmit={handleSubmit(onSubmit)} className=" rounded-md  font-primary_noto  ">
                 <div className="grid grid-rows-1 gap-8 mb-8">
                     <div>
-                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>รายละเอียดงานที่รับสมัคร</label>
+                        <label className={`label-form-head-card `}>รายละเอียดงานที่รับสมัคร</label>
                         <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
                             {me?.role === RoleOption.COMMITTEE ? (
-                                <div className="mb-8 h-auto col-span-2">
-                                    <label className={`block mb-6 text-lg font-medium text-gray-900 `}>ชื่อบริษัท*</label>
+                                <div className="mb-2 h-auto col-span-2">
+                                    <label className={`block text-[20px] font-medium text-gray-900`}>ชื่อบริษัท*</label>
                                     <Select
-                                        className="text-gray-900 w-full max-h-2 flex items-center"
+                                        className="w-full text-[20px] font-primary_noto"
                                         showSearch
-                                        size="large" // style={{  }}
+                                        size="large"
                                         placeholder="Search to Select"
                                         optionFilterProp="children"
                                         onChange={selectCompanyOnChange}
@@ -444,20 +444,18 @@ const CreateJobPage: FC = () => {
                                 ></Input>
                             </div>
                             <div className="mb-2">
-                                <label className={`block mb-2 text-lg font-medium text-gray-900 `}>หลักสูตรที่รับ</label>
-                                <div>
-                                    <Select
-                                        className=" text-gray-900 w-full h-full "
-                                        mode="multiple"
-                                        allowClear
-                                        size="large"
-                                        placeholder="Please select"
-                                        onChange={selectRequireMajorOnChange}
-                                        options={require_major}
-                                        value={selectRequireMajor}
-                                    />
-                                    <div className="h-5"></div>
-                                </div>
+                                <label className={`block text-[20px] font-medium text-gray-900`}>หลักสูตรที่รับ</label>
+                                <Select
+                                    className={'w-full text-[20px] font-primary_noto'}
+                                    mode="multiple"
+                                    size="large"
+                                    allowClear
+                                    placeholder="Please select"
+                                    onChange={selectRequireMajorOnChange}
+                                    options={require_major}
+                                    value={selectRequireMajor}
+                                />
+                                <div className="h-5"></div>
                             </div>
 
                             <div className="col-span-2">
@@ -511,23 +509,29 @@ const CreateJobPage: FC = () => {
                                 ></Input>
                             </div>
                             <div className="col-span-2">
-                                <div className="grid grid-cols-12 gap-x-8 ">
-                                    <div className="mb-4 h-auto col-span-2 ">
-                                        <label className={`block  text-lg font-medium text-gray-900 mb-1 `}>ระยะเวลาปฏิบัติงาน</label>
-                                        <Radio.Group onChange={internShipPeriodOnChange} value={internshipPeriod} className="grid grid-flow-row">
-                                            <Radio value={'ฝึกงาน (2 เดือน)'}>ฝึกงาน (2 เดือน)</Radio>
-                                            <Radio value={'สหกิจศึกษา (4 เดือน)'}>สหกิจศึกษา (4 เดือน)</Radio>
-                                            <Radio value={'ฝึกงาน+สหกิจศึกษา (6 เดือน)'}>ฝึกงาน+สหกิจศึกษา (6 เดือน)</Radio>
+                                <div className="grid grid-cols-11 gap-x-8">
+                                    <div className="mb-2 h-auto col-span-2  relative">
+                                        <label className={`block text-[20px] font-medium text-gray-900`}>ระยะเวลาปฏิบัติงาน</label>
+                                        <Radio.Group onChange={internShipPeriodOnChange} value={internshipPeriod} className="grid grid-flow-row ">
+                                            <Radio className="font-primary_noto text-[16px]" value={'ฝึกงาน (2 เดือน)'}>
+                                                ฝึกงาน (2 เดือน)
+                                            </Radio>
+                                            <Radio className="font-primary_noto text-[16px]" value={'สหกิจศึกษา (4 เดือน)'}>
+                                                สหกิจศึกษา (4 เดือน)
+                                            </Radio>
+                                            <Radio className="font-primary_noto text-[16px]" value={'ฝึกงาน+สหกิจศึกษา (6 เดือน)'}>
+                                                ฝึกงาน+สหกิจศึกษา (6 เดือน)
+                                            </Radio>
                                         </Radio.Group>
                                         <div className="h-5"></div>
                                     </div>
 
                                     <div className="w-auto col-span-3 ">
-                                        <label className={`block mb-2 text-lg font-medium text-gray-900 `}>
+                                        <label className={`block text-[20px] font-medium text-gray-900`}>
                                             ช่วงเวลาปฏิบัติงาน <span>(วันเริ่มต้น - วันสิ้นสุด)</span>
                                         </label>
                                         <RangePicker
-                                            className="xl:w-full"
+                                            className={'py-3 w-full text-[20px] font-primary_noto'}
                                             format={dateFormat}
                                             onChange={dateOnChange}
                                             allowEmpty={[true, true]}
@@ -543,12 +547,12 @@ const CreateJobPage: FC = () => {
                                         />
                                     </div>
 
-                                    <div className="mb-4 h-auto col-span-2">
-                                        <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                    <div className="h-auto col-span-2">
+                                        <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                             จำนวนที่รับสมัคร
                                         </label>
                                         <input
-                                            className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                            className="w-full shadow-sm  text-[18px] rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                             id="limit"
                                             type="number"
                                             min={1}
@@ -560,13 +564,13 @@ const CreateJobPage: FC = () => {
                                     </div>
 
                                     <div className="col-span-4 ">
-                                        <div className="w-auto mb-4 h-auto grid grid-cols-2 gap-x-2">
+                                        <div className="w-auto h-auto grid grid-cols-2 gap-x-2">
                                             <div className="w-full">
-                                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                                     ค่าตอบแทน
                                                 </label>
                                                 <input
-                                                    className="w-full shadow-sm  text-sm rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                                    className="w-full shadow-sm  text-[18px] rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                                     id="compensation"
                                                     type="number"
                                                     min={0}
@@ -582,8 +586,8 @@ const CreateJobPage: FC = () => {
                                                     onChange={compensationSuffixOnChange}
                                                     value={compensationSuffix}
                                                 >
-                                                    <Radio value={'วัน'}>ต่อวัน</Radio>
-                                                    <Radio value={'เดือน'}>ต่อเดือน</Radio>
+                                                    <Radio className='font-primary_noto text-[16px] ' value={'วัน'}>ต่อวัน</Radio>
+                                                    <Radio className='font-primary_noto text-[16px] ' value={'เดือน'}>ต่อเดือน</Radio>
                                                 </Radio.Group>
                                             </div>
                                         </div>
@@ -591,11 +595,11 @@ const CreateJobPage: FC = () => {
                                 </div>
                             </div>
                             <div className="col-span-2">
-                                <div className=" grid grid-cols-12 gap-x-8">
-                                    <div className="col-span-5 mb-4">
-                                        <label className={`block mb-4 text-lg font-medium text-gray-900 `}>สวัสดิการที่มี</label>
+                                <div className=" grid grid-cols-11 gap-x-8">
+                                    <div className="col-span-5 ">
+                                        <label className={`block text-[20px] font-medium text-gray-900 mb-3`}>สวัสดิการที่มี</label>
                                         <div className="flex ">
-                                            <Checkbox.Group options={welfare_options} value={welfareList} onChange={welfareOnChange} className="" />
+                                            <Checkbox.Group options={welfare_options} value={welfareList} onChange={welfareOnChange} />
                                         </div>
 
                                         <div className="h-5"></div>
@@ -617,13 +621,13 @@ const CreateJobPage: FC = () => {
                     </div>
 
                     <div className="">
-                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>ผู้ประสานงาน</label>
+                        <label className={`label-form-head-card `}>ผู้ประสานงาน</label>
                         <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                            <div className="mb-4 h-auto ">
-                                <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
+                            <div className="mb-2 h-auto ">
+                                <label className={`block text-[20px] font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
                                 <AutoComplete
                                     id="coordinator_name"
-                                    className="w-full"
+                                    className="w-full shadow-sm  text-[18px]"
                                     options={company_person_option}
                                     size="large"
                                     onSelect={coordinatorNameOnSelect}
@@ -636,12 +640,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     ตำแหน่ง
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm text-[18px] rounded-lg placeholder:opacity-50  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="coordinator_position"
                                     type="text"
                                     name="coordinator_position"
@@ -654,12 +658,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     อีเมล์
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="coordinator_email"
                                     type="text"
                                     name="coordinator_email"
@@ -672,12 +676,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     โทรศัพท์
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="coordinator_phone"
                                     type="text"
                                     name="coordinator_phone"
@@ -692,10 +696,10 @@ const CreateJobPage: FC = () => {
                         </div>
                     </div>
                     <div className="">
-                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>ผู้นิเทศงาน (หากมีข้อมูลกรุณาให้ข้อมูล)</label>
+                        <label className={`label-form-head-card `}>ผู้นิเทศงาน (หากมีข้อมูลกรุณาให้ข้อมูล)</label>
                         <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
-                            <div className="mb-4 h-auto">
-                                <label className={`block mb-2 text-lg font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
+                            <div className="mb-2 h-auto">
+                                <label className={`block text-[20px] font-medium text-gray-900`}>ชื่อ-นามสกุล</label>
                                 <AutoComplete
                                     id="supervisor_name"
                                     className="w-full"
@@ -711,12 +715,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     ตำแหน่ง
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="supervisor_position"
                                     type="text"
                                     name="supervisor_position"
@@ -729,12 +733,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     อีเมล์
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="supervisor_email"
                                     type="text"
                                     name="supervisor_email"
@@ -747,12 +751,12 @@ const CreateJobPage: FC = () => {
                                 <div className="h-5"></div>
                             </div>
 
-                            <div className="mb-4 h-auto">
-                                <label htmlFor="address" className="block mb-2 text-lg font-medium text-gray-900">
+                            <div className="mb-2 h-auto">
+                                <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
                                     โทรศัพท์
                                 </label>
                                 <input
-                                    className="w-full shadow-sm text-sm rounded-lg outline-0 block p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-blue-500"
+                                    className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="supervisor_phone"
                                     type="text"
                                     name="supervisor_phone"
@@ -767,7 +771,7 @@ const CreateJobPage: FC = () => {
                         </div>
                     </div>
                     <div>
-                        <label className={`block mb-2 text-xl font-medium text-gray-900 `}>เพิ่มเอกสาร (.pdf)</label>
+                        <label className={`block mb-2 text-2xl font-medium text-gray-900 `}>เพิ่มเอกสาร (.pdf)</label>
                         <div>
                             <input accept="application/pdf" type="file" onChange={handleFileChange} defaultValue={null} id="file" />
                         </div>

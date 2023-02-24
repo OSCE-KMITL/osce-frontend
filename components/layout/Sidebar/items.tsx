@@ -55,7 +55,6 @@ export const items: MenuProps['items'] = [
     },
 ];
 
-
 export const student_item: MenuProps['items'] = [
     {
         label: 'จัดการสหกิจ',
@@ -89,8 +88,8 @@ export const student_item: MenuProps['items'] = [
                 key: '/jobs',
             },
             {
-                label: 'งานที่กำลังสมัคร',
-                key: '/',
+                label: 'งานที่สมัคร',
+                key: '/student/jobApply',
             },
         ],
     },
@@ -124,12 +123,97 @@ export const student_item: MenuProps['items'] = [
 ];
 export const itemsCompany: MenuProps['items'] = [
     {
-        label: 'จัดการสหกิจ',
+        label: 'จัดการงานที่เปิดรับ',
         key: '01',
         type: 'group',
         children: [
             {
-                label: 'ใบสมัครงานสหกิจศึกษา',
+                label: 'งานที่เปิดรับ',
+                key: '/company/myjob',
+            },
+            {
+                label: 'เพิ่มงานที่เปิดรับ',
+                key: '/jobs/new',
+            },
+        ],
+    },
+    {
+        label: 'เกี่ยวกับบริษัท',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'ข้อมูลบริษัท',
+                key: '/coopregister',
+            },
+        ],
+    },
+    {
+        label: 'จัดการนักศึกษา',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'นักศึกษาที่สังกัดปัจจุบัน',
+                key: '/coopregister',
+            },
+        ],
+    },
+];
+
+export const itemsCommittee: MenuProps['items'] = [
+    {
+        label: 'จัดการผู้ใช้ในระบบ',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'นักศึกษา',
+                key: '/coopregister',
+            },
+            {
+                label: 'อาจารย์สหกิจ',
+                key: '/coopregister',
+            },
+            {
+                label: 'บริษัทสหกิจ',
+                key: '/coopregister',
+            },
+        ],
+    },
+    {
+        label: 'จัดการสหกิจ',
+        key: '02',
+        type: 'group',
+        children: [
+            {
+                label: 'กำหนดนักศึกษาให้อาจารย์',
+                key: '/coopregister',
+            },
+            {
+                label: 'รวมคะแนนสหกิจ',
+                key: '/coopregister',
+            },
+        ],
+    },
+    {
+        label: 'จัดการงานที่เปิดรับ',
+        key: '02',
+        type: 'group',
+        children: [
+            {
+                label: 'เพิ่มงานที่เปิดรับ',
+                key: '/jobs/new',
+            },
+        ],
+    },
+    {
+        label: 'จัดการประกาศ',
+        key: '02',
+        type: 'group',
+        children: [
+            {
+                label: 'เพิ่มประกาศ',
                 key: '/coopregister',
             },
         ],
