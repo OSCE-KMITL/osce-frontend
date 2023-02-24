@@ -55,7 +55,6 @@ export const items: MenuProps['items'] = [
     },
 ];
 
-
 export const student_item: MenuProps['items'] = [
     {
         label: 'จัดการสหกิจ',
@@ -64,7 +63,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'ใบสมัครงานสหกิจศึกษา',
-                key: 'coopregister',
+                key: '/coopregister',
             },
         ],
     },
@@ -113,11 +112,11 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'ประเมินสถานประกอบการ',
-                key: '/companyassessment',
+                key: '',
             },
             {
                 label: 'ประเมินอาจารย์นิเทศ',
-                key: '/advisorassessment',
+                key: '',
             },
         ],
     },
@@ -193,7 +192,6 @@ export const itemsCommittee: MenuProps['items'] = [
             },
         ],
     },
-
     {
         label: 'จัดการงานที่เปิดรับ',
         key: '03',
@@ -209,6 +207,4 @@ export const itemsCommittee: MenuProps['items'] = [
             },
         ],
     },
-]
-
-
+];
