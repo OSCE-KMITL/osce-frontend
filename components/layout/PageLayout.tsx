@@ -19,7 +19,26 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                 <link rel="icon" href="/osce.ico" />
             </Head>
             <div className="w-screen max-h-full bg-primary-300 font-primary_noto">
-                <ConfigProvider theme={theme}>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Menu: {
+                                colorPrimary: '#FF813E',
+                            },
+                            Steps: {
+                                colorPrimary: '#FF813E',
+                            },
+                            Table: {
+                                fontSize: 16,
+                                colorTextHeading: '#333',
+                                colorBgLayout: '#333',
+                            },
+                        },
+                        token: {
+                            colorPrimary: '#FF813E',
+                        },
+                    }}
+                >
                     <NavigationBar />
                     <Layout style={{ backgroundColor: '#f8f8f8' }}>
                         {me && (
