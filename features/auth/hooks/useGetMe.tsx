@@ -36,6 +36,24 @@ export const GET_ME = gql`
                 birth_date
                 created_at
                 updated_at
+                skills {
+                    id
+                    level
+                    skill_name
+                }
+                language_abilities {
+                    id
+                    level
+                    name
+                }
+                transcript {
+                    id
+                    current_name
+                    original_name
+                    updated_at
+                    url
+                    created_at
+                }
                 department {
                     id
                     department_id

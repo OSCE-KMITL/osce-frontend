@@ -5,7 +5,6 @@ import { UseFormRegister } from 'react-hook-form';
 import { RegisterCoopHookState, registerErrorSchema } from '@features/register-coop/interfaces';
 import moment from 'moment';
 import { useFacultyState } from '@features/register-coop/hooks/useFormState';
-import useLogout from '@features/auth/hooks/useLogout';
 
 export interface RegisterForm {
     register: UseFormRegister<RegisterCoopHookState>;
@@ -120,7 +119,7 @@ const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
                                 validationSchema={registerErrorSchema.address}
                             />{' '}
                         </div>
-                        <div className="ol-span-1">
+                        <div className="col-span-1">
                             <Input
                                 name={'phone_number'}
                                 type="string"

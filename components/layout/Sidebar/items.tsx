@@ -55,7 +55,6 @@ export const items: MenuProps['items'] = [
     },
 ];
 
-
 export const student_item: MenuProps['items'] = [
     {
         label: 'จัดการสหกิจ',
@@ -90,7 +89,7 @@ export const student_item: MenuProps['items'] = [
             },
             {
                 label: 'งานที่กำลังสมัคร',
-                key: '/',
+                key: '/student/jobapplying',
             },
         ],
     },
@@ -101,7 +100,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: '/coopreport',
+                key: '',
             },
         ],
     },
@@ -125,12 +124,47 @@ export const student_item: MenuProps['items'] = [
 export const itemsCompany: MenuProps['items'] = [
     {
         label: 'จัดการสหกิจ',
+        key: '02',
+        type: 'group',
+        children: [
+            {
+                label: 'รายชื่อผู้สมัครสหกิจศึกษา',
+                key: '/manager/coop-applying',
+            },
+            {
+                label: 'กำหนดนักศึกษาให้อาจารย์',
+                key: '',
+            },
+            {
+                label: 'รวมคะแนนสหกิจ',
+                key: '',
+            },
+        ],
+    },
+    {
+        label: 'จัดการผู้ใช้ในระบบ',
         key: '01',
         type: 'group',
         children: [
             {
-                label: 'ใบสมัครงานสหกิจศึกษา',
-                key: '/coopregister',
+                label: 'บัญชีผู้ใช้งานในระบบ',
+                key: '/manager/accounts',
+            },
+        ],
+    },
+
+    {
+        label: 'จัดการงานที่เปิดรับ',
+        key: '03',
+        type: 'group',
+        children: [
+            {
+                label: 'งานที่เปิดรับ',
+                key: '/jobs',
+            },
+            {
+                label: 'เพิ่มงานที่เปิดรับ',
+                key: '/jobs/new',
             },
         ],
     },

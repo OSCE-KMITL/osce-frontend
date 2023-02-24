@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { ConfigProvider, Layout } from 'antd';
 import NavigationBar from './NavigationBar/NavigationBar';
-import { AuthenticationContext } from '../../context/AuthContextProvider';
+import { AuthenticationContext } from '@context/AuthContextProvider';
 import { ScriptProps } from 'next/script';
 import Head from 'next/head';
 import SideBar from './Sidebar';
+import { theme } from '@components/theme';
 
 const { Content, Sider } = Layout;
 
@@ -17,22 +18,8 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                 <meta name="description" content="ระบบสหกิจออนไลน์" />
                 <link rel="icon" href="/osce.ico" />
             </Head>
-            <div className="w-screen max-h-full bg-primary-300'">
-                <ConfigProvider
-                    theme={{
-                        components: {
-                            Menu: {
-                                colorPrimary: '#FF813E',
-                            },
-                            Steps: {
-                                colorPrimary: '#FF813E',
-                            },
-                        },
-                        token: {
-                            colorPrimary: '#FF813E',
-                        },
-                    }}
-                >
+            <div className="w-screen max-h-full bg-primary-300 font-primary_noto">
+                <ConfigProvider theme={theme}>
                     <NavigationBar />
                     <Layout style={{ backgroundColor: '#f8f8f8' }}>
                         {me && (

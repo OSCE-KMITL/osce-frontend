@@ -5,7 +5,7 @@ import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React from 'react';
 import { Space, Tag } from 'antd';
 
-export default function JobApply() {
+export default function JobApplying() {
     const { data, loading, error } = useGetMe();
     return (
         <ContentContainer>
