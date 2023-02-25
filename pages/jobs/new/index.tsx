@@ -471,7 +471,7 @@ const CreateJobPage: FC = () => {
                                                   required: 'จำเป็นต้องกรอกลักษณะงานที่ต้องปฏิบัติ',
                                                   maxLength: {
                                                       message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
+                                                      value: 1500,
                                                   },
                                                   minLength: {
                                                       message: 'ข้อมูลน้อยเกินไป',
@@ -496,7 +496,7 @@ const CreateJobPage: FC = () => {
                                                   required: 'จำเป็นต้องกรอกลักษณะงานที่ต้องปฏิบัติ',
                                                   maxLength: {
                                                       message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
+                                                      value: 1500,
                                                   },
                                                   minLength: {
                                                       message: 'ข้อมูลน้อยเกินไป',
