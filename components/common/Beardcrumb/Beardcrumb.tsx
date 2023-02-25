@@ -34,8 +34,10 @@ const BreadcrumbComponent: FunctionComponent<Props> = () => {
                             </div>
                         ) : (
                             <div className="flex items-center">
-                                <p className={'mx-2'}>{'>'}</p>
-                                <p>Detail</p>
+                                <a href="" className={'mx-2'}>
+                                    {'>'}
+                                </a>
+                                <a href="">Detail</a>
                             </div>
                         )}
                     </li>

@@ -7,7 +7,7 @@ import { registerErrorSchema } from '@features/register-coop/interfaces';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import { RoleOption } from '@constants/RoleOptions';
 import { studentIdParser } from '../../utils/common';
-import { useAppSelector } from '../../store/index';
+import { useAppSelector } from '@store';
 
 const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
     const {
@@ -30,7 +30,6 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
         }
     };
 
-    const disable = useAppSelector;
     return (
         <>
             <div className="flex flex-col justify-between w-full p-6 rounded-md bg-white my-6">
@@ -66,7 +65,7 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                                 className="bg-gray-50 border text-[18px] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                                 <option value={'DEFAULT'} hidden disabled>
-                                    เลือกคำนำหน้า
+                                    คำนำหน้า
                                 </option>
                                 <option key={'mr.'} value={'นาย'}>
                                     นาย

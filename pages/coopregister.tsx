@@ -1,10 +1,8 @@
-import React, { FunctionComponent, useState, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Steps, notification } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import PersonalInformation from '@components/CoopRegister/PersonalInformation';
 import EducationInformation from '@components/CoopRegister/EducationInformation';
-import { step_items } from '@components/CoopRegister/steps';
 import { RegisterCoopHookState, TranscriptState } from '@features/register-coop/interfaces';
 import { birthDateStateSelector, curriculumStateSelector, facultyInfoStateSelector, facultyStateSelector } from '@features/register-coop/coopregister.slice';
 import EmergencyContact from '@components/CoopRegister/EmergencyContact';
@@ -16,15 +14,13 @@ import { CoopStatus, CoopStudentInfo, RegisterCoopPayload } from '../features/st
 import { REGISTER_COOP, useCoopRegister } from '../features/student/hooks/useCoopRegister';
 import NotificationService from '../lib/ant_service/NotificationService';
 import LoadingSpinner from '../components/common/Spinner/LoadingSpinner';
-import { useMutation } from '@apollo/client';
 import { decreaseStep, handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, studentStatusStateSelector } from '@features/student/student.slice';
 import { studentStepStateSelector } from '../features/student/student.slice';
 import AppliedStatus from '../components/CoopRegister/AppliedStatus';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import MakeSure from '@components/CoopRegister/Makesure';
 import { GET_ME } from '@features/auth/hooks/useGetMe';
-import { useFacultyState } from '@features/register-coop/hooks/useFormState';
-
+import { useRouter } from 'next/router';
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -51,6 +47,17 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
     const { me } = useContext(AuthenticationContext);
     const [transcriptFile, setTranscriptFile] = useState<TranscriptState>(null);
 
+    const isSelectedFaculty = faculties_obj !== null;
+    const isSelectedDepartment = departments_obj !== null;
+    const isSelectedCurriculum = curriculums_obj !== null;
+    const isSelectedSkill = skills !== null || skills.length !== 0;
+    const isSelectedLang = languages !== null || languages.length !== 0;
+    const isSelectedBirthDate = birth_date_state !== null;
+    const isAttractFile = transcriptFile !== null;
+    const isError =
+        isSelectedFaculty && isSelectedDepartment && isSelectedCurriculum && isSelectedSkill && isSelectedLang && isSelectedBirthDate && isAttractFile;
+
+    const router = useRouter();
     React.useEffect(() => {
         if (me) {
             if (me.is_student) {
@@ -59,7 +66,7 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
                 }
             }
         }
-    }, []);
+    }, [me, router.pathname]);
 
     const onSubmit = async (data: RegisterCoopHookState) => {
         const result: CoopStudentInfo = {
@@ -103,7 +110,12 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
         // If state not equal  SAVED just saved to redux
         // if state is SAVED will call doRegister()
         if (apply_status !== 'SAVED') {
-            dispatch(handleSavedStudentInfo(payload));
+            if (!isError) {
+                console.log(isError, '=======>');
+                notification.error('กรุณากรอกข้อมูลให้ครบถ้วน', 'isError');
+            } else {
+                dispatch(handleSavedStudentInfo(payload));
+            }
         } else {
             await register_coop({
                 variables: {
@@ -126,13 +138,10 @@ const CoopRegisterPage: FunctionComponent<Props> = (props) => {
 
     return (
         <div className="flex flex-col max-w-[100%] min-w-[80%] min-h-screen font-primary_noto ">
-            <div className="flex items-center mb-6 w-full bg-primary-500  h-[150px] m-2 rounded-md px-4  text-gray-800">
-                <h1 className="font-semibold text-5xl text-white ">สมัครเข้าร่วมสหกิจศึกษา</h1>
+            <div className="flex items-center mb-4 w-full  h-[150px] m-2 rounded-md px-4  text-gray-800">
+                <h1 className="font-semibold text-5xl  ">สมัครเข้าร่วมสหกิจศึกษา</h1>
             </div>
-            <div className="flex items-center justify-center  px-6 py-2 ">
-                <Steps size="default" responsive={true} current={step} className={'mb-6 font-primary_noto text-[20px] '} items={step_items} />
-            </div>{' '}
-            {apply_status === 'APPLIED' && <AppliedStatus />}
+            {apply_status === 'APPLIED' && <AppliedStatus studentData={me?.is_student} />}
             {apply_status === 'SAVED' && <MakeSure />}
             {apply_status === 'DEFAULT' && (
                 <>

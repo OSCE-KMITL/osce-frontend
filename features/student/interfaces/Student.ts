@@ -2,10 +2,24 @@ import { JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
 import { CoopStatus } from './index';
+
+export interface ITranscriptFileUpload {
+    id: string;
+    original_name: string;
+    current_name: string;
+    url: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
 export interface IStudent {
     student_id: string;
 
     name_eng: string;
+
+    name_prefix: string;
+
+    transcript: ITranscriptFileUpload | null | undefined;
 
     faculty: IFaculty;
 

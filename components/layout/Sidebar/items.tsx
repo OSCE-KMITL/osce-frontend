@@ -63,7 +63,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'ใบสมัครงานสหกิจศึกษา',
-                key: 'apply coop',
+                key: '/coopregister',
             },
         ],
     },
@@ -74,7 +74,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: 'coop report',
+                key: '',
             },
         ],
     },
@@ -88,8 +88,8 @@ export const student_item: MenuProps['items'] = [
                 key: '/jobs',
             },
             {
-                label: 'งานที่สมัคร',
-                key: '/student/jobApply',
+                label: 'งานที่กำลังสมัคร',
+                key: '/student/job-applying',
             },
         ],
     },
@@ -100,7 +100,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: '/coopreport',
+                key: '',
             },
         ],
     },
@@ -112,11 +112,11 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'ประเมินสถานประกอบการ',
-                key: '/companyassessment',
+                key: '',
             },
             {
                 label: 'ประเมินอาจารย์นิเทศ',
-                key: '/advisorassessment',
+                key: '',
             },
         ],
     },
@@ -144,7 +144,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'ข้อมูลบริษัท',
-                key: '/coopregister',
+                key: '',
             },
         ],
     },
@@ -155,7 +155,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'นักศึกษาที่สังกัดปัจจุบัน',
-                key: '/coopregister',
+                key: '',
             },
         ],
     },
@@ -163,77 +163,48 @@ export const itemsCompany: MenuProps['items'] = [
 
 export const itemsCommittee: MenuProps['items'] = [
     {
-        label: 'จัดการผู้ใช้ในระบบ',
-        key: '01',
-        type: 'group',
-        children: [
-            {
-                label: 'นักศึกษา',
-                key: '/coopregister',
-            },
-            {
-                label: 'อาจารย์สหกิจ',
-                key: '/coopregister',
-            },
-            {
-                label: 'บริษัทสหกิจ',
-                key: '/coopregister',
-            },
-        ],
-    },
-    {
         label: 'จัดการสหกิจ',
         key: '02',
         type: 'group',
         children: [
             {
+                label: 'รายชื่อผู้สมัครสหกิจศึกษา',
+                key: '/manager/coop-applying',
+            },
+            {
                 label: 'กำหนดนักศึกษาให้อาจารย์',
-                key: '/coopregister',
+                key: '',
             },
             {
                 label: 'รวมคะแนนสหกิจ',
-                key: '/coopregister',
+                key: '',
+            },
+        ],
+    },
+    {
+        label: 'จัดการผู้ใช้ในระบบ',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'บัญชีผู้ใช้งานในระบบ',
+                key: '/manager/accounts',
             },
         ],
     },
     {
         label: 'จัดการงานที่เปิดรับ',
-        key: '02',
+        key: '03',
         type: 'group',
         children: [
+            {
+                label: 'งานที่เปิดรับ',
+                key: '/jobs',
+            },
             {
                 label: 'เพิ่มงานที่เปิดรับ',
                 key: '/jobs/new',
             },
         ],
     },
-    {
-        label: 'จัดการประกาศ',
-        key: '02',
-        type: 'group',
-        children: [
-            {
-                label: 'เพิ่มประกาศ',
-                key: '/coopregister',
-            },
-        ],
-    },
 ];
-{
-    /*            <Menu.ItemGroup key="g1" title={<span>จัดการสหกิจ</span>}>
-                <Menu.Item key="1">
-                    <Link href={'/'}> ใบสมัครงานสหกิจศึกษา</Link>
-                </Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup key="g2" title="การรายงานผลสหกิจศึกษา">
-                <Menu.Item key="2">รายงานผลสหกิจ</Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup key="g3" title="งานที่เปิดรัย">
-                <Menu.Item key="3">รายการงานที่เปิดรับ</Menu.Item>
-                <Menu.Item key="4">งานที่ยื่นสมัคร</Menu.Item>
-            </Menu.ItemGroup>{' '}
-            <Menu.ItemGroup key="g4" title="การประเมิน">
-                <Menu.Item key="5">ประเมินสถานประกอบการ</Menu.Item>
-                <Menu.Item key="6">ประเมินอาจารย์นิเทศ</Menu.Item>
-            </Menu.ItemGroup>*/
-}

@@ -6,7 +6,7 @@ import React from 'react';
 import { Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 
-export default function JobApply() {
+export default function JobApplying() {
     const { data, loading, error } = useGetMe();
     const [cancelApplyJob, { loading: cancel_job_loading }] = useCancelApplyJob();
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ConfigProvider, Layout } from 'antd';
 import NavigationBar from './NavigationBar/NavigationBar';
-import { AuthenticationContext } from '../../context/AuthContextProvider';
+import { AuthenticationContext } from '@context/AuthContextProvider';
 import { ScriptProps } from 'next/script';
 import Head from 'next/head';
 import SideBar from './Sidebar';
@@ -17,7 +17,7 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                 <meta name="description" content="ระบบสหกิจออนไลน์" />
                 <link rel="icon" href="/osce.ico" />
             </Head>
-            <div className="w-screen max-h-full bg-primary-300'">
+            <div className="w-screen max-h-full bg-primary-300 font-primary_noto">
                 <ConfigProvider
                     theme={{
                         components: {
@@ -26,6 +26,11 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                             },
                             Steps: {
                                 colorPrimary: '#FF813E',
+                            },
+                            Table: {
+                                fontSize: 16,
+                                colorTextHeading: '#333',
+                                colorBgLayout: '#333',
                             },
                             Select: {
                                 colorPrimary: '#FF813E',
