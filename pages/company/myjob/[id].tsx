@@ -5,12 +5,13 @@ import { useGetJob } from 'features/job/hooks/useGetJobs';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import React from 'react';
+import StudentApplyTable from '@components/Job/StudentApplyTable';
 
 export default function DetailMyJob() {
     const router = useRouter();
     const { id } = router.query;
     const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
-    console.log(data?.getJobById?.students[0]);
+
     return (
         <div className="w-full">
             <div className="xl:w-full 2xl:w-4/5 w-full">
@@ -33,7 +34,7 @@ export default function DetailMyJob() {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-white font-primary_noto rounded-md  h-auto border-2 border-gray-100">
+                        {/* <div className="bg-white font-primary_noto rounded-md  h-auto border-2 border-gray-100">
                             <div className="overflow-x-auto rounded-md">
                                 <table className="w-full whitespace-nowrap  rounded-xl">
                                     <tbody>
@@ -105,7 +106,8 @@ export default function DetailMyJob() {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
+                        <StudentApplyTable datasource={data?.getJobById?.students} loading={loading} />
                     </div>
                 )}
             </div>

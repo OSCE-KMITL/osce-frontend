@@ -1,3 +1,4 @@
+import { GET_ME } from './../../auth/hooks/useGetMe';
 import { GET_JOBS } from './useGetJobs';
 import { gql, useMutation } from '@apollo/client';
 
@@ -23,5 +24,5 @@ export interface ApplyJobInput {
 }
 
 export const useApplyJob = () => {
-    return useMutation<ApplyResponse, ApplyJobInput>(APPLY_JOB, { refetchQueries: [GET_JOBS] });
+    return useMutation<ApplyResponse, ApplyJobInput>(APPLY_JOB, { refetchQueries: [GET_JOBS, GET_ME] });
 };

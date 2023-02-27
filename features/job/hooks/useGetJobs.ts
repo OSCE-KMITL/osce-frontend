@@ -111,8 +111,76 @@ export const GET_JOB_BY_ID = gql`
             }
             students {
                 student_id
+                name_eng
+                lastname_eng
                 name_th
                 lastname_th
+                coop_status
+                gpa
+                gender
+                religion
+                military_status
+                driver_license
+                citizen_id
+                weight
+                height
+                address
+                phone_number
+                emer_relation
+                emer_name
+                emer_lastname
+                emer_tel
+                birth_date
+                created_at
+                updated_at
+                name_prefix
+                curriculum {
+                    level_id
+                    id
+                    faculty_id
+                    dept_id
+                    curriculum_name_th
+                    curriculum_name_en
+                    curriculum_id
+                }
+                department {
+                    id
+                    department_id
+                    faculty_id
+                    department_name_en
+                    department_name_th
+                }
+                faculty {
+                    faculty_id
+                    faculty_name_en
+                    faculty_name_th
+                }
+                language_abilities {
+                    id
+                    name
+                    level
+                }
+                skills {
+                    id
+                    skill_name
+                    level
+                }
+                account {
+                    id
+                    email
+                    password
+                    role
+                    status
+                    profile_image
+                    created_at
+                    updated_at
+                }
+                # transcript {
+                #     id
+                #     original_name
+                #     current_name
+                #     url
+                # }
             }
         }
     }

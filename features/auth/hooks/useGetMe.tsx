@@ -46,14 +46,14 @@ export const GET_ME = gql`
                     level
                     name
                 }
-                transcript {
-                    id
-                    current_name
-                    original_name
-                    updated_at
-                    url
-                    created_at
-                }
+                # transcript {
+                #     id
+                #     current_name
+                #     original_name
+                #     updated_at
+                #     url
+                #     created_at
+                # }
                 department {
                     id
                     department_id

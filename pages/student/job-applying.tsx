@@ -5,14 +5,29 @@ import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React from 'react';
 import { Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
+import NotificationService from '@lib/ant_service/NotificationService';
 
 export default function JobApplying() {
     const { data, loading, error } = useGetMe();
     const [cancelApplyJob, { loading: cancel_job_loading }] = useCancelApplyJob();
+    const notification = NotificationService.getInstance();
 
-    const handleCancelApplyJob = () => {
-        // cancelApplyJob()
-    }
+    const handleCancelApplyJob = (id: string) => {
+        cancelApplyJob({
+            variables: { cancelApplyInfo: { job_id: id } },
+            onCompleted: (result) => {
+                if (result) {
+                    notification.success('Success', 'ยกเลิกสมัครงานเสร็จสิ้น');
+                }
+            },
+            onError: (error) => {
+                console.log(error);
+                if (error) {
+                    notification.error('Error', error.message);
+                }
+            },
+        });
+    };
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
@@ -45,7 +60,12 @@ export default function JobApplying() {
                         <div className=" w-full h-full col-span-4 gap-4 grid grid-rows-1 border-l-2 pl-4">
                             <div className=" flex justify-end gap-x-4 items-center">
                                 <div className="text-right items-end">
-                                    <button className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer">ยกเลิกการสมัคร</button>
+                                    <button
+                                        className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer"
+                                        onClick={() => handleCancelApplyJob(job.id)}
+                                    >
+                                        ยกเลิกการสมัคร
+                                    </button>
                                 </div>
                                 <div className="text-right items-end">
                                     <Link href={`/jobs/` + job.id} className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer">

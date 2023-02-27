@@ -67,28 +67,18 @@ export const student_item: MenuProps['items'] = [
             },
         ],
     },
+
     {
-        label: 'การรายงานผลสหกิจศึกษา',
-        key: '02',
-        type: 'group',
-        children: [
-            {
-                label: 'รายงานผลสหกิจ',
-                key: '',
-            },
-        ],
-    },
-    {
-        label: 'งานที่เปิดรับ',
+        label: 'ข้อมูลงาน',
         key: '03',
         type: 'group',
         children: [
             {
                 label: 'งานที่เปิดรับ',
-                key: '/jobs',
+                key: '/student/job-list',
             },
             {
-                label: 'งานที่กำลังสมัคร',
+                label: 'งานที่สมัคร',
                 key: '/student/job-applying',
             },
         ],

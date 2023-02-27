@@ -1,17 +1,30 @@
 import { useRouter } from 'next/router';
-import { useGetJob } from '../../features/job/hooks/useGetJobs';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
+import { AuthenticationContext } from 'context/AuthContextProvider';
+import { RoleOption } from 'constants/RoleOptions';
 import Link from 'next/link';
+import Button from '@ui/Button';
+import { useApplyJob } from 'features/job/hooks/useApplyJob';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
+import NotificationService from 'lib/ant_service/NotificationService';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
+import { useGetJob } from '@features/job/hooks/useGetJobs';
 interface OwnProps {}
 
 type Props = OwnProps;
-const JobDetail: FunctionComponent<Props> = () => {
+const JobListDetail: FunctionComponent<Props> = () => {
     const router = useRouter();
+    const notification = NotificationService.getInstance();
     const { id } = router.query;
-    const { data, loading, error } = useGetJob({ jobId: id as string });
+    const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
+    const { me } = useContext(AuthenticationContext);
+    const { data: dataGetMe } = useGetMe();
+    const [applyJob, { loading: apply_job_loading }] = useApplyJob();
+    const [onApply, setOnApply] = useState(false);
 
     if (error) {
         return <h1>{error.message || 'พบข้อผิดพลาดบางประการ'}</h1>;
@@ -19,6 +32,32 @@ const JobDetail: FunctionComponent<Props> = () => {
     if (loading) {
         return <SkeletonLoading></SkeletonLoading>;
     }
+
+    const stu_id = dataGetMe?.getMe?.is_student?.student_id;
+    const obj_stu_apply = data?.getJobById?.students;
+    const on_apply = obj_stu_apply.findIndex((obj) => obj.student_id === stu_id);
+    console.log(on_apply);
+
+    const handleApply = async () => {
+        await applyJob({
+            variables: {
+                applyInfo: { job_id: data?.getJobById?.id },
+            },
+            onCompleted: (result) => {
+                if (result) {
+                    notification.success('Success', 'สมัครงานเสร็จสิ้น');
+                }
+            },
+            onError: (error) => {
+                console.log(error);
+                if (error) {
+                    notification.error('Error', error.message);
+                }
+            },
+        });
+
+        await refetch();
+    };
 
     return (
         <ContentContainer>
@@ -198,7 +237,7 @@ const JobDetail: FunctionComponent<Props> = () => {
                                 ''
                             )}
                         </div>
-                        {/* {me?.role === RoleOption.STUDENT ? (
+                        {me?.role === RoleOption.STUDENT ? (
                             <div className="col-span-2 overflow-hidden sm:rounded-lg w-full h-fit ">
                                 <div className="flex flex-row w-full justify-center gap-4 p-1 rounded-md ">
                                     {on_apply === -1 ? (
@@ -225,7 +264,7 @@ const JobDetail: FunctionComponent<Props> = () => {
                             </div>
                         ) : (
                             ''
-                        )} */}
+                        )}
                     </div>
                 </div>
             )}
@@ -233,4 +272,4 @@ const JobDetail: FunctionComponent<Props> = () => {
     );
 };
 
-export default JobDetail;
+export default JobListDetail;
