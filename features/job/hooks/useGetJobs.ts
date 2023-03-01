@@ -1,4 +1,5 @@
-import { IStudent } from '@features/student/interfaces/Student';
+import { IJob } from './../interfaces/index';
+import { IStudent } from './../../student/interfaces/Student';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 import jobs from '../../../pages/jobs';
 
@@ -109,82 +110,92 @@ export const GET_JOB_BY_ID = gql`
                 createdAt
                 updatedAt
             }
-            students {
-                student_id
-                name_eng
-                lastname_eng
-                name_th
-                lastname_th
-                coop_status
-                gpa
-                gender
-                religion
-                military_status
-                driver_license
-                citizen_id
-                weight
-                height
-                address
-                phone_number
-                emer_relation
-                emer_name
-                emer_lastname
-                emer_tel
-                birth_date
-                created_at
-                updated_at
-                name_prefix
-                curriculum {
-                    level_id
-                    id
-                    faculty_id
-                    dept_id
-                    curriculum_name_th
-                    curriculum_name_en
-                    curriculum_id
-                }
-                department {
-                    id
-                    department_id
-                    faculty_id
-                    department_name_en
-                    department_name_th
-                }
-                faculty {
-                    faculty_id
-                    faculty_name_en
-                    faculty_name_th
-                }
-                language_abilities {
-                    id
-                    name
-                    level
-                }
-                skills {
-                    id
-                    skill_name
-                    level
-                }
-                account {
-                    id
-                    email
-                    password
-                    role
-                    status
-                    profile_image
+            student_apply_job {
+                id
+                job_status
+                student {
+                    student_id
+                    name_eng
+                    lastname_eng
+                    name_th
+                    lastname_th
+                    coop_status
+                    gpa
+                    gender
+                    religion
+                    military_status
+                    driver_license
+                    citizen_id
+                    weight
+                    height
+                    address
+                    phone_number
+                    emer_relation
+                    emer_name
+                    emer_lastname
+                    emer_tel
+                    birth_date
                     created_at
                     updated_at
+                    skills {
+                        id
+                        level
+                        skill_name
+                    }
+                    language_abilities {
+                        id
+                        level
+                        name
+                    }
+                    # transcript {
+                    #     id
+                    #     current_name
+                    #     original_name
+                    #     updated_at
+                    #     url
+                    #     created_at
+                    # }
+                    department {
+                        id
+                        department_id
+                        faculty_id
+                        department_name_en
+                        department_name_th
+                    }
+                    curriculum {
+                        id
+                        curriculum_id
+                        faculty_id
+                        dept_id
+                        curriculum_name_en
+                        curriculum_name_th
+                        level_id
+                    }
+                    faculty {
+                        faculty_id
+                        faculty_name_en
+                        faculty_name_th
+                    }
                 }
-                # transcript {
-                #     id
-                #     original_name
-                #     current_name
-                #     url
-                # }
+                job {
+                    id
+                }
+                created_at
+                updated_at
             }
         }
     }
 `;
+
+//student_apply_job
+export interface IStudentApplyJob {
+    id: string;
+    job_status: string;
+    student: IStudent;
+    job: IJob;
+    created_at: string;
+    updated_at: string;
+}
 
 export interface JobProps {
     id: string;
@@ -245,6 +256,7 @@ export interface JobProps {
         }
     ];
     students: IStudent[] | null | undefined;
+    student_apply_job: IStudentApplyJob[] | null | undefined;
 }
 export interface JobResponse {
     getJobById: JobProps | null;

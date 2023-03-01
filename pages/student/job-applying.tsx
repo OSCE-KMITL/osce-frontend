@@ -6,11 +6,14 @@ import React from 'react';
 import { Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
+import { useGetStudent } from '@features/student/hooks/useGetStudent';
 
 export default function JobApplying() {
-    const { data, loading, error } = useGetMe();
+    const { data: data_me, loading: loading_me, error: error_me } = useGetMe();
     const [cancelApplyJob, { loading: cancel_job_loading }] = useCancelApplyJob();
     const notification = NotificationService.getInstance();
+    const { data, loading, error } = useGetStudent(data_me?.getMe?.is_student?.student_id);
+    console.log('data = ', data?.getStudent?.student_apply_job);
 
     const handleCancelApplyJob = (id: string) => {
         cancelApplyJob({
@@ -36,23 +39,25 @@ export default function JobApplying() {
                 <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
             </div>
             {data ? (
-                data?.getMe?.is_student?.job?.map((job) => (
+                data?.getStudent?.student_apply_job?.map((item) => (
                     <div
-                        key={job.id}
+                        key={item?.job?.id}
                         className=" w-[80%] h-fit p-8 grid grid-cols-12  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
                     >
                         <div className=" w-full h-full col-span-8 gap-4 flex ">
                             <Space size={[0, 8]} wrap className=" justify-center align-middle items-center">
-                                <Tag color="processing">รอการตอบรับ</Tag>
+                                <Tag color="processing">{item?.job_status ? item?.job_status : ''}</Tag>
                             </Space>
                             <div className="grid grid-cols-2 w-full align-middle items-center   ">
                                 <div className=" w-full h-full grid items-center">
-                                    <h1 className="text-md font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : 'ไม่ระบุตำแหน่งงาน'}</h1>
+                                    <h1 className="text-md font-medium leading-6 text-gray-700">
+                                        {item.job?.job_title ? item.job?.job_title : 'ไม่ระบุตำแหน่งงาน'}
+                                    </h1>
                                 </div>
                                 <div className=" w-full h-full grid items-center justify-end pr-4">
                                     <h1 className="text-md font-medium leading-6 text-gray-700">
                                         {' '}
-                                        {job.company_id?.name_eng ? job.company_id.name_eng : 'ไม่ระบุข้อมูล'}
+                                        {item.job?.company_id?.name_eng ? item.job?.company_id.name_eng : 'ไม่ระบุข้อมูล'}
                                     </h1>
                                 </div>
                             </div>
@@ -62,13 +67,16 @@ export default function JobApplying() {
                                 <div className="text-right items-end">
                                     <button
                                         className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer"
-                                        onClick={() => handleCancelApplyJob(job.id)}
+                                        onClick={() => handleCancelApplyJob(item.job?.id)}
                                     >
                                         ยกเลิกการสมัคร
                                     </button>
                                 </div>
                                 <div className="text-right items-end">
-                                    <Link href={`/jobs/` + job.id} className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer">
+                                    <Link
+                                        href={`/jobs/` + item.job?.id}
+                                        className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer"
+                                    >
                                         {'ดูรายละเอียด'}
                                     </Link>
                                 </div>

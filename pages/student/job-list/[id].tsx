@@ -34,8 +34,8 @@ const JobListDetail: FunctionComponent<Props> = () => {
     }
 
     const stu_id = dataGetMe?.getMe?.is_student?.student_id;
-    const obj_stu_apply = data?.getJobById?.students;
-    const on_apply = obj_stu_apply.findIndex((obj) => obj.student_id === stu_id);
+    const obj_stu_apply = data?.getJobById?.student_apply_job;
+    const on_apply = obj_stu_apply?.findIndex((obj) => obj?.student?.student_id === stu_id);
     console.log(on_apply);
 
     const handleApply = async () => {
