@@ -45,3 +45,7 @@ export type RegisterCoopPayload = {
     skills?: ISkillState[];
     transcriptFile: UploadFileInput;
 };
+
+export interface IAccount {
+    email: string;
+}

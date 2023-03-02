@@ -1,5 +1,6 @@
 import { IStudent } from '@features/student/interfaces/Student';
 import { ICompany } from '@features/company/interfaces';
+import { IStudentApplyJob } from '../hooks/useGetJobs';
 
 export interface FileUpload {
     id: string;
@@ -65,4 +66,6 @@ export interface IJob {
     file_upload: FileUpload[];
 
     students: IStudent[];
+
+    student_apply_job: IStudentApplyJob[] | null | undefined;
 }

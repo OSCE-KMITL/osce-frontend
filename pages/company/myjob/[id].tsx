@@ -1,16 +1,167 @@
 import { Link } from '@ui/Link';
 import { Button, Statistic } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
-import { useGetJob } from 'features/job/hooks/useGetJobs';
+import { IStudentApplyJob, useGetJob } from 'features/job/hooks/useGetJobs';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import StudentApplyTable from '@components/Job/StudentApplyTable';
+import Table, { ColumnsType } from 'antd/es/table';
+import { IStudent } from '@features/student/interfaces/Student';
+import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import tableStyle from '../../../styles/Table/table.module.scss';
+import { JobStatus } from '@constants/Job/JobStatus';
+import { useCompnayApproveJob, useUndoCompnayApproveJob } from '@features/job/hooks/useEditStateJob';
+import NotificationService from '@lib/ant_service/NotificationService';
 
 export default function DetailMyJob() {
     const router = useRouter();
     const { id } = router.query;
     const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
+    const [companyApproveJob, { loading: approve_loading, error: approve_error }] = useCompnayApproveJob();
+    const [undoCompanyApproveJob, { loading: undo_approve_loading, error: undo_approve_error }] = useUndoCompnayApproveJob();
+    const notification = NotificationService.getInstance();
+
+    const handleApproveJob = (id: string) => {
+        if (id) {
+            companyApproveJob({
+                variables: { companyApproveInfo: { student_apply_job_id: id } },
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ตอบรับงานเสร็จสิ้น');
+                        refetch();
+                    }
+                },
+                onError: (error) => {
+                    if (error) {
+                        notification.error('Error', error.message);
+                        refetch();
+                    }
+                },
+            });
+        }
+    };
+
+    const handleUndoApproveJob = (id: string) => {
+        if (id) {
+            undoCompanyApproveJob({
+                variables: { undoCompanyApproveInfo: { student_apply_job_id: id } },
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ยกเลิกตอบรับงานเสร็จสิ้น');
+                        refetch();
+                    }
+                },
+                onError: (error) => {
+                    if (error) {
+                        notification.error('Error', error.message);
+                        refetch();
+                    }
+                },
+            });
+        }
+    };
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         // Fetch or update data here
+    //         refetch();
+    //     }, 2000);
+
+    //     return () => clearInterval(interval);
+    // }, []);
+
+    const columns: ColumnsType<IStudentApplyJob> = [
+        {
+            title: 'ชื่อ-นามสกุล',
+            dataIndex: 'student',
+            render: (text, { student }, record) =>
+                `${student?.name_prefix ? student?.name_prefix : ''}    ${student?.name_th ? student.name_th : ''}  ${
+                    student?.lastname_th ? student?.lastname_th : ''
+                }`,
+        },
+        {
+            title: 'หลักสูตร',
+            dataIndex: 'student',
+            render: (text, { student }, record) => `${student?.curriculum?.curriculum_name_th ? student?.curriculum?.curriculum_name_th : ''} `,
+        },
+        {
+            title: 'อีเมล์',
+            dataIndex: 'student',
+            render: (text, { student }, record) => `${student?.account?.email ? student?.account?.email : ''} `,
+        },
+        {
+            title: 'โทรศัพท์',
+            dataIndex: 'student',
+            render: (text, { student }, record) => `${student?.phone_number ? student?.phone_number : ''} `,
+        },
+
+        {
+            title: 'Actions',
+            dataIndex: 'student',
+            render: (value, { student, job_status, id }, index) => {
+                return (
+                    <div className={'flex flex-row gap-2'}>
+                        <div className={'px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500 rounded-2xl cursor-pointer'}>
+                            <Link href={'/student/' + student.student_id} className="cursor-pointer">
+                                ดูข้อมูล
+                            </Link>
+                        </div>
+                        {job_status === JobStatus.STUDENTAPPLIED ? (
+                            <>
+                                <div className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl  '}>
+                                    <button onClick={() => handleApproveJob(id)}>ตอบรับ</button>
+                                </div>
+                                <div className={'px-4 py-1 text-center bg-red-100 text-red-500  border border-red-500 rounded-2xl  '}>
+                                    <button onClick={() => handleApproveJob(student.student_id)}>ปฏิเสธ</button>
+                                </div>
+                            </>
+                        ) : (
+                            ''
+                        )}
+
+                        {job_status === JobStatus.COMPANYAPPROVE ? (
+                            <div className={'px-4 py-1 text-center bg-primary-100 text-primary-500  border border-primary-500  rounded-2xl  '}>
+                                <button onClick={() => handleUndoApproveJob(id)}>ยกเลิกการตอบรับ</button>
+                            </div>
+                        ) : (
+                            ''
+                        )}
+                    </div>
+                );
+            },
+        },
+        // {
+        //     title: 'Action',
+        //     dataIndex: 'action',
+        //     render: (value, { transcript, student_id }, index) => {
+        //         return (
+        //             <div className={'flex flex-row gap-4'}>
+        //                 <Link href={'/student/' + student_id} className="cursor-pointer">
+        //                     <MagnifyingGlassIcon className="w-6 h-6  text-gray-600 " />
+        //                 </Link>
+        //                 <div className="cursor-pointer">
+        //                     <PencilSquareIcon className="w-6 h-6 text-gray-600 " />
+        //                 </div>{' '}
+        //                 <div className="cursor-pointer">
+        //                     <TrashIcon className="w-6 h-6  text-gray-600 hover:text-red-600 " />
+        //                 </div>
+        //             </div>
+        //         );
+        //     },
+        // },
+    ];
+    const rowClassname = (record, index) => {
+        if (index % 2 !== 0) {
+            return 'bg-[#f2f2f2]';
+        }
+    };
+    if (loading) {
+        return <p>loading</p>;
+    }
+    if (error) {
+        return <p>error</p>;
+    }
 
     return (
         <div className="w-full">
@@ -107,7 +258,15 @@ export default function DetailMyJob() {
                                 </table>
                             </div>
                         </div> */}
-                        <StudentApplyTable datasource={data?.getJobById?.students} loading={loading} />
+                        {/* <StudentApplyTable datasource={data?.getJobById?.students} loading={loading} /> */}
+                        <Table
+                            bordered={true}
+                            size={'large'}
+                            rowClassName={rowClassname}
+                            className={tableStyle.customTable}
+                            columns={columns}
+                            dataSource={data?.getJobById?.student_apply_job}
+                        />
                     </div>
                 )}
             </div>

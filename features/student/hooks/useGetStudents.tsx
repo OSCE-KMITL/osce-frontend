@@ -9,10 +9,10 @@ export const GET_STUDENTS = gql`
             citizen_id
             coop_status
             created_at
-            transcript {
-                current_name
-                url
-            }
+            # transcript {
+            #     current_name
+            #     url
+            # }
             department {
                 id
                 faculty_id

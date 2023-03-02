@@ -1,7 +1,7 @@
 import { IStudentApplyJob, JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
-import { CoopStatus } from './index';
+import { CoopStatus, IAccount } from './index';
 
 export interface ITranscriptFileUpload {
     id: string;
@@ -74,6 +74,8 @@ export interface IStudent {
     updated_at: Date;
 
     job: JobProps[] | null | undefined;
-    
+
     student_apply_job: IStudentApplyJob[] | null | undefined;
+
+    account: IAccount | null | undefined;
 }

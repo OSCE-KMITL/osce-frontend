@@ -114,9 +114,13 @@ export const GET_JOB_BY_ID = gql`
                 id
                 job_status
                 student {
+                    account {
+                        email
+                    }
                     student_id
                     name_eng
                     lastname_eng
+                    name_prefix
                     name_th
                     lastname_th
                     coop_status

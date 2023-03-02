@@ -7,12 +7,13 @@ import { Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
+import SkeletonLoading from '@ui/SkeletonLoading';
 
 export default function JobApplying() {
     const { data: data_me, loading: loading_me, error: error_me } = useGetMe();
-    const [cancelApplyJob, { loading: cancel_job_loading }] = useCancelApplyJob();
+    const [cancelApplyJob, { loading, error }] = useCancelApplyJob();
     const notification = NotificationService.getInstance();
-    const { data, loading, error } = useGetStudent(data_me?.getMe?.is_student?.student_id);
+    const { data, loading: stu_loading, error: stu_error } = useGetStudent(data_me?.getMe?.is_student?.student_id);
     console.log('data = ', data?.getStudent?.student_apply_job);
 
     const handleCancelApplyJob = (id: string) => {
@@ -31,6 +32,14 @@ export default function JobApplying() {
             },
         });
     };
+
+    if (error) {
+        console.log(error);
+    }
+    if (stu_loading || loading_me) {
+        return <SkeletonLoading></SkeletonLoading>;
+    }
+
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
@@ -67,7 +76,7 @@ export default function JobApplying() {
                                 <div className="text-right items-end">
                                     <button
                                         className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer"
-                                        onClick={() => handleCancelApplyJob(item.job?.id)}
+                                        onClick={() => handleCancelApplyJob(item?.id)}
                                     >
                                         ยกเลิกการสมัคร
                                     </button>
