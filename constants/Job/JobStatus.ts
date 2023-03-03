@@ -1,6 +1,6 @@
 export enum JobStatus {
     STUDENTAPPLIED = 'รอการตอบรับ',
-    COMPANYAPPROVE = 'รอการอนุมัติจากกรรมการ',
+    COMPANYAPPROVE = 'รอกรรมการอนุมัติ',
     COMPANYCANCEL = 'ปฏิเสธการตอบรับ',
     COMMITTEEAPPROVE = 'ได้รับงาน',
     COMMITTEECANCEL = 'ปฏิเสธโดยกรรมการ',

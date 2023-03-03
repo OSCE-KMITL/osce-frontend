@@ -1,5 +1,5 @@
 import { Link } from '@ui/Link';
-import { Button, Statistic } from 'antd';
+import { Button, Space, Statistic, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { IStudentApplyJob, useGetJob } from 'features/job/hooks/useGetJobs';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -11,7 +11,7 @@ import { IStudent } from '@features/student/interfaces/Student';
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import tableStyle from '../../../styles/Table/table.module.scss';
 import { JobStatus } from '@constants/Job/JobStatus';
-import { useCompnayApproveJob, useUndoCompnayApproveJob } from '@features/job/hooks/useEditStateJob';
+import { useCompnayApproveJob, useCompnayDisapproveJob, useUndoCompnayApproveJob, useUndoCompnayDisapproveJob } from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 
 export default function DetailMyJob() {
@@ -21,6 +21,8 @@ export default function DetailMyJob() {
     const [companyApproveJob, { loading: approve_loading, error: approve_error }] = useCompnayApproveJob();
     const [undoCompanyApproveJob, { loading: undo_approve_loading, error: undo_approve_error }] = useUndoCompnayApproveJob();
     const notification = NotificationService.getInstance();
+    const [companyDisapproveJob, { loading: disapprove_loading, error: disapprove_error }] = useCompnayDisapproveJob();
+    const [undoCompanyDisapproveJob, { loading: undo_disapprove_loading, error: undo_disapprove_error }] = useUndoCompnayDisapproveJob();
 
     const handleApproveJob = (id: string) => {
         if (id) {
@@ -62,6 +64,46 @@ export default function DetailMyJob() {
         }
     };
 
+    const handleDisapproveJob = (id: string) => {
+        if (id) {
+            companyDisapproveJob({
+                variables: { companyDisapproveInfo: { student_apply_job_id: id } },
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ปฏิเสธการตอบรับเสร็จสิ้น');
+                        refetch();
+                    }
+                },
+                onError: (error) => {
+                    if (error) {
+                        notification.error('Error', error.message);
+                        refetch();
+                    }
+                },
+            });
+        }
+    };
+
+    const handleUndoDisapproveJob = (id: string) => {
+        if (id) {
+            undoCompanyDisapproveJob({
+                variables: { undoCompanyDisapproveInfo: { student_apply_job_id: id } },
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ยกเลิกการปฏิเสธเสร็จสิ้น');
+                        refetch();
+                    }
+                },
+                onError: (error) => {
+                    if (error) {
+                        notification.error('Error', error.message);
+                        refetch();
+                    }
+                },
+            });
+        }
+    };
+
     // useEffect(() => {
     //     const interval = setInterval(() => {
     //         // Fetch or update data here
@@ -70,6 +112,8 @@ export default function DetailMyJob() {
 
     //     return () => clearInterval(interval);
     // }, []);
+
+    const approve_count = data?.getJobById?.student_apply_job.filter((i) => i.job_status === JobStatus.COMPANYAPPROVE).length;
 
     const columns: ColumnsType<IStudentApplyJob> = [
         {
@@ -97,6 +141,35 @@ export default function DetailMyJob() {
         },
 
         {
+            title: 'สถานะ',
+            dataIndex: 'student',
+            render: (text, { student, job_status }, record) =>
+                job_status === JobStatus.STUDENTAPPLIED ? (
+                    <Tag className="text-sm font-primary_noto" color="default">
+                        รอดำเนินการ
+                    </Tag>
+                ) : '' || job_status === JobStatus.COMPANYAPPROVE ? (
+                    <Tag className="text-sm font-primary_noto" color="success">
+                        ตอบรับผู้สมัคร
+                    </Tag>
+                ) : '' || job_status === JobStatus.COMPANYCANCEL ? (
+                    <Tag className="text-sm font-primary_noto" color="error">
+                        ปฏิเสธผู้สมัคร
+                    </Tag>
+                ) : '' || job_status === JobStatus.COMMITTEEAPPROVE ? (
+                    <Tag className="text-sm font-primary_noto" color="success">
+                        กรรมการอนุมัติ
+                    </Tag>
+                ) : '' || job_status === JobStatus.COMMITTEECANCEL ? (
+                    <Tag className="text-sm font-primary_noto" color="error">
+                        กรรมการปฏิเสธ
+                    </Tag>
+                ) : (
+                    ''
+                ),
+        },
+
+        {
             title: 'Actions',
             dataIndex: 'student',
             render: (value, { student, job_status, id }, index) => {
@@ -113,7 +186,7 @@ export default function DetailMyJob() {
                                     <button onClick={() => handleApproveJob(id)}>ตอบรับ</button>
                                 </div>
                                 <div className={'px-4 py-1 text-center bg-red-100 text-red-500  border border-red-500 rounded-2xl  '}>
-                                    <button onClick={() => handleApproveJob(student.student_id)}>ปฏิเสธ</button>
+                                    <button onClick={() => handleDisapproveJob(id)}>ปฏิเสธ</button>
                                 </div>
                             </>
                         ) : (
@@ -121,8 +194,16 @@ export default function DetailMyJob() {
                         )}
 
                         {job_status === JobStatus.COMPANYAPPROVE ? (
-                            <div className={'px-4 py-1 text-center bg-primary-100 text-primary-500  border border-primary-500  rounded-2xl  '}>
+                            <div className={'px-4 py-1 text-center bg-gray-100 text-gray-500  border border-gray-500  rounded-2xl  '}>
                                 <button onClick={() => handleUndoApproveJob(id)}>ยกเลิกการตอบรับ</button>
+                            </div>
+                        ) : (
+                            ''
+                        )}
+
+                        {job_status === JobStatus.COMPANYCANCEL ? (
+                            <div className={'px-4 py-1 text-center bg-gray-100 text-gray-500  border border-gray-500  rounded-2xl  '}>
+                                <button onClick={() => handleUndoDisapproveJob(id)}>ยกเลิกการปฏิเสธ</button>
                             </div>
                         ) : (
                             ''
@@ -180,7 +261,7 @@ export default function DetailMyJob() {
                                         ตำแหน่ง : {data?.getJobById?.job_title ? data?.getJobById?.job_title : 'ไม่ระบุตำแหน่งงาน'}
                                     </p>
                                     <p className="text-base sm:text-lg md:text-xl font-bold leading-normal text-white-800 font-primary_noto">
-                                        {data?.getJobById?.limit ? 'จำนวนที่รับสมัคร : 0 / ' + data?.getJobById?.limit : ''}
+                                        {data?.getJobById?.limit ? `จำนวนที่รับสมัคร : ${approve_count} / ` + data?.getJobById?.limit : ''}
                                     </p>
                                 </div>
                             </div>

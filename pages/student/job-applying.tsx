@@ -8,6 +8,7 @@ import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
 import SkeletonLoading from '@ui/SkeletonLoading';
+import { JobStatus } from '@constants/Job/JobStatus';
 
 export default function JobApplying() {
     const { data: data_me, loading: loading_me, error: error_me } = useGetMe();
@@ -53,11 +54,15 @@ export default function JobApplying() {
                         key={item?.job?.id}
                         className=" w-[80%] h-fit p-8 grid grid-cols-12  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
                     >
-                        <div className=" w-full h-full col-span-8 gap-4 flex ">
-                            <Space size={[0, 8]} wrap className=" justify-center align-middle items-center">
-                                <Tag color="processing">{item?.job_status ? item?.job_status : ''}</Tag>
+                        <div className=" w-full h-full col-span-8 gap-4 flex   ">
+                            <Space size={[0, 8]} wrap className=" justify-center align-middle items-center absolute pt-1.5">
+                                {item?.job_status === JobStatus.STUDENTAPPLIED ? <Tag color="processing">{item.job_status}</Tag> : ''}
+                                {item?.job_status === JobStatus.COMPANYAPPROVE ? <Tag color="processing">{item.job_status}</Tag> : ''}
+                                {item?.job_status === JobStatus.COMPANYCANCEL ? <Tag color="error">{item.job_status}</Tag> : ''}
+                                {item?.job_status === JobStatus.COMMITTEEAPPROVE ? <Tag color="success">{item.job_status}</Tag> : ''}
+                                {item?.job_status === JobStatus.COMMITTEECANCEL ? <Tag color="error">{item.job_status}</Tag> : ''}
                             </Space>
-                            <div className="grid grid-cols-2 w-full align-middle items-center   ">
+                            <div className="grid grid-cols-2 w-full align-middle items-center pl-32">
                                 <div className=" w-full h-full grid items-center">
                                     <h1 className="text-md font-medium leading-6 text-gray-700">
                                         {item.job?.job_title ? item.job?.job_title : 'ไม่ระบุตำแหน่งงาน'}
