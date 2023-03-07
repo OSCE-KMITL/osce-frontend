@@ -13,7 +13,7 @@ import Input from '@ui/Input';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
-import { AutoComplete, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
+import { AutoComplete, Checkbox, DatePicker, Divider, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import { UploadFileInput, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
@@ -376,8 +376,8 @@ const CreateJobPage: FC = () => {
         <div className=" gap-8 min-h-screen relative overflow-y-auto py-8 ">
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> เพิ่มงานที่เปิดรับ</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1> เพิ่มงานที่เปิดรับ</h1>
+                <Divider />
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className=" rounded-md  font-primary_noto  ">
                 <div className="grid grid-rows-1 gap-8 mb-8">
@@ -586,8 +586,12 @@ const CreateJobPage: FC = () => {
                                                     onChange={compensationSuffixOnChange}
                                                     value={compensationSuffix}
                                                 >
-                                                    <Radio className='font-primary_noto text-[16px] ' value={'วัน'}>ต่อวัน</Radio>
-                                                    <Radio className='font-primary_noto text-[16px] ' value={'เดือน'}>ต่อเดือน</Radio>
+                                                    <Radio className="font-primary_noto text-[16px] " value={'วัน'}>
+                                                        ต่อวัน
+                                                    </Radio>
+                                                    <Radio className="font-primary_noto text-[16px] " value={'เดือน'}>
+                                                        ต่อเดือน
+                                                    </Radio>
                                                 </Radio.Group>
                                             </div>
                                         </div>

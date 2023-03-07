@@ -195,6 +195,14 @@ export const itemsCommittee: MenuProps['items'] = [
                 label: 'เพิ่มงานที่เปิดรับ',
                 key: '/jobs/new',
             },
+            {
+                label: 'งานที่บริษัทตอบรับ',
+                key: '/manager/approve-job',
+            },
+            {
+                label: 'กำหนดงานให้นักศึกษา',
+                key: '/manager/',
+            },
         ],
     },
 ];

@@ -1,7 +1,7 @@
 import ContentContainer from '@ui/ContentContainer';
 import { Link } from '@ui/Link';
 import SkeletonLoading from '@ui/SkeletonLoading';
-import { Dropdown, Menu, Space, Tag } from 'antd';
+import { Divider, Dropdown, Menu, Space, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { RoleOption } from 'constants/RoleOptions';
 import { AuthenticationContext } from 'context/AuthContextProvider';
@@ -60,8 +60,8 @@ export default function Myjob() {
         <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold">งานที่เปิดรับ</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1>งานที่เปิดรับ</h1>
+                <Divider />
             </div>
             {loading && <SkeletonLoading />}
             {me?.role === RoleOption.COMMITTEE || me?.role === RoleOption.COMPANY ? (

@@ -32,6 +32,38 @@ export const UNDO_COMPANY_DISAPPROVE_JOB = gql`
     }
 `;
 
+export const COMMITTEE_APPROVE_JOB = gql`
+    mutation CommitteeApproveJob($committeeApproveInfo: EditJobStateInput!) {
+        committeeApproveJob(committee_approve_info: $committeeApproveInfo) {
+            id
+        }
+    }
+`;
+
+export const UNDO_COMMITTEE_APPROVE_JOB = gql`
+    mutation UndoCommitteeApproveJob($undoCommitteeApproveInfo: EditJobStateInput!) {
+        undoCommitteeApproveJob(undo_committee_approve_info: $undoCommitteeApproveInfo) {
+            id
+        }
+    }
+`;
+
+export const COMMITTEE_DISAPPROVE_JOB = gql`
+    mutation CommitteeDisapproveJob($committeeDisapproveInfo: EditJobStateInput!) {
+        committeeDisapproveJob(committee_disapprove_info: $committeeDisapproveInfo) {
+            id
+        }
+    }
+`;
+
+export const UNDO_COMMITTEE_DISAPPROVE_JOB = gql`
+    mutation UndoCommitteeDisapproveJob($undoCommitteeDisapproveInfo: EditJobStateInput!) {
+        undoCommitteeDisapproveJob(undo_committee_disapprove_info: $undoCommitteeDisapproveInfo) {
+            id
+        }
+    }
+`;
+
 export interface CompanyApproveJobResponse {
     companyApproveJob: {
         id: string;
@@ -79,6 +111,53 @@ export interface UndoCompanyDisapproveJobInput {
     };
 }
 
+export interface CommitteeApproveJobResponse {
+    committeeApproveJob: {
+        id: string;
+    };
+}
+
+export interface CommitteeApproveJobInput {
+    committeeApproveInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface UndoCommitteeApproveJobResponse {
+    undoCommitteeApproveJob: {
+        id: string;
+    };
+}
+
+export interface UndoCommitteeApproveJobInput {
+    undoCommitteeApproveInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface CommitteeDisapproveJobResponse {
+    committeeDisapproveJob: {
+        id: string;
+    };
+}
+export interface CommitteeDisapproveJobInput {
+    committeeDisapproveInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface UndoCommitteeDisapproveJobResponse {
+    undoCommitteeDisapproveJob: {
+        id: string;
+    };
+}
+
+export interface UndoCommitteeDisapproveJobInput {
+    undoCommitteeDisapproveInfo: {
+        student_apply_job_id: string;
+    };
+}
+
 export const useCompnayApproveJob = () => {
     return useMutation<CompanyApproveJobResponse, CompanyApproveJobInput>(COMPANY_APPROVE_JOB);
 };
@@ -93,4 +172,20 @@ export const useCompnayDisapproveJob = () => {
 
 export const useUndoCompnayDisapproveJob = () => {
     return useMutation<UndoCompanyDisapproveJobResponse, UndoCompanyDisapproveJobInput>(UNDO_COMPANY_DISAPPROVE_JOB);
+};
+
+export const useCommitteeApproveJob = () => {
+    return useMutation<CommitteeApproveJobResponse, CommitteeApproveJobInput>(COMMITTEE_APPROVE_JOB);
+};
+
+export const useUndoCommitteeApproveJob = () => {
+    return useMutation<UndoCommitteeApproveJobResponse, UndoCommitteeApproveJobInput>(UNDO_COMMITTEE_APPROVE_JOB);
+};
+
+export const useCommitteeDisapproveJob = () => {
+    return useMutation<CommitteeDisapproveJobResponse, CommitteeDisapproveJobInput>(COMMITTEE_DISAPPROVE_JOB);
+};
+
+export const useUndoCommitteeDisapproveJob = () => {
+    return useMutation<UndoCommitteeDisapproveJobResponse, UndoCommitteeDisapproveJobInput>(UNDO_COMMITTEE_DISAPPROVE_JOB);
 };

@@ -11,7 +11,7 @@ import { useApplyJob } from 'features/job/hooks/useApplyJob';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import NotificationService from 'lib/ant_service/NotificationService';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { Divider, Spin } from 'antd';
 import { useGetJob } from '@features/job/hooks/useGetJobs';
 interface OwnProps {}
 
@@ -62,9 +62,11 @@ const JobListDetail: FunctionComponent<Props> = () => {
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit font-primary_noto">
-                <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> รายละเอียดงาน</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <p onClick={() => router.back()} className="mb-6 font-semibold cursor-pointer ">
+                    {'< ย้อนกลับ'}
+                </p>
+                <h1> รายละเอียดงาน</h1>
+                <Divider />
             </div>
             {data && (
                 <div className="grid grid-cols-8 w-full gap-x-4 font-primary_noto">

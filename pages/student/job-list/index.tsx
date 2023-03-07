@@ -3,7 +3,7 @@ import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
-import { Dropdown, Menu } from 'antd';
+import { Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import { useRouter } from 'next/router';
@@ -77,8 +77,8 @@ const JobList: React.FC = () => {
         <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold">งานที่เปิดรับสมัคร</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1>งานที่เปิดรับสมัคร</h1>
+                <Divider />
             </div>
             {loading && <SkeletonLoading />}
             {me?.role === RoleOption.COMMITTEE || me?.role === RoleOption.COMPANY ? (

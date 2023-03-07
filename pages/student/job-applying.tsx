@@ -3,7 +3,7 @@ import { Link } from '@ui/Link';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React from 'react';
-import { Space, Tag } from 'antd';
+import { Divider, Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
@@ -45,8 +45,8 @@ export default function JobApplying() {
         <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold">งานที่สมัคร</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1>งานที่สมัคร</h1>
+                <Divider />
             </div>
             {data ? (
                 data?.getStudent?.student_apply_job?.map((item) => (

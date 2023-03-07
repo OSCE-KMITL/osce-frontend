@@ -5,6 +5,7 @@ import SkeletonLoading from '@ui/SkeletonLoading';
 import React, { FunctionComponent } from 'react';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import Link from 'next/link';
+import { Divider } from 'antd';
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -23,9 +24,11 @@ const JobDetail: FunctionComponent<Props> = () => {
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit font-primary_noto">
-                <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> รายละเอียดงาน</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <p onClick={() => router.back()} className="mb-6 font-semibold cursor-pointer ">
+                    {'< ย้อนกลับ'}
+                </p>
+                <h1> รายละเอียดงาน</h1>
+                <Divider />
             </div>
             {data && (
                 <div className="grid grid-cols-8 w-full gap-x-4 font-primary_noto">
