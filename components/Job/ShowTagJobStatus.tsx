@@ -31,7 +31,7 @@ export default function ShowTagJobStatus(job_status: string) {
                         กรรมการอนุมัติ
                     </Tag>
                 );
-            case JobStatus.COMPANYCANCEL:
+            case JobStatus.COMMITTEECANCEL:
                 return (
                     <Tag className="text-sm font-primary_noto" color="error">
                         กรรมการปฏิเสธ

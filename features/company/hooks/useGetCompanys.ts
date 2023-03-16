@@ -1,3 +1,4 @@
+import { IJob } from '@features/job/interfaces';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 
 export const GET_ALL_COMPANIES = gql`
@@ -28,6 +29,8 @@ export const GET_ALL_COMPANIES = gql`
             }
             job {
                 id
+                job_title
+                required_major
             }
         }
     }
@@ -54,9 +57,7 @@ export interface CompanyProps {
         phone_number: string;
         is_coordinator: string;
     };
-    job: {
-        id: string;
-    };
+    job: IJob[];
 }
 
 export interface CompanyResponses {

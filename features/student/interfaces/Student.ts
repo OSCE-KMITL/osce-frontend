@@ -73,7 +73,7 @@ export interface IStudent {
 
     updated_at: Date;
 
-    job: JobProps[] | null | undefined;
+    job: JobProps | null | undefined;
 
     student_apply_job: IStudentApplyJob[] | null | undefined;
 

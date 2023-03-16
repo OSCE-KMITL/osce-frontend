@@ -1,3 +1,5 @@
+import { GET_STUDENT_APPLY_JOB } from './useGetStudentApplyJob';
+import { GET_STUDENTS } from './../../student/hooks/useGetStudents';
 import { gql, useMutation } from '@apollo/client';
 
 export const COMPANY_APPROVE_JOB = gql`
@@ -59,6 +61,14 @@ export const COMMITTEE_DISAPPROVE_JOB = gql`
 export const UNDO_COMMITTEE_DISAPPROVE_JOB = gql`
     mutation UndoCommitteeDisapproveJob($undoCommitteeDisapproveInfo: EditJobStateInput!) {
         undoCommitteeDisapproveJob(undo_committee_disapprove_info: $undoCommitteeDisapproveInfo) {
+            id
+        }
+    }
+`;
+
+export const COMMITTEE_ASSIGN_JOB = gql`
+    mutation CommitteeAssignJob($committeeAssignjobInfo: AssignJobInput!) {
+        committeeAssignJob(committee_assignjob_info: $committeeAssignjobInfo) {
             id
         }
     }
@@ -158,6 +168,19 @@ export interface UndoCommitteeDisapproveJobInput {
     };
 }
 
+export interface CommitteeAssignJobResponse {
+    committeeAssignJob: {
+        id: string;
+    };
+}
+
+export interface CommitteeAssignJobInput {
+    committeeAssignjobInfo: {
+        job_id: string;
+        student_id: string;
+    };
+}
+
 export const useCompnayApproveJob = () => {
     return useMutation<CompanyApproveJobResponse, CompanyApproveJobInput>(COMPANY_APPROVE_JOB);
 };
@@ -188,4 +211,8 @@ export const useCommitteeDisapproveJob = () => {
 
 export const useUndoCommitteeDisapproveJob = () => {
     return useMutation<UndoCommitteeDisapproveJobResponse, UndoCommitteeDisapproveJobInput>(UNDO_COMMITTEE_DISAPPROVE_JOB);
+};
+
+export const useCommitteeAssignJob = () => {
+    return useMutation<CommitteeAssignJobResponse, CommitteeAssignJobInput>(COMMITTEE_ASSIGN_JOB, { refetchQueries: [GET_STUDENTS, GET_STUDENT_APPLY_JOB] });
 };

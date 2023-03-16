@@ -422,29 +422,25 @@ const CreateJobPage: FC = () => {
                             <div className="">
                                 <Input
                                     type={'text'}
-                                    label={'ตำแหน่งงาน'}
+                                    label={'ตำแหน่งงาน*'}
                                     name={'job_title'}
                                     errors={errors}
                                     register={register}
-                                    validationSchema={
-                                        me?.role === RoleOption.COMPANY
-                                            ? {
-                                                  required: 'จำเป็นต้องกรอกตำแหน่งงาน',
-                                                  maxLength: {
-                                                      message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
-                                                  },
-                                                  minLength: {
-                                                      message: 'ข้อมูลน้อยเกินไป',
-                                                      value: 5,
-                                                  },
-                                              }
-                                            : {}
-                                    }
+                                    validationSchema={{
+                                        required: 'จำเป็นต้องกรอกตำแหน่งงาน',
+                                        maxLength: {
+                                            message: 'ข้อมูลมากเกินไป',
+                                            value: 100,
+                                        },
+                                        minLength: {
+                                            message: 'ข้อมูลน้อยเกินไป',
+                                            value: 5,
+                                        },
+                                    }}
                                 ></Input>
                             </div>
                             <div className="mb-2">
-                                <label className={`block text-[20px] font-medium text-gray-900`}>หลักสูตรที่รับ</label>
+                                <label className={`block text-[20px] font-medium text-gray-900`}>หลักสูตรที่รับ*</label>
                                 <Select
                                     className={'w-full text-[20px] font-primary_noto'}
                                     mode="multiple"

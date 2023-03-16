@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
@@ -20,8 +20,12 @@ const JobList: React.FC = () => {
     const message = MessageService.getInstance();
     const { me } = useContext(AuthenticationContext);
     const notification = NotificationService.getInstance();
-    const { data: dataGetMe } = useGetMe();
+    const { data: dataGetMe, refetch } = useGetMe();
     const router = useRouter();
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     if (error) {
         message.error(error.message);

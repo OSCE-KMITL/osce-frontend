@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
     outline: none;
     font-family: "Noto Sans Thai", serif;
 }
@@ -11,12 +11,15 @@
     h1 {
         @apply text-5xl;
     }
+
     h2 {
         @apply text-4xl;
     }
+
     h3 {
         @apply text-lg;
     }
+
     p {
         @apply text-[18px]
     }
@@ -78,4 +81,14 @@
     font-size: 16px;
 
 }
-.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell { background-color: #ec6815;color: white ;font-size: 1.1rem }
+
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell {
+    background-color: #ec6815;
+    color: white;
+    font-size: 1.1rem;
+}
+
+/* Select component in Ant design */
+.ant-select-single .ant-select-selector {
+    font-size: 16px;
+}

@@ -15,6 +15,7 @@ import {
     useUndoCommitteeDisapproveJob,
 } from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 const ApproveJob: React.FC = () => {
     const { data: stu_apply_job_data, loading, error, refetch } = useGetStudentApplyJob();
@@ -137,7 +138,18 @@ const ApproveJob: React.FC = () => {
             title: 'ตำแหน่ง',
             dataIndex: 'job',
             render: (value, { job }, index) => {
-                return <>{job?.job_title ? job?.job_title : '-'}</>;
+                return (
+                    <>
+                        {job?.job_title ? (
+                            <Link href={`/jobs/` + job?.id} className="flex items-center gap-2">
+                                {job?.job_title}
+                                <LinkIcon className="w-3 h-3" />
+                            </Link>
+                        ) : (
+                            '-'
+                        )}
+                    </>
+                );
             },
         },
         {
@@ -146,11 +158,11 @@ const ApproveJob: React.FC = () => {
             render: (value, { job, job_status, id, student }, index) => {
                 return (
                     <div className={'flex flex-row gap-2'}>
-                        <div className={'px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500 rounded-2xl cursor-pointer'}>
+                        {/* <div className={'px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500 rounded-2xl cursor-pointer'}>
                             <Link href={`/jobs/` + job?.id} className="cursor-pointer">
                                 รายละเอียดงาน
                             </Link>
-                        </div>
+                        </div> */}
                         {job_status === JobStatus.COMPANYAPPROVE ? (
                             <>
                                 <div className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl  '}>

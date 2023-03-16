@@ -6,18 +6,22 @@ import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { RoleOption } from 'constants/RoleOptions';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import NotificationService from 'lib/ant_service/NotificationService';
 import { useRouter } from 'next/router';
 
 export default function Myjob() {
-    const { data, loading, error } = useGetMe();
+    const { data, loading, error, refetch } = useGetMe();
     const { me } = useContext(AuthenticationContext);
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const notification = NotificationService.getInstance();
     const router = useRouter();
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const handleDelete = (id: string) => {
         console.log('delete id:', id);

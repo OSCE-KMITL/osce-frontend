@@ -1,12 +1,11 @@
 import { Link } from '@ui/Link';
-import { Button, Divider, Space, Statistic, Tag } from 'antd';
+import { Button, Divider, Space, Statistic, Table, TableColumnsType, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { IStudentApplyJob, useGetJob } from 'features/job/hooks/useGetJobs';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import StudentApplyTable from '@components/Job/StudentApplyTable';
-import Table, { ColumnsType } from 'antd/es/table';
 import { IStudent } from '@features/student/interfaces/Student';
 import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import tableStyle from '../../../styles/Table/table.module.scss';
@@ -15,7 +14,7 @@ import { useCompnayApproveJob, useCompnayDisapproveJob, useUndoCompnayApproveJob
 import NotificationService from '@lib/ant_service/NotificationService';
 import ShowTagJobStatus from '@components/Job/ShowTagJobStatus';
 
-export default function DetailMyJob() {
+const DetailMyJob: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
@@ -24,6 +23,7 @@ export default function DetailMyJob() {
     const notification = NotificationService.getInstance();
     const [companyDisapproveJob, { loading: disapprove_loading, error: disapprove_error }] = useCompnayDisapproveJob();
     const [undoCompanyDisapproveJob, { loading: undo_disapprove_loading, error: undo_disapprove_error }] = useUndoCompnayDisapproveJob();
+    const dataSource = data?.getJobById?.student_apply_job;
 
     const handleApproveJob = (id: string) => {
         if (id) {
@@ -105,9 +105,11 @@ export default function DetailMyJob() {
         }
     };
 
-    const approve_count = data?.getJobById?.student_apply_job.filter((i) => i.job_status === JobStatus.COMPANYAPPROVE).length;
+    const approve_count = data?.getJobById?.student_apply_job.filter(
+        (i) => i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE
+    ).length;
 
-    const columns: ColumnsType<IStudentApplyJob> = [
+    const columns: TableColumnsType<IStudentApplyJob> = [
         {
             title: 'ชื่อ-นามสกุล',
             dataIndex: 'student',
@@ -224,11 +226,12 @@ export default function DetailMyJob() {
                             rowClassName={rowClassname}
                             className={tableStyle.customTable}
                             columns={columns}
-                            dataSource={data?.getJobById?.student_apply_job}
+                            dataSource={dataSource}
                         />
                     </div>
                 )}
             </div>
         </div>
     );
-}
+};
+export default DetailMyJob;

@@ -75,9 +75,20 @@ export const GET_STUDENTS = gql`
                     supervisor_job_title
                     supervisor_email
                     supervisor_phone_number
+                    company_id {
+                        name_eng
+                    }
                 }
                 created_at
                 updated_at
+            }
+            job {
+                id
+                job_title
+                company_id {
+                    id
+                    name_eng
+                }
             }
         }
     }

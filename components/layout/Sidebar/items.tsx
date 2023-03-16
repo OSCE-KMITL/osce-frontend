@@ -201,7 +201,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'กำหนดงานให้นักศึกษา',
-                key: '/manager/',
+                key: '/manager/assign-job',
             },
         ],
     },

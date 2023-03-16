@@ -2,7 +2,7 @@ import ContentContainer from '@ui/ContentContainer';
 import { Link } from '@ui/Link';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Divider, Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
@@ -11,11 +11,15 @@ import SkeletonLoading from '@ui/SkeletonLoading';
 import { JobStatus } from '@constants/Job/JobStatus';
 
 export default function JobApplying() {
-    const { data: data_me, loading: loading_me, error: error_me } = useGetMe();
+    const { data: data_me, loading: loading_me, error: error_me, refetch } = useGetMe();
     const [cancelApplyJob, { loading, error }] = useCancelApplyJob();
     const notification = NotificationService.getInstance();
     const { data, loading: stu_loading, error: stu_error } = useGetStudent(data_me?.getMe?.is_student?.student_id);
     console.log('data = ', data?.getStudent?.student_apply_job);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const handleCancelApplyJob = (id: string) => {
         cancelApplyJob({
@@ -80,7 +84,8 @@ export default function JobApplying() {
                             <div className=" flex justify-end gap-x-4 items-center">
                                 <div className="text-right items-end">
                                     <button
-                                        className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer"
+                                        // className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm  cursor-pointer"
+                                        className="px-4 py-1 text-center bg-red-100 text-red-500  border border-red-500  rounded-2xl"
                                         onClick={() => handleCancelApplyJob(item?.id)}
                                     >
                                         ยกเลิกการสมัคร
@@ -89,7 +94,7 @@ export default function JobApplying() {
                                 <div className="text-right items-end">
                                     <Link
                                         href={`/jobs/` + item.job?.id}
-                                        className=" bg-primary-100 text-primary-500 px-4 py-2 rounded-2xl text-sm  cursor-pointer"
+                                        className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
                                     >
                                         {'ดูรายละเอียด'}
                                     </Link>

@@ -34,7 +34,7 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                             },
                             Select: {
                                 colorPrimary: '#FF813E',
-                                fontSize: 18,
+                                fontSize: 16,
                                 colorBgContainer: 'rgb(249 250 251 / var(--tw-bg-opacity));',
                             },
                             DatePicker: {
