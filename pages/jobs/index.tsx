@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useGetJobs } from '../../features/job/hooks/useGetJobs';
 import NotificationService from '../../lib/ant_service/NotificationService';
 import MessageService from '../../lib/ant_service/MessageService';
@@ -8,18 +8,24 @@ import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
-import { Divider, Dropdown, Menu } from 'antd';
+import { Divider, Dropdown, Menu, Modal } from 'antd';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import { useRouter } from 'next/router';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const Jobs: React.FC = () => {
-    const { data, loading, error } = useGetJobs();
+    const { data, loading, error, refetch } = useGetJobs();
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const message = MessageService.getInstance();
     const { me } = useContext(AuthenticationContext);
     const notification = NotificationService.getInstance();
     const router = useRouter();
+    const { confirm } = Modal;
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     if (error) {
         message.error(error.message);
@@ -29,6 +35,21 @@ const Jobs: React.FC = () => {
             </>
         );
     }
+
+    const showDeleteConfirm = (job_id: string) => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการลบงานนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: '',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleDelete(job_id);
+            },
+            onCancel() {},
+        });
+    };
 
     const handleDelete = (id: string) => {
         console.log('delete id:', id);
@@ -61,7 +82,7 @@ const Jobs: React.FC = () => {
             <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleEdit(id_job)}>
                 แก้ไข
             </Menu.Item>
-            <Menu.Item key="2" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
+            <Menu.Item key="2" icon={<DeleteOutlined />} danger={true} onClick={() => showDeleteConfirm(id_job)}>
                 ลบ
             </Menu.Item>
         </Menu>

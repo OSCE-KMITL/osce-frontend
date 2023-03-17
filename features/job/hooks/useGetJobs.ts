@@ -272,9 +272,9 @@ export interface JobResponses {
 
 export function useGetJobs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery<JobResponses>(GET_JOBS);
+    const { data, loading, error, refetch } = useQuery<JobResponses>(GET_JOBS);
 
-    return { data, loading, error };
+    return { data, loading, error, refetch };
 }
 
 export function useGetJob({ jobId: string }) {
