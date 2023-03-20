@@ -24,6 +24,7 @@ export const GET_STUDENT_APPLY_JOB = gql`
             job {
                 id
                 job_title
+                required_major
                 company_id {
                     name_eng
                 }
@@ -48,6 +49,7 @@ export interface StudentApplyJobProp {
     };
     job: {
         job_title: string;
+        required_major: string;
         company_id: {
             name_eng: string;
         };

@@ -90,6 +90,7 @@ export const GET_ME = gql`
                 name
                 last_name
                 faculty
+                department
                 is_committee
                 announcements {
                     id

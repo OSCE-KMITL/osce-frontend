@@ -51,3 +51,12 @@ export interface ICompany {
 
     job: IJob[] | null | undefined;
 }
+
+export interface IAdvisor {
+    advisor_id: string;
+    name: string;
+    last_name: string;
+    faculty: string;
+    department: string;
+    is_committee: Boolean;
+}

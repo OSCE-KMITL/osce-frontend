@@ -16,6 +16,7 @@ import {
 } from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const ApproveJob: React.FC = () => {
     const { data: stu_apply_job_data, loading, error, refetch } = useGetStudentApplyJob();
@@ -23,12 +24,15 @@ const ApproveJob: React.FC = () => {
     const [undoCommitteeApproveJob, { loading: undo_approve_loading, error: undo_approve_error }] = useUndoCommitteeApproveJob();
     const [committeeDisapproveJob, { loading: disapprove_loading, error: disapprove_error }] = useCommitteeDisapproveJob();
     const [undoCommitteeDisapproveJob, { loading: undo_disapprove_loading, error: undo_disapprove_error }] = useUndoCommitteeDisapproveJob();
+    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
     const notification = NotificationService.getInstance();
-    const filter_student = stu_apply_job_data?.getAllStudentApplyJob.filter(
-        (i) => i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL
+    const filter_job_status = stu_apply_job_data?.getAllStudentApplyJob.filter(
+        (i) =>
+            (i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
+            (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
     );
-
     const handleApproveJob = (id: string) => {
         if (id) {
             committeeApproveJob({
@@ -217,7 +221,7 @@ const ApproveJob: React.FC = () => {
                 rowClassName={rowClassname}
                 className={tableStyle.customTable}
                 columns={columns}
-                dataSource={filter_student}
+                dataSource={filter_job_status}
             />
         </div>
     );
