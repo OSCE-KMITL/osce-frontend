@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Form, Input, Select, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import tableStyle from '../../styles/Table/table.module.scss';
 import { useGetStudents } from '@features/student/hooks/useGetStudents';
-import Link from 'next/link';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { IStudent } from '@features/student/interfaces/Student';
 import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
@@ -18,7 +16,7 @@ const AssignJob: React.FC = () => {
     const [jobOnChange, setJobOnChange] = useState<boolean | null | undefined>(false);
     const notification = NotificationService.getInstance();
     const { data: stu_data, loading: stu_loading, error: stu_error } = useGetStudents();
-    const { data: company_data, loading: company_loading, error: company_error } = useGetAllCompany();
+    const { data: company_data, loading: company_loading, error: company_error, refetch } = useGetAllCompany();
     const [committeeAssignJob, { loading: approve_loading, error: approve_error }] = useCommitteeAssignJob();
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
@@ -26,7 +24,7 @@ const AssignJob: React.FC = () => {
     const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
 
     const filter_stu_data = stu_data?.getStudents.filter((i) => i.department?.department_name_th === committee_dep);
-    filter_stu_data.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
+    filter_stu_data?.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const newDataSource = () => {
         const data = [];
@@ -37,7 +35,6 @@ const AssignJob: React.FC = () => {
                 ...filter_stu_data[index],
             });
         }
-        console.log(data);
         setDataSource(data);
     };
 
@@ -50,14 +47,14 @@ const AssignJob: React.FC = () => {
     });
 
     const updateOptionJobTitles = (company_id: string) => {
-        console.log('is run =', company_id);
+        refetch();
         const companySelected = company_data?.getAllCompanies?.find((i) => i.id === company_id);
         if (companySelected) {
             const newOpntionJobtitle = companySelected.job
                 ?.filter?.((i) => i.required_major?.includes(committee_dep) || i.required_major?.includes('ไม่จำกัดหลักสูตร'))
                 ?.map((obj) => {
                     return {
-                        label: obj?.job_title ? obj.job_title : `ไม่มีชื่อ (job id : ${obj?.id})`,
+                        label: obj?.job_title + `(${obj?.students?.length}/${obj?.limit})`,
                         value: obj?.id,
                     };
                 });
@@ -91,17 +88,12 @@ const AssignJob: React.FC = () => {
                     setEditingRowKey(null);
                     setJobOnChange(null);
                     setOptionJobTitle(null);
+                    refetch();
                 },
                 onError: (error) => {
                     if (error) {
                         notification.error('Error', error.message);
                     }
-                    // setJobOnChange(null);
-                    // setOptionJobTitle(null);
-                    // form.setFieldsValue({
-                    //     company_name: null,
-                    //     job_title: null,
-                    // });
                 },
             });
         }
@@ -119,12 +111,6 @@ const AssignJob: React.FC = () => {
     interface ITableStudent extends IStudent {
         key: string;
     }
-
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
 
     const columns: ColumnsType<ITableStudent> = [
         {
@@ -191,7 +177,7 @@ const AssignJob: React.FC = () => {
                         </Form.Item>
                     );
                 else {
-                    return <>{job?.job_title ? job?.job_title : '-'}</>;
+                    return <>{job?.job_title ? job?.job_title + ` (${job?.students?.length}/${job?.limit})` : '-'}</>;
                 }
             },
         },

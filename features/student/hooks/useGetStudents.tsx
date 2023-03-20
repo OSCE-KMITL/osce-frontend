@@ -89,6 +89,10 @@ export const GET_STUDENTS = gql`
                     id
                     name_eng
                 }
+                limit
+                students {
+                    student_id
+                }
             }
         }
     }

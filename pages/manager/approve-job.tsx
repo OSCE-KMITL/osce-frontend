@@ -148,7 +148,7 @@ const ApproveJob: React.FC = () => {
                     <>
                         {job?.job_title ? (
                             <Link href={`/jobs/` + job?.id} className="flex items-center gap-2">
-                                {job?.job_title} ({job?.students.length}/{job?.limit})
+                                {job?.job_title} ({job?.students?.length}/{job?.limit})
                                 <LinkIcon className="w-3 h-3" />
                             </Link>
                         ) : (

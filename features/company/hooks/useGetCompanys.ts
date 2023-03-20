@@ -31,6 +31,10 @@ export const GET_ALL_COMPANIES = gql`
                 id
                 job_title
                 required_major
+                limit
+                students{
+                    student_id
+                }
             }
         }
     }
@@ -66,7 +70,7 @@ export interface CompanyResponses {
 
 export function useGetAllCompany() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery<CompanyResponses>(GET_ALL_COMPANIES);
+    const { data, loading, error, refetch } = useQuery<CompanyResponses>(GET_ALL_COMPANIES);
 
-    return { data, loading, error };
+    return { data, loading, error, refetch };
 }
