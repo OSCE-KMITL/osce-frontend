@@ -148,7 +148,7 @@ const AssignJob: React.FC = () => {
             render: (value, { job, key }, index) => {
                 if (editingRowKey === key)
                     return (
-                        <Form.Item name="company_name">
+                        <Form.Item name="company_name" style={{ margin: 0 }}>
                             <Select
                                 showSearch
                                 placeholder="Search to Select"
@@ -172,7 +172,7 @@ const AssignJob: React.FC = () => {
             render: (value, { job, key }, index) => {
                 if (editingRowKey === key)
                     return (
-                        <Form.Item name="job_title">
+                        <Form.Item name="job_title" style={{ margin: 0 }}>
                             <Select
                                 className=""
                                 showSearch
@@ -207,7 +207,7 @@ const AssignJob: React.FC = () => {
                                     updateOptionJobTitles(record.job?.company_id?.id);
                                 }}
                             >
-                                <PencilSquareIcon className="w-6 h-6 text-gray-600 " />
+                                <PencilSquareIcon className="w-6 h-6 text-gray-600" />
                             </Button>
                         )}
 
@@ -259,14 +259,7 @@ const AssignJob: React.FC = () => {
             <h1>กำหนดงานให้นักศึกษา</h1>
             <Divider />
             <Form form={form} onFinish={onFinish}>
-                <Table
-                    bordered={true}
-                    size={'large'}
-                    rowClassName={rowClassname}
-                    className={tableStyle.customTable}
-                    columns={columns}
-                    dataSource={dataSource}
-                />
+                <Table bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
             </Form>
         </div>
     );
