@@ -25,8 +25,12 @@ export const GET_STUDENT_APPLY_JOB = gql`
                 id
                 job_title
                 required_major
+                limit
                 company_id {
                     name_eng
+                }
+                students {
+                    student_id
                 }
             }
             created_at
@@ -53,6 +57,7 @@ export interface StudentApplyJobProp {
         company_id: {
             name_eng: string;
         };
+        students: IStudent[] | null | undefined;
     };
     created_at;
     updated_at;

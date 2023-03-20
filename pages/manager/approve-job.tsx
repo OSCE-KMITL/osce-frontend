@@ -28,11 +28,13 @@ const ApproveJob: React.FC = () => {
 
     const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
     const notification = NotificationService.getInstance();
-    const filter_job_status = stu_apply_job_data?.getAllStudentApplyJob.filter(
+    const filter_stu_data = stu_apply_job_data?.getAllStudentApplyJob.filter(
         (i) =>
             (i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
             (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
     );
+
+    filter_stu_data?.sort((a, b) => a.job?.company_id?.name_eng.localeCompare(b.job?.company_id?.name_eng));
     const handleApproveJob = (id: string) => {
         if (id) {
             committeeApproveJob({
@@ -146,7 +148,7 @@ const ApproveJob: React.FC = () => {
                     <>
                         {job?.job_title ? (
                             <Link href={`/jobs/` + job?.id} className="flex items-center gap-2">
-                                {job?.job_title}
+                                {job?.job_title} ({job?.students.length}/{job?.limit})
                                 <LinkIcon className="w-3 h-3" />
                             </Link>
                         ) : (
@@ -221,7 +223,7 @@ const ApproveJob: React.FC = () => {
                 rowClassName={rowClassname}
                 className={tableStyle.customTable}
                 columns={columns}
-                dataSource={filter_job_status}
+                dataSource={filter_stu_data}
             />
         </div>
     );

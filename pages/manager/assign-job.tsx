@@ -9,6 +9,7 @@ import { IStudent } from '@features/student/interfaces/Student';
 import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const AssignJob: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -20,8 +21,13 @@ const AssignJob: React.FC = () => {
     const { data: company_data, loading: company_loading, error: company_error } = useGetAllCompany();
     const [committeeAssignJob, { loading: approve_loading, error: approve_error }] = useCommitteeAssignJob();
     const [form] = Form.useForm();
+    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
-    const filter_stu_data = stu_data?.getStudents.filter((i) => i.department?.department_name_th === 'วิศวกรรมคอมพิวเตอร์');
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
+
+    const filter_stu_data = stu_data?.getStudents.filter((i) => i.department?.department_name_th === committee_dep);
+    filter_stu_data.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
+
     const newDataSource = () => {
         const data = [];
         setDataSource([]);
@@ -31,6 +37,7 @@ const AssignJob: React.FC = () => {
                 ...filter_stu_data[index],
             });
         }
+        console.log(data);
         setDataSource(data);
     };
 
@@ -47,7 +54,7 @@ const AssignJob: React.FC = () => {
         const companySelected = company_data?.getAllCompanies?.find((i) => i.id === company_id);
         if (companySelected) {
             const newOpntionJobtitle = companySelected.job
-                ?.filter?.((i) => i.required_major?.includes('วิศวกรรมคอมพิวเตอร์') || i.required_major?.includes('ไม่จำกัดหลักสูตร'))
+                ?.filter?.((i) => i.required_major?.includes(committee_dep) || i.required_major?.includes('ไม่จำกัดหลักสูตร'))
                 ?.map((obj) => {
                     return {
                         label: obj?.job_title ? obj.job_title : `ไม่มีชื่อ (job id : ${obj?.id})`,
