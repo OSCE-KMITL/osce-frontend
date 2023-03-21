@@ -15,8 +15,8 @@ export default function ShowTagJobStatus(job_status: string) {
                 );
             case JobStatus.COMPANYAPPROVE:
                 return (
-                    <Tag className="text-sm font-primary_noto" color="success">
-                        ตอบรับผู้สมัคร
+                    <Tag className="text-sm font-primary_noto" color="processing">
+                        รอนักศึกษาตอบรับ
                     </Tag>
                 );
             case JobStatus.COMPANYCANCEL:
@@ -35,6 +35,18 @@ export default function ShowTagJobStatus(job_status: string) {
                 return (
                     <Tag className="text-sm font-primary_noto" color="error">
                         กรรมการปฏิเสธ
+                    </Tag>
+                );
+            case JobStatus.STUDENTACCEPT:
+                return (
+                    <Tag className="text-sm font-primary_noto" color="success">
+                        นักศึกษาตอบรับ
+                    </Tag>
+                );
+            case JobStatus.STUDENTREJECT:
+                return (
+                    <Tag className="text-sm font-primary_noto" color="error">
+                        นักศึกษาปฏิเสธ
                     </Tag>
                 );
 

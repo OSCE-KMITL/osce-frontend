@@ -30,7 +30,7 @@ const ApproveJob: React.FC = () => {
     const notification = NotificationService.getInstance();
     const filter_stu_data = stu_apply_job_data?.getAllStudentApplyJob.filter(
         (i) =>
-            (i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
+            (i.job_status === JobStatus.STUDENTACCEPT || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
             (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
     );
 
@@ -169,7 +169,7 @@ const ApproveJob: React.FC = () => {
                                 รายละเอียดงาน
                             </Link>
                         </div> */}
-                        {job_status === JobStatus.COMPANYAPPROVE ? (
+                        {job_status === JobStatus.STUDENTACCEPT ? (
                             <>
                                 <div className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl  '}>
                                     <button onClick={() => handleApproveJob(id)}>อนุมัติ</button>

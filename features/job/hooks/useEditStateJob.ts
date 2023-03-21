@@ -74,6 +74,38 @@ export const COMMITTEE_ASSIGN_JOB = gql`
     }
 `;
 
+export const STUDENT_ACCEPT_JOB = gql`
+    mutation StudentAcceptJob($studentAcceptInfo: EditJobStateInput!) {
+        studentAcceptJob(student_accept_info: $studentAcceptInfo) {
+            id
+        }
+    }
+`;
+
+export const UNDO_STUDENT_ACCEPT_JOB = gql`
+    mutation UndoStudentAcceptJob($undoStudentAcceptInfo: EditJobStateInput!) {
+        undoStudentAcceptJob(undo_student_accept_info: $undoStudentAcceptInfo) {
+            id
+        }
+    }
+`;
+
+export const STUDENT_REJECT_JOB = gql`
+    mutation StudentRejectJob($studentRejectInfo: EditJobStateInput!) {
+        studentRejectJob(student_reject_info: $studentRejectInfo) {
+            id
+        }
+    }
+`;
+
+export const UNDO_STUDENT_REJECT_JOB = gql`
+    mutation UndoStudentRejectJob($undoStudentRejectInfo: EditJobStateInput!) {
+        undoStudentRejectJob(undo_student_reject_info: $undoStudentRejectInfo) {
+            id
+        }
+    }
+`;
+
 export interface CompanyApproveJobResponse {
     companyApproveJob: {
         id: string;
@@ -181,6 +213,54 @@ export interface CommitteeAssignJobInput {
     };
 }
 
+export interface StudentAcceptJobResponse {
+    studentAcceptJob: {
+        id: string;
+    };
+}
+
+export interface StudentAcceptJobInput {
+    studentAcceptInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface UndoStudentAcceptJobResponse {
+    undoStudentAcceptJob: {
+        id: string;
+    };
+}
+
+export interface UndoStudentAcceptJobInput {
+    undoStudentAcceptInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface StudentRejectJobResponse {
+    studentRejectJob: {
+        id: string;
+    };
+}
+
+export interface StudentRejectJobInput {
+    studentRejectInfo: {
+        student_apply_job_id: string;
+    };
+}
+
+export interface UndoStudentRejectJobResponse {
+    undoStudentRejectJob: {
+        id: string;
+    };
+}
+
+export interface UndoStudentRejectJobInput {
+    undoStudentRejectInfo: {
+        student_apply_job_id: string;
+    };
+}
+
 export const useCompnayApproveJob = () => {
     return useMutation<CompanyApproveJobResponse, CompanyApproveJobInput>(COMPANY_APPROVE_JOB);
 };
@@ -215,4 +295,20 @@ export const useUndoCommitteeDisapproveJob = () => {
 
 export const useCommitteeAssignJob = () => {
     return useMutation<CommitteeAssignJobResponse, CommitteeAssignJobInput>(COMMITTEE_ASSIGN_JOB, { refetchQueries: [GET_STUDENTS, GET_STUDENT_APPLY_JOB] });
+};
+
+export const useStudentAcceptJob = () => {
+    return useMutation<StudentAcceptJobResponse, StudentAcceptJobInput>(STUDENT_ACCEPT_JOB);
+};
+
+export const useUndoStudentAcceptJob = () => {
+    return useMutation<UndoStudentAcceptJobResponse, UndoStudentAcceptJobInput>(UNDO_STUDENT_ACCEPT_JOB);
+};
+
+export const useStudentRejectJob = () => {
+    return useMutation<StudentRejectJobResponse, StudentRejectJobInput>(STUDENT_REJECT_JOB);
+};
+
+export const useUndoStudentRejectJob = () => {
+    return useMutation<UndoStudentRejectJobResponse, UndoStudentRejectJobInput>(UNDO_STUDENT_REJECT_JOB);
 };

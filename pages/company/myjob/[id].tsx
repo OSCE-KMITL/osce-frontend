@@ -1,13 +1,8 @@
 import { Link } from '@ui/Link';
 import { Button, Divider, Space, Statistic, Table, TableColumnsType, Tag } from 'antd';
-import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { IStudentApplyJob, useGetJob } from 'features/job/hooks/useGetJobs';
-import { DownloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import StudentApplyTable from '@components/Job/StudentApplyTable';
-import { IStudent } from '@features/student/interfaces/Student';
-import { MagnifyingGlassIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import tableStyle from '../../../styles/Table/table.module.scss';
 import { JobStatus } from '@constants/Job/JobStatus';
 import { useCompnayApproveJob, useCompnayDisapproveJob, useUndoCompnayApproveJob, useUndoCompnayDisapproveJob } from '@features/job/hooks/useEditStateJob';
@@ -25,6 +20,7 @@ const DetailMyJob: React.FC = () => {
     const [undoCompanyDisapproveJob, { loading: undo_disapprove_loading, error: undo_disapprove_error }] = useUndoCompnayDisapproveJob();
     const dataSource = data?.getJobById?.student_apply_job;
 
+    const limit = data?.getJobById?.limit;
     const handleApproveJob = (id: string) => {
         if (id) {
             companyApproveJob({
@@ -106,7 +102,7 @@ const DetailMyJob: React.FC = () => {
     };
 
     const approve_count = data?.getJobById?.student_apply_job.filter(
-        (i) => i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE
+        (i) => i.job_status === JobStatus.COMPANYAPPROVE || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.STUDENTACCEPT
     ).length;
 
     const columns: TableColumnsType<IStudentApplyJob> = [
@@ -153,9 +149,18 @@ const DetailMyJob: React.FC = () => {
                         </div>
                         {job_status === JobStatus.STUDENTAPPLIED ? (
                             <>
-                                <div className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl  '}>
-                                    <button onClick={() => handleApproveJob(id)}>ตอบรับ</button>
-                                </div>
+                                {approve_count < parseInt(limit) ? (
+                                    <div className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500 rounded-2xl  '}>
+                                        <button onClick={() => handleApproveJob(id)}>ตอบรับ</button>
+                                    </div>
+                                ) : (
+                                    <div className={'px-4 py-1 text-center bg-gray-100 text-gray-500  border border-gray-500 opacity-50 rounded-2xl  '}>
+                                        <button onClick={() => handleApproveJob(id)} disabled>
+                                            ตอบรับ
+                                        </button>
+                                    </div>
+                                )}
+
                                 <div className={'px-4 py-1 text-center bg-red-100 text-red-500  border border-red-500 rounded-2xl  '}>
                                     <button onClick={() => handleDisapproveJob(id)}>ปฏิเสธ</button>
                                 </div>
@@ -215,7 +220,7 @@ const DetailMyJob: React.FC = () => {
                                         ตำแหน่ง : {data?.getJobById?.job_title ? data?.getJobById?.job_title : 'ไม่ระบุตำแหน่งงาน'}
                                     </p>
                                     <p className="text-base sm:text-lg md:text-xl font-bold leading-normal text-white-800 font-primary_noto">
-                                        {data?.getJobById?.limit ? `จำนวนที่รับสมัคร : ${approve_count} / ` + data?.getJobById?.limit : ''}
+                                        {limit ? `จำนวนที่รับสมัคร : ${approve_count} / ` + limit : ''}
                                     </p>
                                 </div>
                             </div>
