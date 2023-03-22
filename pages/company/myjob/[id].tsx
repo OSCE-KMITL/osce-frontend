@@ -107,7 +107,7 @@ const DetailMyJob: React.FC = () => {
 
     const columns: TableColumnsType<IStudentApplyJob> = [
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'student',
             render: (text, { student }, record) =>
                 `${student?.name_prefix ? student?.name_prefix : ''}    ${student?.name_th ? student.name_th : ''}  ${
@@ -115,28 +115,31 @@ const DetailMyJob: React.FC = () => {
                 }`,
         },
         {
-            title: 'หลักสูตร',
+            title: <div className="flex items-center justify-center">หลักสูตร</div>,
             dataIndex: 'student',
             render: (text, { student }, record) => `${student?.curriculum?.curriculum_name_th ? student?.curriculum?.curriculum_name_th : ''} `,
         },
         {
-            title: 'อีเมล์',
+            title: <div className="flex items-center justify-center">อีเมล์</div>,
             dataIndex: 'student',
             render: (text, { student }, record) => `${student?.account?.email ? student?.account?.email : ''} `,
         },
         {
+            align: 'center',
             title: 'โทรศัพท์',
             dataIndex: 'student',
             render: (text, { student }, record) => `${student?.phone_number ? student?.phone_number : ''} `,
         },
 
         {
+            align: 'center',
             title: 'สถานะ',
             dataIndex: 'student',
             render: (text, { student, job_status }, record) => ShowTagJobStatus(job_status),
         },
 
         {
+            align: 'center',
             title: 'Actions',
             dataIndex: 'student',
             render: (value, { student, job_status, id }, index) => {

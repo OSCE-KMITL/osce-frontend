@@ -115,6 +115,7 @@ const AssignJob: React.FC = () => {
 
     const columns: ColumnsType<ITableStudent> = [
         {
+            align: 'center',
             title: 'รหัสนักศึกษา',
             dataIndex: 'student_id',
             render: (value, { student_id }, index) => {
@@ -122,14 +123,14 @@ const AssignJob: React.FC = () => {
             },
         },
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'name',
             render: (value, { name_prefix, name_th, lastname_th }, index) => {
                 return <>{name_prefix + ' ' + name_th + ' ' + lastname_th}</>;
             },
         },
         {
-            title: 'หลักสูตร',
+            title: <div className="flex items-center justify-center">หลักสูตร</div>,
             dataIndex: 'curriculum',
             render: (value, { curriculum }, index) => {
                 return <>{curriculum?.curriculum_name_th}</>;
@@ -137,7 +138,7 @@ const AssignJob: React.FC = () => {
         },
         {
             width: '20%',
-            title: 'บริษัท',
+            title: <div className="flex items-center justify-center">บริษัท</div>,
             dataIndex: 'job',
             render: (value, { job, key }, index) => {
                 if (editingRowKey === key)
@@ -155,13 +156,13 @@ const AssignJob: React.FC = () => {
                         </Form.Item>
                     );
                 else {
-                    return <>{job?.company_id?.name_eng ? job?.company_id?.name_eng : '-'}</>;
+                    return <>{job?.company_id?.name_eng ? job?.company_id?.name_eng : <div className="flex justify-center">-</div>}</>;
                 }
             },
         },
         {
             width: '20%',
-            title: 'ตำแหน่ง',
+            title: <div className="flex items-center justify-center">ตำแหน่ง</div>,
             dataIndex: 'job',
             render: (value, { job, key }, index) => {
                 if (editingRowKey === key)
@@ -178,11 +179,12 @@ const AssignJob: React.FC = () => {
                         </Form.Item>
                     );
                 else {
-                    return <>{job?.job_title ? job?.job_title + ` (${job?.students?.length}/${job?.limit})` : '-'}</>;
+                    return <>{job?.job_title ? job?.job_title + ` (${job?.students?.length}/${job?.limit})` : <div className="flex justify-center">-</div>}</>;
                 }
             },
         },
         {
+            align: 'center',
             width: '15%',
             title: 'Action',
             dataIndex: 'action',

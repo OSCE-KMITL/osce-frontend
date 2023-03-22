@@ -117,6 +117,7 @@ const ApproveJob: React.FC = () => {
     };
     const columns: ColumnsType<IStudentApplyJob> = [
         {
+            align: 'center',
             title: 'รหัสนักศึกษา',
             dataIndex: 'student',
             render: (value, { student }, index) => {
@@ -124,27 +125,28 @@ const ApproveJob: React.FC = () => {
             },
         },
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'student',
             render: (value, { student }, index) => {
                 return <>{student?.name_prefix + ' ' + student?.name_th + ' ' + student?.lastname_th}</>;
             },
         },
         {
-            title: 'หลักสูตร',
+            title: <div className="flex items-center justify-center">หลักสูตร</div>,
             dataIndex: 'student',
             render: (value, { student }, index) => {
                 return <>{student?.curriculum?.curriculum_name_th}</>;
             },
         },
         {
-            title: 'บริษัท',
+            title: <div className="flex items-center justify-center">บริษัท</div>,
             dataIndex: 'job',
             render: (value, { job }, index) => {
                 return <>{job?.company_id?.name_eng}</>;
             },
         },
         {
+            align: 'center',
             title: 'ตำแหน่ง',
             dataIndex: 'job',
             render: (value, { job }, index) => {
@@ -163,6 +165,7 @@ const ApproveJob: React.FC = () => {
             },
         },
         {
+            align: 'center',
             title: 'Action',
             dataIndex: 'action',
             render: (value, { job, job_status, id, student }, index) => {
