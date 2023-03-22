@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Divider, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import tableStyle from '../../styles/Table/table.module.scss';
@@ -33,6 +33,10 @@ const ApproveJob: React.FC = () => {
             (i.job_status === JobStatus.STUDENTACCEPT || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
             (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
     );
+
+    useEffect(() => {
+        refectch_me();
+    }, []);
 
     filter_stu_data?.sort((a, b) => a.job?.company_id?.name_eng.localeCompare(b.job?.company_id?.name_eng));
     const handleApproveJob = (id: string) => {

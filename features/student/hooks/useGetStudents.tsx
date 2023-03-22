@@ -49,6 +49,9 @@ export const GET_STUDENTS = gql`
             height
             gpa
             gender
+            score_from_advisor
+            score_from_company
+            score_from_presentation
             student_apply_job {
                 id
                 job_status

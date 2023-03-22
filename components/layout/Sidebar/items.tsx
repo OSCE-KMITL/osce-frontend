@@ -167,7 +167,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'รวมคะแนนสหกิจ',
-                key: '',
+                key: '/manager/coop-score',
             },
         ],
     },

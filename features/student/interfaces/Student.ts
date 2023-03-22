@@ -69,6 +69,12 @@ export interface IStudent {
 
     birth_date: string;
 
+    score_from_advisor: number;
+
+    score_from_company: number;
+
+    score_from_presentation: number;
+
     created_at: Date;
 
     updated_at: Date;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Form, Input, Select, Table } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, Select, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useGetStudents } from '@features/student/hooks/useGetStudents';
 import NotificationService from '@lib/ant_service/NotificationService';
@@ -8,16 +8,14 @@ import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
+import { useSetScoreStudent } from '@features/student/hooks/useSetScoreStudent';
 
-const AssignJob: React.FC = () => {
+const CoopScore: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
     const [editingRowKey, setEditingRowKey] = useState(null);
-    const [optionJobTitle, setOptionJobTitle] = useState(null);
-    const [jobOnChange, setJobOnChange] = useState<boolean | null | undefined>(false);
     const notification = NotificationService.getInstance();
-    const { data: stu_data, loading: stu_loading, error: stu_error } = useGetStudents();
-    const { data: company_data, loading: company_loading, error: company_error, refetch } = useGetAllCompany();
-    const [committeeAssignJob, { loading: approve_loading, error: approve_error }] = useCommitteeAssignJob();
+    const { data: stu_data, loading: stu_loading, error: stu_error, refetch } = useGetStudents();
+    const [setScore, { loading: set_score_loading, error: set_score_error }] = useSetScoreStudent();
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
@@ -38,52 +36,28 @@ const AssignJob: React.FC = () => {
         setDataSource(data);
     };
 
-    const companies = company_data?.getAllCompanies;
-    const object_company_name = companies?.map((obj) => {
-        return {
-            label: obj.name_eng,
-            value: obj.id,
-        };
-    });
-
-    const updateOptionJobTitles = (company_id: string) => {
-        refetch();
-        const companySelected = company_data?.getAllCompanies?.find((i) => i.id === company_id);
-        if (companySelected) {
-            const newOpntionJobtitle = companySelected.job
-                ?.filter?.((i) => i.required_major?.includes(committee_dep) || i.required_major?.includes('ไม่จำกัดหลักสูตร'))
-                ?.map((obj) => {
-                    return {
-                        label: obj?.job_title + `(${obj?.students?.length}/${obj?.limit})`,
-                        value: obj?.id,
-                    };
-                });
-            form.setFieldsValue({
-                job_title: null,
-            });
-            setJobOnChange(null);
-            setOptionJobTitle(newOpntionJobtitle);
-        }
-    };
-
     const onFinish = (value) => {
         console.log({ value });
     };
 
     const handleSaveButton = (stdent_id: string) => {
-        console.log(stdent_id);
-        const job_id = form.getFieldValue('job_title');
-        console.log(job_id);
-        if (job_id && stdent_id) {
-            committeeAssignJob({
-                variables: { committeeAssignjobInfo: { job_id: job_id, student_id: stdent_id } },
+        const advisor_score = form.getFieldValue('advisor_score');
+        const company_score = form.getFieldValue('company_score');
+        const presentation_score = form.getFieldValue('presentation_score');
+
+        console.log('advisor score:' + typeof advisor_score);
+        console.log('advisor score:' + typeof company_score);
+        console.log('advisor score:' + typeof presentation_score);
+        if (stdent_id) {
+            setScore({
+                variables: {
+                    setScoreInfo: { student_id: stdent_id, score_advisor: advisor_score, score_company: company_score, score_presentation: presentation_score },
+                },
                 onCompleted: (result) => {
                     if (result) {
-                        notification.success('Success', 'กำหนดงานเสร็จสิ้น');
+                        notification.success('Success', 'แก้ไขคะแนนเสร็จสิ้น');
                     }
                     setEditingRowKey(null);
-                    setJobOnChange(null);
-                    setOptionJobTitle(null);
                     refetch();
                 },
                 onError: (error) => {
@@ -95,13 +69,8 @@ const AssignJob: React.FC = () => {
         }
     };
 
-    const handleJobOnChange = (value) => {
-        setJobOnChange(value);
-    };
-
     const handleCancel = () => {
         setEditingRowKey(null);
-        setJobOnChange(false);
     };
 
     useEffect(() => {
@@ -117,75 +86,109 @@ const AssignJob: React.FC = () => {
         {
             title: 'รหัสนักศึกษา',
             dataIndex: 'student_id',
+            align: 'center',
             render: (value, { student_id }, index) => {
                 return <>{student_id}</>;
             },
         },
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'name',
             render: (value, { name_prefix, name_th, lastname_th }, index) => {
                 return <>{name_prefix + ' ' + name_th + ' ' + lastname_th}</>;
             },
         },
         {
-            title: 'หลักสูตร',
+            title: <div className="flex items-center justify-center">หลักสูตร</div>,
             dataIndex: 'curriculum',
             render: (value, { curriculum }, index) => {
                 return <>{curriculum?.curriculum_name_th}</>;
             },
         },
         {
-            width: '20%',
-            title: 'บริษัท',
-            dataIndex: 'job',
-            render: (value, { job, key }, index) => {
+            width: '10%',
+            title: 'อาจารย์นิเทศ',
+            dataIndex: 'score_from_advisor',
+            align: 'center',
+            render: (value, { score_from_advisor, key }, index) => {
                 if (editingRowKey === key)
                     return (
-                        <Form.Item name="company_name" style={{ margin: 0 }}>
-                            <Select
-                                showSearch
-                                placeholder="Search to Select"
-                                optionFilterProp="children"
-                                filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                                filterSort={(optionA, optionB) => (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())}
-                                options={object_company_name}
-                                onChange={updateOptionJobTitles}
-                            />
+                        <Form.Item name="advisor_score" className="m-0">
+                            <InputNumber maxLength={2} min={0} max={20} className="w-[50%] font-primary_noto text-[16px]"></InputNumber>
                         </Form.Item>
                     );
                 else {
-                    return <>{job?.company_id?.name_eng ? job?.company_id?.name_eng : '-'}</>;
+                    return (
+                        <>
+                            {score_from_advisor}
+                            {'/20'}
+                        </>
+                    );
                 }
             },
         },
         {
-            width: '20%',
-            title: 'ตำแหน่ง',
-            dataIndex: 'job',
-            render: (value, { job, key }, index) => {
+            width: '10%',
+            title: 'บริษัท',
+            dataIndex: 'score_from_company',
+            align: 'center',
+            render: (value, { score_from_company, key }, index) => {
                 if (editingRowKey === key)
                     return (
-                        <Form.Item name="job_title" style={{ margin: 0 }}>
-                            <Select
-                                className=""
-                                showSearch
-                                placeholder="Search to Select"
-                                optionFilterProp="children"
-                                options={optionJobTitle}
-                                onChange={handleJobOnChange}
-                            />
+                        <Form.Item name="company_score" className="m-0">
+                            <InputNumber maxLength={2} min={0} max={40} className="w-[50%] font-primary_noto text-[16px]"></InputNumber>
                         </Form.Item>
                     );
                 else {
-                    return <>{job?.job_title ? job?.job_title + ` (${job?.students?.length}/${job?.limit})` : '-'}</>;
+                    return (
+                        <>
+                            {score_from_company}
+                            {'/40'}
+                        </>
+                    );
                 }
+            },
+        },
+        {
+            width: '10%',
+            title: 'สอบสหกิจ',
+            dataIndex: 'score_from_presentation',
+            align: 'center',
+            render: (value, { score_from_presentation, key }, index) => {
+                if (editingRowKey === key)
+                    return (
+                        <Form.Item name="presentation_score" className="m-0">
+                            <InputNumber maxLength={2} min={0} max={40} className="w-[50%] font-primary_noto text-[16px]"></InputNumber>
+                        </Form.Item>
+                    );
+                else {
+                    return (
+                        <>
+                            {score_from_presentation}
+                            {'/40'}
+                        </>
+                    );
+                }
+            },
+        },
+        {
+            width: '10%',
+            title: 'คะแนนรวม',
+            align: 'center',
+            render: (value, { score_from_advisor, score_from_company, score_from_presentation }, index) => {
+                return (
+                    <>
+                        {score_from_advisor + score_from_company + score_from_presentation}
+                        {'/100'}
+                    </>
+                );
             },
         },
         {
             width: '15%',
             title: 'Action',
             dataIndex: 'action',
+            align: 'center',
             render: (_, record) => {
                 return (
                     <>
@@ -195,10 +198,10 @@ const AssignJob: React.FC = () => {
                                 onClick={() => {
                                     setEditingRowKey(record.key);
                                     form.setFieldsValue({
-                                        company_name: record.job?.company_id?.name_eng,
-                                        job_title: record.job?.job_title,
+                                        advisor_score: record.score_from_advisor,
+                                        presentation_score: record.score_from_presentation,
+                                        company_score: record.score_from_company,
                                     });
-                                    updateOptionJobTitles(record.job?.company_id?.id);
                                 }}
                             >
                                 <PencilSquareIcon className="w-6 h-6 text-gray-600" />
@@ -215,7 +218,7 @@ const AssignJob: React.FC = () => {
                         )}
 
                         {editingRowKey === record.key &&
-                            (jobOnChange ? (
+                            (true ? (
                                 <button
                                     className={'px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl'}
                                     type="submit"
@@ -250,7 +253,7 @@ const AssignJob: React.FC = () => {
     }
     return (
         <div>
-            <h1>กำหนดงานให้นักศึกษา</h1>
+            <h1>รวมคะแนนสหกิจ</h1>
             <Divider />
             <Form form={form} onFinish={onFinish}>
                 <Table bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
@@ -259,4 +262,4 @@ const AssignJob: React.FC = () => {
     );
 };
 
-export default AssignJob;
+export default CoopScore;
