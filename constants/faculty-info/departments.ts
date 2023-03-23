@@ -76,12 +76,6 @@ export const departments = [
     },
     {
         faculty_id: '01',
-        department_id: '13',
-        department_name_th: 'ยังไม่เลือกภาควิชา',
-        department_name_en: 'Not yet selected the department',
-    },
-    {
-        faculty_id: '01',
         department_id: '14',
         department_name_th: 'วิศวกรรมอุตสาหการ',
         department_name_en: 'Industrial Engineering',
@@ -118,12 +112,6 @@ export const departments = [
     },
     {
         faculty_id: '01',
-        department_id: '24',
-        department_name_th: ' สำนักงานบริหารหลักสูตรวิศวกรรมสหวิทยาการนานาชาติ',
-        department_name_en: 'School of International and Interdisciplinary Engineering Programs (SIIE)',
-    },
-    {
-        faculty_id: '01',
         department_id: '25',
         department_name_th: 'วิศวกรรมการเงิน',
         department_name_en: 'Financial Engineering',
@@ -139,12 +127,6 @@ export const departments = [
         department_id: '27',
         department_name_th: 'วิศวกรรมและการเป็นผู้ประกอบการ',
         department_name_en: 'Engineering Management and Engrepreneurship',
-    },
-    {
-        faculty_id: '01',
-        department_id: '28',
-        department_name_th: 'คณะวิศวกรรมศาสตร์ ไม่ประจำภาควิชา',
-        department_name_en: 'คณะวิศวกรรมศาสตร์ ไม่ประจำภาควิชา',
     },
     {
         faculty_id: '02',
@@ -182,12 +164,7 @@ export const departments = [
         department_name_th: 'ศิลปกรรม',
         department_name_en: 'Fine Arts',
     },
-    {
-        faculty_id: '02',
-        department_id: '07',
-        department_name_th: 'สำนักงานบริหารหลักสูตรสถาปัตยกรรมสหวิทยาการนานาชาติ',
-        department_name_en: 'Free Department',
-    },
+
     {
         faculty_id: '02',
         department_id: '08',
@@ -362,12 +339,7 @@ export const departments = [
         department_name_th: 'คณิตศาสตร์',
         department_name_en: 'Mathematics',
     },
-    {
-        faculty_id: '05',
-        department_id: '11',
-        department_name_th: 'ศูนย์วิเคราะห์ข้อมูลดิจิทัลอัจฉริยะพระจอมเกล้าลาดกระบัง',
-        department_name_en: 'KMITL Digital Analytics and Intelligence Center',
-    },
+
     {
         faculty_id: '06',
         department_id: '01',
@@ -452,24 +424,14 @@ export const departments = [
         department_name_th: 'แพทยศาสตรนานาชาติ',
         department_name_en: 'International Medical College',
     },
-    {
-        faculty_id: '17',
-        department_id: '01',
-        department_name_th: 'วิทยาลัยวิจัยนวัตกรรมทางการศึกษา',
-        department_name_en: 'College of Educational Innovation Research',
-    },
+
     {
         faculty_id: '18',
         department_id: '01',
         department_name_th: 'วิศวกรรมดนตรีและสื่อประสม',
         department_name_en: 'Music Engineering and Multimedia',
     },
-    {
-        faculty_id: '19',
-        department_id: '01',
-        department_name_th: 'ไม่ระบุ',
-        department_name_en: 'ไม่ระบุ',
-    },
+
     {
         faculty_id: '20',
         department_id: '01',
@@ -482,22 +444,11 @@ export const departments = [
         department_name_th: 'เทคโนโลยีการเกษตร',
         department_name_en: 'Agricultural Technology',
     },
-    {
-        faculty_id: '20',
-        department_id: '03',
-        department_name_th: 'พื้นฐานทั่วไป',
-        department_name_en: 'General basic',
-    },
+
     {
         faculty_id: '20',
         department_id: '11',
         department_name_th: 'บริหารธุรกิจ',
         department_name_en: 'Business Administration',
-    },
-    {
-        faculty_id: '90',
-        department_id: '90',
-        department_name_th: 'ศึกษาทั่วไป',
-        department_name_en: 'General Education',
     },
 ];

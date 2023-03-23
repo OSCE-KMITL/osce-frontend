@@ -87,19 +87,4 @@ export const faculties = [
         faculty_name_th: 'ทันตแพทยศาสตร์',
         faculty_name_en: 'Dentistry',
     },
-    {
-        faculty_id: '20',
-        faculty_name_th: 'วิทยาเขตชุมพรเขตรอุดมศักดิ์',
-        faculty_name_en: 'Prince of Chumphon Campus',
-    },
-    {
-        faculty_id: '90',
-        faculty_name_th: 'สำนักวิชาศึกษาทั่วไป',
-        faculty_name_en: 'General Education',
-    },
-    {
-        faculty_id: '95',
-        faculty_name_th: 'นักศึกษาแลกเปลี่ยน',
-        faculty_name_en: 'International Exchange Student',
-    },
 ];

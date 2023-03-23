@@ -5,6 +5,10 @@ import { UseFormRegister } from 'react-hook-form';
 import { RegisterCoopHookState, registerErrorSchema } from '@features/register-coop/interfaces';
 import moment from 'moment';
 import { useFacultyState } from '@features/register-coop/hooks/useFormState';
+import { useSelector } from 'react-redux';
+import { birthDateStateSelector } from '@features/register-coop/coopregister.slice';
+import date from 'async-validator/dist-types/validator/date';
+import dayjs from 'dayjs';
 
 export interface RegisterForm {
     register: UseFormRegister<RegisterCoopHookState>;
@@ -13,11 +17,15 @@ export interface RegisterForm {
 
 const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
     const { handleBrithDateStateChange } = useFacultyState();
+
     function disabledDate(current) {
         // Can not select days before today and today
-        const start = moment('1990-01-01', 'YYYY-MM-DD');
+        const start = moment('01/01/1990', 'DD/MM/YYYY');
         return current < start || current > moment();
     }
+
+    const birth_date = useSelector(birthDateStateSelector);
+    console.log(birth_date);
 
     return (
         <>
@@ -32,7 +40,7 @@ const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
                                 name={'citizen_id'}
                                 type="text"
                                 label={'เลขบัตรประจำตัวประชาชน'}
-                                placeholder={' 1234567890000'}
+                                placeholder={'1234567890000'}
                                 fullWidth
                                 register={register}
                                 isError={errors.citizen_id && true}
@@ -101,6 +109,7 @@ const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
                                 disabledDate={disabledDate}
                                 placeholder={'เลือกวันเกิด'}
                                 size={'large'}
+                                defaultValue={birth_date ? dayjs(birth_date, 'DD/MM/YYYY') : null}
                                 onChange={(date, dateString) => {
                                     handleBrithDateStateChange(dateString);
                                 }}

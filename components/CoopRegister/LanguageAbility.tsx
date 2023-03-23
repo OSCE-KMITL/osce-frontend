@@ -1,18 +1,10 @@
 import React, { FC } from 'react';
 import Input from '@ui/Input';
-import { checkIsSelected, ILanguageAbility, ISkillState, regExPattern, registerErrorSchema } from '@features/register-coop/interfaces';
+import { checkIsSelected, ILanguageAbility, regExPattern } from '@features/register-coop/interfaces';
 import { useFieldArray, useForm } from 'react-hook-form';
-import {
-    handleAddSkill,
-    skillsStateSelector,
-    handleDiscardSkill,
-    handleAddLanguageAbilities,
-    languageAbilitiesStateSelector,
-    handleDiscardLanguageAbilities,
-} from '@features/register-coop/coopregister.slice';
+import { handleAddLanguageAbilities, languageAbilitiesStateSelector, handleDiscardLanguageAbilities } from '@features/register-coop/coopregister.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
 
 interface OwnProps {}
 
@@ -44,10 +36,10 @@ const LanguageAbility: FC<Props> = (props) => {
     const added_skill = language_ability.map((skill, index) => (
         <div className="col-span-7 grid grid-cols-7 gap-x-6  items-start " key={index}>
             <div className="col-span-3 text-black text-[20px] mb-4  border border-gray-100 rounded-md px-3 py-3 bg-gray-100">
-                <h1>{skill.name}</h1>
+                <p>{skill.name}</p>
             </div>{' '}
             <div className="col-span-3 text-black text-[20px]  mb-4 border border-gray-100 rounded-md px-3 py-3 bg-gray-100">
-                <h1>{skill.level}</h1>
+                <p>{skill.level}</p>
             </div>{' '}
             <div className="col-span-1 flex py-1 items-center">
                 <div

@@ -13,8 +13,10 @@ const StudentInfo: FunctionComponent<Props> = (props) => {
 
     const current = router.query as { student_id: string };
     const { data, loading, error } = useGetStudent(current.student_id);
+
     if (loading) return <SkeletonLoading></SkeletonLoading>;
     if (error) return <>{error.message}</>;
+
     return (
         <div>
             <p onClick={() => router.back()} className="mb-6 font-semibold">

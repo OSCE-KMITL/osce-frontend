@@ -1,40 +1,99 @@
 import { FC, useContext } from 'react';
 import { AuthenticationContext } from '@context/AuthContextProvider';
-import { studentIdParser } from 'utils/common';
+import { checkIsCompleteInformation } from 'utils/common';
 import { CoopStatus } from '@features/student/interfaces';
 import { IStudent } from '@features/student/interfaces/Student';
 
 interface AppliedStatusProps {
-    studentData: IStudent;
+    studentData: IStudent | null;
 }
 
 const AppliedStatus: FC<AppliedStatusProps> = ({ studentData }) => {
-    const { me } = useContext(AuthenticationContext);
-
     if (!studentData) {
         return <h1>ไม่พบข้อมูล</h1>;
     }
 
-    const skills = () => {
-        return studentData.skills.map((skill, key) => <p key={key}>{skill.skill_name}</p>);
-    };
-
-    const status = () => {
-        if (studentData.coop_status === CoopStatus.APPLYING) {
-            return <p className="px-6 py-2 bg-blue-50 text-blue-800">ส่งใบสมัครแล้ว</p>;
-        } else if (studentData.coop_status === CoopStatus.PASSED) {
-            return <p className="px-6 py-2 bg-green-50 text-green-800">ผ่านการคัดเลือก</p>;
-        } else if (studentData.coop_status === CoopStatus.REJECTED) {
-            return <p className="px-6 py-2 bg-red-50 text-red-800">ไม่ผ่านการคัดเลือก</p>;
+    const skill_name = () => {
+        if (studentData.skills) {
+            return studentData.skills.map((skill, key) => (
+                <>
+                    <p key={key}>{skill.skill_name}</p>
+                </>
+            ));
+        } else {
+            return <p>-</p>;
         }
     };
+    const skill_level = () => {
+        if (studentData.skills) {
+            return studentData.skills.map((skill, key) => (
+                <>
+                    <p key={key}>{skill.level}</p>
+                </>
+            ));
+        } else {
+            return <p>-</p>;
+        }
+    };
+    const lang_name = () => {
+        if (studentData.language_abilities) {
+            return studentData.language_abilities.map((skill, key) => (
+                <>
+                    <p key={key}>{skill.name}</p>
+                </>
+            ));
+        } else {
+            return <p>-</p>;
+        }
+    };
+    const lang_level = () => {
+        if (studentData.language_abilities) {
+            return studentData.language_abilities.map((skill, key) => (
+                <>
+                    <p key={key}>{skill.level}</p>
+                </>
+            ));
+        } else {
+            return <p>-</p>;
+        }
+    };
+    const status = () => {
+        if (studentData.coop_status === CoopStatus.APPLYING) {
+            return <p className="px-6 py-2 bg-blue-100 text-blue-500 rounded-full border border-blue-500">ส่งใบสมัคร</p>;
+        } else if (studentData.coop_status === CoopStatus.PASSED) {
+            return <p className="px-6 py-2 bg-green-100 text-green-500 rounded-full border border-green-500">ผ่านการคัดเลือก</p>;
+        } else if (studentData.coop_status === CoopStatus.REJECTED) {
+            return <p className="px-6 py-2 bg-red-100 text-red-500 rounded-full border border-red-500">ไม่ผ่านการคัดเลือก</p>;
+        } else if (studentData.coop_status === CoopStatus.SAVED) {
+            return <p className="px-6 py-2 bg-yellow-100 text-yellow-500 rounded-full border border-yellow-500">บันทึกใบสมัคร</p>;
+        } else {
+            return <p className="px-6 py-2 bg-gray-100 text-gray-500 rounded-full border border-gray-500">-</p>;
+        }
+    };
+
     return (
         <div className="w-full mb-6 flex flex-col  ">
             <div className="grid grid-cols-4 w-[100%] py-4 min-h-full bg-white text-[20px] px-4  rounded-md gap-x-6 gap-y-4 ">
                 <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
                     <p className="mb-4 mt-5 text-xl">สถานะการสมัคร</p>
                 </div>
-                <div className="col-span-3 grid grid-rows-1 gap-y-4 justify-start align-middle items-center">{status()}</div>
+                <div className="col-span-3 grid grid-rows-1 gap-y-4 justify-start align-middle items-center">{status()}</div>{' '}
+                <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
+                    <p className="mb-4 mt-5 text-xl">ความครบถ้วนของข้อมูล</p>
+                </div>
+                <div className="col-span-3  flex items-center gap-x-4 justify-start align-middle items-center">
+                    <div className="bg-gray-200  w-1/3 text-sm font-semibold inline-flex items-center rounded ">
+                        <div
+                            className="bg-gray-400 text-gray-800  text-sm font-semibold inline-flex items-center p-1.5 rounded "
+                            style={{ width: `${checkIsCompleteInformation(studentData)}%` }}
+                        >
+                            {checkIsCompleteInformation(studentData).toFixed(0)} %
+                        </div>
+                    </div>
+                    <p className="bg-gray-100 text-gray-800 text-sm font-semibold inline-flex items-center p-1.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                        กรอกข้อมูลครบแล้ว
+                    </p>
+                </div>
             </div>
             <p className="mb-4 mt-5 text-3xl">ข้อมูลนักศึกษา</p>
             <div className="grid grid-cols-4 w-[100%] min-h-full bg-white text-[20px] px-6 py-6 rounded-md gap-x-6 gap-y-4 ">
@@ -46,7 +105,7 @@ const AppliedStatus: FC<AppliedStatusProps> = ({ studentData }) => {
                     <p>หลักสูตร</p>
                 </div>
                 <div className="col-span-3 grid grid-rows-1 gap-y-4">
-                    <p>{studentIdParser(me?.email)}</p>
+                    <p>{studentData.student_id}</p>
                     <p>{studentData.name_th + ' ' + studentData.lastname_th}</p>
                     <p>{studentData.faculty?.faculty_name_th}</p>
                     <p>{studentData.department?.department_name_th}</p>
@@ -88,11 +147,21 @@ const AppliedStatus: FC<AppliedStatusProps> = ({ studentData }) => {
                     <p>เบอร์ติดต่อ</p>
                 </div>
                 <div className="col-span-3 grid grid-rows-1 gap-y-4">
-                    <p>{studentData.emer_name + studentData.emer_lastname || '-'}</p>
+                    <p>{studentData.emer_name + ' ' + studentData.emer_lastname || '-'}</p>
                     <p>{studentData.emer_relation || '-'}</p>
                     <p>{studentData.emer_tel || '-'}</p>
                 </div>
             </div>{' '}
+            <p className="mb-4 mt-5 text-3xl">ความสามารถพิเศษ</p>
+            <div className="grid grid-cols-4 w-[100%] min-h-full bg-white text-[20px] px-6 py-6 rounded-md gap-x-6 gap-y-4 ">
+                <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">{skill_name()}</div>
+                <div className="col-span-3 grid grid-rows-1 gap-y-4">{skill_level()}</div>
+            </div>
+            <p className="mb-4 mt-5 text-3xl">ทักษะทางภาษา</p>
+            <div className="grid grid-cols-4 w-[100%] min-h-full bg-white text-[20px] px-6 py-6 rounded-md gap-x-6 gap-y-4 ">
+                <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">{lang_name()}</div>
+                <div className="col-span-3 grid grid-rows-1 gap-y-4">{lang_level()}</div>
+            </div>
             <p className="mb-4 mt-5 text-3xl">เอกสารที่แนบมา</p>
             <div className="grid grid-cols-4 w-[100%] min-h-full bg-white text-[20px] px-6 py-6 rounded-md gap-x-6 gap-y-4 ">
                 <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
@@ -107,7 +176,7 @@ const AppliedStatus: FC<AppliedStatusProps> = ({ studentData }) => {
                         <p>{'-'}</p>
                     )}
                 </div>
-            </div>
+            </div>{' '}
         </div>
     );
 };

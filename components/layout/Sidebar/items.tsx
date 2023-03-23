@@ -74,7 +74,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: '',
+                key: '/student/report/',
             },
         ],
     },
@@ -93,30 +93,19 @@ export const student_item: MenuProps['items'] = [
             },
         ],
     },
-    {
-        label: 'การรายงานผลสหกิจศึกษา',
-        key: '02',
-        type: 'group',
-        children: [
-            {
-                label: 'รายงานผลสหกิจ',
-                key: '',
-            },
-        ],
-    },
 
     {
         label: 'การประเมินผล',
-        key: '04',
+        key: '05',
         type: 'group',
         children: [
             {
                 label: 'ประเมินสถานประกอบการ',
-                key: '',
+                key: '/assessment/company-assessment',
             },
             {
                 label: 'ประเมินอาจารย์นิเทศ',
-                key: '',
+                key: '/assessment/advisor-assessment',
             },
         ],
     },
@@ -139,7 +128,7 @@ export const itemsCompany: MenuProps['items'] = [
     },
     {
         label: 'เกี่ยวกับบริษัท',
-        key: '01',
+        key: '02',
         type: 'group',
         children: [
             {
@@ -150,7 +139,7 @@ export const itemsCompany: MenuProps['items'] = [
     },
     {
         label: 'จัดการนักศึกษา',
-        key: '01',
+        key: '03',
         type: 'group',
         children: [
             {
@@ -164,7 +153,7 @@ export const itemsCompany: MenuProps['items'] = [
 export const itemsCommittee: MenuProps['items'] = [
     {
         label: 'จัดการสหกิจ',
-        key: '02',
+        key: '01',
         type: 'group',
         children: [
             {
@@ -173,17 +162,17 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'กำหนดนักศึกษาให้อาจารย์',
-                key: '',
+                key: '/manager/advisor',
             },
             {
                 label: 'รวมคะแนนสหกิจ',
-                key: '',
+                key: '/manager/coop-score',
             },
         ],
     },
     {
         label: 'จัดการผู้ใช้ในระบบ',
-        key: '01',
+        key: '02',
         type: 'group',
         children: [
             {

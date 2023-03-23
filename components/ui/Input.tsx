@@ -64,7 +64,7 @@ const Input: FunctionComponent<InputProps> = ({
                 placeholder={placeholder}
                 step={step ? 0.01 : undefined}
                 disabled={disable}
-                value={disable && value}
+                value={value}
             />
             <div className="h-5">
                 {errors && <ErrorMessage errors={errors} name={name} render={({ message }) => <p className={'text-red-500'}>{message}</p>} />}

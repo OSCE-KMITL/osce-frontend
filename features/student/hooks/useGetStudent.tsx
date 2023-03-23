@@ -9,6 +9,14 @@ export const GET_STUDENT = gql`
             citizen_id
             coop_status
             created_at
+            skills {
+                level
+                skill_name
+            }
+            language_abilities {
+                level
+                name
+            }
             transcript {
                 current_name
                 url

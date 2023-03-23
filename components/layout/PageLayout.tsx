@@ -24,6 +24,9 @@ const PageLayout: React.FC<ScriptProps> = ({ children }) => {
                             Menu: {
                                 colorPrimary: '#FF813E',
                             },
+                            Tag: {
+                                fontSize: 16,
+                            },
                             Steps: {
                                 colorPrimary: '#FF813E',
                             },

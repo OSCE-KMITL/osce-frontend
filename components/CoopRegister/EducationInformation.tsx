@@ -82,28 +82,28 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                     <div className="col-span-4 ">
                         {' '}
                         <Input
-                            name={'name'}
+                            name={'name_th'}
                             type="text"
                             label={'ชื่อจริง (ภาษาไทย)'}
-                            placeholder={' อาทิตย์ '}
+                            placeholder={'อาทิตย์ '}
                             fullWidth
                             register={register}
-                            isError={errors.name && true}
-                            validationSchema={registerErrorSchema.name}
+                            isError={errors.name_th && true}
+                            validationSchema={registerErrorSchema.name_th}
                             errors={errors}
                         />{' '}
                     </div>{' '}
                     <div className="col-span-4 ">
                         {' '}
                         <Input
-                            name={'lastname'}
+                            name={'lastname_th'}
                             type="text"
                             label={'นามสกุล (ภาษาไทย)'}
                             placeholder={' ใจดีมาก '}
                             fullWidth
                             register={register}
-                            isError={errors.lastname && true}
-                            validationSchema={registerErrorSchema.lastname}
+                            isError={errors.lastname_th && true}
+                            validationSchema={registerErrorSchema.lastname_th}
                             errors={errors}
                         />{' '}
                     </div>

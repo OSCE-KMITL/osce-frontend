@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Input from '@ui/Input';
-import { checkIsSelected, ISkillState, registerErrorSchema } from '@features/register-coop/interfaces';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { checkIsSelected, ISkillState } from '@features/register-coop/interfaces';
+import { useForm } from 'react-hook-form';
 import { handleAddSkill, skillsStateSelector, handleDiscardSkill } from '@features/register-coop/coopregister.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { TrashIcon } from '@heroicons/react/24/outline';
@@ -25,6 +25,7 @@ const PersonalSkill: FC<Props> = (props) => {
         dispatch(handleAddSkill(data));
         reset();
     }
+
     function alreadySkillExist(value: string) {
         const already = skills.find((obj) => obj.skill_name.trim().toLowerCase() === value.trim().toLowerCase());
         if (already) {
@@ -35,10 +36,10 @@ const PersonalSkill: FC<Props> = (props) => {
     const added_skill = skills.map((skill, index) => (
         <div className="col-span-7 grid grid-cols-7 gap-x-6  items-start " key={index}>
             <div className="col-span-3 text-black text-[20px] mb-4  border border-gray-100 rounded-md px-3 py-3 bg-gray-100">
-                <h1>{skill.skill_name}</h1>
+                <p>{skill.skill_name}</p>
             </div>{' '}
             <div className="col-span-3 text-black text-[20px]  mb-4 border border-gray-100 rounded-md px-3 py-3 bg-gray-100">
-                <h1>{skill.level}</h1>
+                <p>{skill.level}</p>
             </div>{' '}
             <div className="col-span-1 flex py-1 items-center">
                 <div

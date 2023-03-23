@@ -25,27 +25,27 @@ export interface IUserFacultyState {
 }
 
 export interface RegisterCoopHookState {
-    height: string;
-    phone_number: string;
-    weight: string;
-    name: string;
-    lastname: string;
-    student_id: string;
-    gpa: string;
-    faculty: string;
-    department: string;
-    curriculum: string;
-    citizen_id: string;
-    address: string;
-    gender: string;
-    religion: string;
+    height: string | null;
+    phone_number: string | null;
+    weight: string | null;
+    name_th: string | null;
+    lastname_th: string | null;
+    student_id: string | null;
+    gpa: string | null;
+    faculty: string | null;
+    department: string | null;
+    curriculum: string | null;
+    citizen_id: string | null;
+    address: string | null;
+    gender: string | null;
+    religion: string | null;
     military_status: any;
     driver_license: any;
-    emer_name: string;
-    emer_tel: string;
-    emer_relation: string;
-    emer_lastname: string;
-    name_prefix: string;
+    emer_name: string | null;
+    emer_tel: string | null;
+    emer_relation: string | null;
+    emer_lastname: string | null;
+    name_prefix: string | null;
 }
 
 interface RegisterError {
@@ -56,7 +56,7 @@ interface RegisterError {
     gender: RegisterOptions;
     religion: RegisterOptions;
     phone_number: RegisterOptions;
-    lastname: RegisterOptions;
+    lastname_th: RegisterOptions;
     weight: RegisterOptions;
     height: RegisterOptions;
     citizen_id: RegisterOptions;
@@ -69,7 +69,7 @@ interface RegisterError {
     // gender: RegisterOptions;
     gpa: RegisterOptions;
     // military_status: RegisterOptions;
-    name: RegisterOptions;
+    name_th: RegisterOptions;
     // religion: RegisterOptions;
 }
 
@@ -123,8 +123,8 @@ export const registerErrorSchema: RegisterError = {
     },
     emer_name: { required: 'กรุณากรอกชื่อ', pattern: { value: regExPattern.only_thai, message: 'กรอกชื่อภาษาไทย' }, maxLength: 50 },
     emer_lastname: { required: 'กรุณากรอกนามสกุล', pattern: { value: regExPattern.only_thai, message: 'กรอกนามสกุลภาษาไทย' }, maxLength: 50 },
-    name: { required: 'กรุณากรอกชื่อ', pattern: { value: regExPattern.only_thai, message: 'กรอกชื่อภาษาไทย' }, maxLength: 50 },
-    lastname: { required: 'กรุณากรอกนามสกุล', pattern: { value: regExPattern.only_thai, message: 'กรอกนามสกุลภาษาไทย' }, maxLength: 50 },
+    name_th: { required: 'กรุณากรอกชื่อ', pattern: { value: regExPattern.only_thai, message: 'กรอกชื่อภาษาไทย' }, maxLength: 50 },
+    lastname_th: { required: 'กรุณากรอกนามสกุล', pattern: { value: regExPattern.only_thai, message: 'กรอกนามสกุลภาษาไทย' }, maxLength: 50 },
     citizen_id: {
         required: { value: true, message: 'กรอกรหัสบัตรประจำตัวประชาชน' },
         minLength: { value: 13, message: 'รหัสบัตรประจำตัวประชาชน 13 หลัก' },

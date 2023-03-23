@@ -2,8 +2,8 @@ import { gql, useQuery } from '@apollo/client';
 import { IStudent } from '../interfaces/Student';
 
 export const GET_STUDENTS = gql`
-    query GetStudents {
-        getStudents {
+    query getStudentsApply {
+        getStudentsApply {
             address
             birth_date
             citizen_id
@@ -52,8 +52,8 @@ export const GET_STUDENTS = gql`
         }
     }
 `;
-interface GetStudentsResponse {
-    getStudents: IStudent[];
+export interface GetStudentsResponse {
+    getStudentsApply: IStudent[];
 }
 export const useGetStudents = () => {
     return useQuery<GetStudentsResponse>(GET_STUDENTS, { pollInterval: 3000 });
