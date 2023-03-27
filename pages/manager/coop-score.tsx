@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Form, Input, InputNumber, Select, Table } from 'antd';
+import { Button, Divider, Form, InputNumber, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useGetStudents } from '@features/student/hooks/useGetStudents';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { IStudent } from '@features/student/interfaces/Student';
-import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
-import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
+import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { useSetScoreStudent } from '@features/student/hooks/useSetScoreStudent';
+import { saveAs } from 'file-saver';
+import { Link } from '@ui/Link';
+const XLSX = require('xlsx');
 
 const CoopScore: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -45,9 +46,6 @@ const CoopScore: React.FC = () => {
         const company_score = form.getFieldValue('company_score');
         const presentation_score = form.getFieldValue('presentation_score');
 
-        console.log('advisor score:' + typeof advisor_score);
-        console.log('advisor score:' + typeof company_score);
-        console.log('advisor score:' + typeof presentation_score);
         if (stdent_id) {
             setScore({
                 variables: {
@@ -77,6 +75,26 @@ const CoopScore: React.FC = () => {
         newDataSource();
         refectch_me();
     }, [stu_data]);
+
+    const handleExportExcel = () => {
+        const dataToExport = dataSource.map((item) => {
+            return {
+                รหัสนักศึกษา: item.student_id,
+                'ชื่อ-นามสกุล': `${item.name_prefix} ${item.name_th} ${item.lastname_th}`,
+                หลักสูตร: item.curriculum?.curriculum_name_th,
+                อาจารย์นิเทศ: `${item.score_from_advisor}/20`,
+                บริษัท: `${item.score_from_company}/40`,
+                การสอบ: `${item.score_from_presentation}/40`,
+                รวมคะแนน: `${item.score_from_advisor + item.score_from_company + item.score_from_presentation}`,
+            };
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'coop_score.xlsx');
+    };
 
     interface ITableStudent extends IStudent {
         key: string;
@@ -255,8 +273,15 @@ const CoopScore: React.FC = () => {
         <div>
             <h1>รวมคะแนนสหกิจ</h1>
             <Divider />
+            <div className="flex justify-end mb-4">
+                <Link onClick={handleExportExcel} intent="primary">
+                    <DocumentArrowDownIcon className="w-6 h-6 text-white mr-2" />
+                    <p className="text-[14px] font-bold">Export to Excel</p>
+                </Link>
+            </div>
+
             <Form form={form} onFinish={onFinish}>
-                <Table bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
+                <Table id="scroe_table" bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
             </Form>
         </div>
     );
