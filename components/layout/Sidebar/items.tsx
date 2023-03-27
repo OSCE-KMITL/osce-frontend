@@ -145,7 +145,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'นักศึกษาที่สังกัดปัจจุบัน',
-                key: '',
+                key: '/company/my-students',
             },
         ],
     },

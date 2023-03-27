@@ -84,7 +84,6 @@ export default function Myjob() {
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
-                <BreadcrumbComponent />
                 <h1>งานที่เปิดรับ</h1>
                 <Divider />
             </div>

@@ -26,7 +26,9 @@ export const GET_STUDENT_APPLY_JOB = gql`
                 job_title
                 required_major
                 limit
+                internship_period
                 company_id {
+                    id
                     name_eng
                 }
                 students {
@@ -54,7 +56,9 @@ export interface StudentApplyJobProp {
     job: {
         job_title: string;
         required_major: string;
+        internship_period: string;
         company_id: {
+            id: string;
             name_eng: string;
         };
         students: IStudent[] | null | undefined;

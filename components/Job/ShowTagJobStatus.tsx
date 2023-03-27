@@ -39,8 +39,8 @@ export default function ShowTagJobStatus(job_status: string) {
                 );
             case JobStatus.STUDENTACCEPT:
                 return (
-                    <Tag className="text-sm font-primary_noto" color="success">
-                        นักศึกษาตอบรับ
+                    <Tag className="text-sm font-primary_noto" color="processing">
+                        รอกรรมการอนุมัติ
                     </Tag>
                 );
             case JobStatus.STUDENTREJECT:

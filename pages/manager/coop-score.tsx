@@ -192,7 +192,7 @@ const CoopScore: React.FC = () => {
             render: (_, record) => {
                 return (
                     <>
-                        {!editingRowKey && (
+                        {editingRowKey !== record.key && (
                             <Button
                                 type="link"
                                 onClick={() => {
