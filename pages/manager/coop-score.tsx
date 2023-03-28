@@ -7,9 +7,8 @@ import { IStudent } from '@features/student/interfaces/Student';
 import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { useSetScoreStudent } from '@features/student/hooks/useSetScoreStudent';
-import { saveAs } from 'file-saver';
 import { Link } from '@ui/Link';
-const XLSX = require('xlsx');
+import { ExportJsonToExcel } from 'utils/ExportJsonToExcel';
 
 const CoopScore: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -88,12 +87,7 @@ const CoopScore: React.FC = () => {
                 รวมคะแนน: `${item.score_from_advisor + item.score_from_company + item.score_from_presentation}`,
             };
         });
-
-        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'coop_score.xlsx');
+        return dataToExport;
     };
 
     interface ITableStudent extends IStudent {
@@ -274,7 +268,7 @@ const CoopScore: React.FC = () => {
             <h1>รวมคะแนนสหกิจ</h1>
             <Divider />
             <div className="flex justify-end mb-4">
-                <Link onClick={handleExportExcel} intent="primary">
+                <Link onClick={() => ExportJsonToExcel(handleExportExcel())} intent="primary">
                     <DocumentArrowDownIcon className="w-6 h-6 text-white mr-2" />
                     <p className="text-[14px] font-bold">Export to Excel</p>
                 </Link>
