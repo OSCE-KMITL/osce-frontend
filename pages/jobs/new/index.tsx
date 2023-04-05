@@ -18,6 +18,7 @@ import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import { UploadFileInput, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
 import { require_major, welfare_options } from 'constants/Job/jobData';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const CreateJobPage: FC = () => {
     const notification = NotificationService.getInstance();
@@ -28,6 +29,7 @@ const CreateJobPage: FC = () => {
     const [uploadFile, { loading: file_loading }] = useUploadFile();
     const { data: companies } = useGetAllCompany();
     const { me } = useContext(AuthenticationContext);
+    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
     const [internshipPeriod, setInternshipPeriod] = useState<string | undefined | null>(null);
     const [requireMajor, setRequireMajor] = useState<string | undefined | null>(null);
@@ -74,6 +76,12 @@ const CreateJobPage: FC = () => {
         setComapnyPersonObj(find_company_person);
     };
 
+    const handleCompanypersonOnClick = () => {
+        if (me?.role === 'COMPANY') {
+            setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
+        }
+    };
+
     //object all company person
     const object_company_persons = originalArray?.map((obj) => {
         return {
@@ -83,6 +91,7 @@ const CreateJobPage: FC = () => {
     });
 
     useEffect(() => {
+        refectch_me();
         if (me?.role === 'COMPANY') {
             setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
         }
@@ -632,6 +641,7 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={coordinatorNameOnSelect}
                                     onChange={coordinatorNameOnChange}
+                                    onClick={handleCompanypersonOnClick}
                                     placeholder="นาง พรประภา ชินตะวัน"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -707,6 +717,7 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={supervisorNameOnSelect}
                                     onChange={supervisorNameOnChange}
+                                    onClick={handleCompanypersonOnClick}
                                     placeholder="นาง เทธิกา จริงกิจจานุกูล"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
