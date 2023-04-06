@@ -13,9 +13,8 @@ import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import { useRouter } from 'next/router';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useGetMe } from '@features/auth/hooks/useGetMe';
 
-const Jobs: React.FC = () => {
+const PublicJobs: React.FC = () => {
     const { data, loading, error, refetch } = useGetJobs();
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const message = MessageService.getInstance();
@@ -23,10 +22,6 @@ const Jobs: React.FC = () => {
     const notification = NotificationService.getInstance();
     const router = useRouter();
     const { confirm } = Modal;
-    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
-
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
-    const filter_data = data?.getAllJob?.filter((job) => job?.required_major.includes(committee_dep) || job?.required_major.includes('ไม่จำกัดหลักสูตร'));
 
     useEffect(() => {
         refetch();
@@ -97,10 +92,10 @@ const Jobs: React.FC = () => {
         <ContentContainer>
             <div className="w-[80%] h-fit">
                 <BreadcrumbComponent />
-                <h1>งานที่เปิดรับสมัคร</h1>
+                <h1>ประกาศรับสมัครงาน</h1>
                 <Divider />
             </div>
-            {loading && <SkeletonLoading />}
+            {/* {loading && <SkeletonLoading />}
             {me?.role === RoleOption.COMMITTEE || me?.role === RoleOption.COMPANY ? (
                 <div className="w-[100%] flex justify-end">
                     <Link href={'/jobs/new'} intent="primary">
@@ -109,19 +104,19 @@ const Jobs: React.FC = () => {
                 </div>
             ) : (
                 ''
-            )}
+            )} */}
 
-            {filter_data &&
-                filter_data?.map((job) => (
+            {data &&
+                data?.getAllJob.map((job) => (
                     <div
                         key={job.id}
                         className=" w-full h-auto px-6 py-6 grid grid-cols-5  shadow-sm sm:rounded-lg border-solid border-1 border-gray-300 overflow-hidden bg-white font-primary_noto"
                     >
-                        {me?.role === RoleOption.COMMITTEE && (
+                        {/* {me?.role === RoleOption.COMMITTEE && (
                             <Dropdown overlay={menu(job?.id)} placement="topCenter" trigger={['click']} className="absolute flex justify-self-end">
                                 <MoreOutlined />
                             </Dropdown>
-                        )}
+                        )} */}
                         <div className=" w-full h-full col-span-3 gap-4 grid grid-rows-2">
                             <div className=" w-full h-full grid md:items-center">
                                 <h1 className="text-xl font-medium leading-6 text-gray-700">{job.job_title ? job.job_title : 'ไม่ระบุตำแหน่งงาน'}</h1>
@@ -157,4 +152,4 @@ const Jobs: React.FC = () => {
     );
 };
 
-export default Jobs;
+export default PublicJobs;
