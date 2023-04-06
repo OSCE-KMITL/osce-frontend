@@ -152,8 +152,27 @@ export const itemsCompany: MenuProps['items'] = [
 
 export const itemsCommittee: MenuProps['items'] = [
     {
-        label: 'จัดการสหกิจ',
+        label: 'จัดการผู้ใช้ในระบบ',
         key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'นักศึกษา',
+                key: '/manager/accounts',
+            },
+            {
+                label: 'อาจารย์สหกิจ',
+                key: '/manager/advisor-account',
+            },
+            {
+                label: 'บริษัท',
+                key: '/manager/company-account',
+            },
+        ],
+    },
+    {
+        label: 'จัดการสหกิจ',
+        key: '02',
         type: 'group',
         children: [
             {
@@ -162,7 +181,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'กำหนดนักศึกษาให้อาจารย์',
-                key: '/manager/advisor',
+                key: '/manager/advisor-assign',
             },
             {
                 label: 'รวมคะแนนสหกิจ',
@@ -170,17 +189,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
         ],
     },
-    {
-        label: 'จัดการผู้ใช้ในระบบ',
-        key: '02',
-        type: 'group',
-        children: [
-            {
-                label: 'บัญชีผู้ใช้งานในระบบ',
-                key: '/manager/accounts',
-            },
-        ],
-    },
+
     {
         label: 'จัดการงานที่เปิดรับ',
         key: '03',

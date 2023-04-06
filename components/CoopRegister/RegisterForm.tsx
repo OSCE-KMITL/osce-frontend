@@ -49,7 +49,6 @@ const RegisterForm: FC<Props> = () => {
         mode: 'onChange',
     });
 
-    const info = useSelector(facultyInfoStateSelector);
     const faculties_obj = useSelector(facultyStateSelector);
     const departments_obj = useSelector(departmentStateSelector);
     const curriculums_obj = useSelector(curriculumStateSelector);

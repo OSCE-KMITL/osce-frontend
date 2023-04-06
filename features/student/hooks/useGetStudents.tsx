@@ -6,6 +6,9 @@ export const GET_STUDENTS = gql`
         getStudentsApply {
             address
             birth_date
+            advisor {
+                advisor_id
+            }
             citizen_id
             coop_status
             created_at

@@ -23,6 +23,8 @@
 
 }
 
+
+
 @layer components {
     .input-form-primary {
         @apply w-full shadow-sm text-lg rounded-lg outline-none block p-2.5 bg-gray-50 border border-gray-300 text-gray-900;
@@ -42,6 +44,14 @@
 
     .label-form-head-card {
         @apply block mb-2 text-[24px] font-medium text-gray-900
+    }
+}
+
+.ant-menu-item-group{
+    .ant-menu-item-group-title{
+        font-size: 15px;
+        font-weight: 600;
+        color: #969696;
     }
 }
 

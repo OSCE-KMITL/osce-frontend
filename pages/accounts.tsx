@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
 import { message } from 'antd';
-import { useQueryAccounts } from '@features/account/hooks/useQueryAccounts';
+import { useGetAccounts } from '@features/account/hooks/useGetAccounts';
 import UserAccountTable from '@components/Accounts/UserAccountTable';
 
 const Accounts: React.FC = () => {
-    const { data, loading, error } = useQueryAccounts();
+    const { data, loading, error } = useGetAccounts();
     const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {}, [data, error]);

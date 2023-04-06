@@ -1,21 +1,23 @@
 import { ApolloError, gql, useQuery } from '@apollo/client';
+import { IStudent } from '@features/student/interfaces/Student';
 
 export const GET_ACCOUNTS = gql`
-    query GetAccounts {
+    query getAccounts {
         getAccounts {
+            id
             email
+            created_at
+            profile_image
+            role
+            status
+            updated_at
             is_advisor {
                 name
                 last_name
+                is_committee
+                faculty
+                advisor_id
             }
-            is_company {
-                full_name
-            }
-            is_student {
-                name
-                lastname
-            }
-            role
         }
     }
 `;
@@ -79,7 +81,7 @@ export interface AccountProps {
     status: string;
     created_at: string;
     updated_at: string;
-    is_advisor: {
+    is_advisor?: {
         advisor_id: string;
         name: string;
         last_name: string;
@@ -88,7 +90,7 @@ export interface AccountProps {
         created_at: string;
         updated_at: string;
     };
-    is_company: {
+    is_company?: {
         company_person_id: string;
         full_name: string;
         job_title: string;
@@ -106,22 +108,15 @@ export interface AccountProps {
         created_at: string;
         updated_at: string;
     };
-    is_student: {
-        student_id: string;
-        name: string;
-        lastname: string;
-    };
+    is_student?: IStudent;
 }
 
 export interface AccountResponse {
-    getAccount: AccountProps | null;
+    getAccount: AccountProps[] | null;
 }
 
-export function useQueryAccounts(): Result {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery(GET_ACCOUNTS);
-
-    return { data, loading, error };
+export function useGetAccounts() {
+    return useQuery(GET_ACCOUNTS);
 }
 
 export function useQueryAccount({ accountId: string }) {

@@ -1,6 +1,4 @@
-import { FC, useContext } from 'react';
-import { AuthenticationContext } from '@context/AuthContextProvider';
-import { checkIsCompleteInformation } from 'utils/common';
+import { FC } from 'react';
 import { CoopStatus } from '@features/student/interfaces';
 import { IStudent } from '@features/student/interfaces/Student';
 
@@ -78,22 +76,23 @@ const AppliedStatus: FC<AppliedStatusProps> = ({ studentData }) => {
                     <p className="mb-4 mt-5 text-xl">สถานะการสมัคร</p>
                 </div>
                 <div className="col-span-3 grid grid-rows-1 gap-y-4 justify-start align-middle items-center">{status()}</div>{' '}
-                <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
+                {/*       <div className="col-span-1 grid grid-rows-1 gap-y-4 text-gray-600">
                     <p className="mb-4 mt-5 text-xl">ความครบถ้วนของข้อมูล</p>
                 </div>
                 <div className="col-span-3  flex items-center gap-x-4 justify-start align-middle items-center">
-                    <div className="bg-gray-200  w-1/3 text-sm font-semibold inline-flex items-center rounded ">
-                        <div
-                            className="bg-gray-400 text-gray-800  text-sm font-semibold inline-flex items-center p-1.5 rounded "
-                            style={{ width: `${checkIsCompleteInformation(studentData)}%` }}
+                    <div className="bg-gray-200  w-1/3 text-sm font-semibold border border-green-600 text-gray-800 inline-flex items-center rounded-xl ">
+                        <p
+                            className="bg-green-200 text-green-600  text-center shadow-sm px-5  font-semibold inline-flex items-center p-1.5 rounded-xl "
+                            //style={{ width: `${checkIsCompleteInformation(studentData)}%` }}
+                            style={{ width: '80%' }}
                         >
                             {checkIsCompleteInformation(studentData).toFixed(0)} %
-                        </div>
+                        </p>
                     </div>
                     <p className="bg-gray-100 text-gray-800 text-sm font-semibold inline-flex items-center p-1.5 rounded dark:bg-blue-200 dark:text-blue-800">
                         กรอกข้อมูลครบแล้ว
                     </p>
-                </div>
+                </div>*/}
             </div>
             <p className="mb-4 mt-5 text-3xl">ข้อมูลนักศึกษา</p>
             <div className="grid grid-cols-4 w-[100%] min-h-full bg-white text-[20px] px-6 py-6 rounded-md gap-x-6 gap-y-4 ">

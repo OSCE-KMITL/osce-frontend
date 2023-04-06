@@ -28,6 +28,9 @@ const student_info = createSlice({
             state.status = 'APPLIED';
             state.step = 4;
         },
+        handleEditStudentInfo: (state, { payload }: PayloadAction<void>) => {
+            state.status = 'DEFAULT';
+        },
         increaseStep: (state, { payload }: PayloadAction<void>) => {
             state.step = state.step + 1;
         },
@@ -38,7 +41,7 @@ const student_info = createSlice({
     },
 });
 
-export const { handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, decreaseStep } = student_info.actions;
+export const { handleApplyStudentInfo, handleSavedStudentInfo, increaseStep, decreaseStep, handleEditStudentInfo } = student_info.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export common user selector

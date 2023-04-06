@@ -22,7 +22,7 @@ export const PUBLIC_NAVIGATOR_LINK: NavContent[] = [
     },
     {
         title: 'ดาวโหลดแบบฟอร์ม',
-        link: '/',
+        link: '/download',
     },
 ];
 

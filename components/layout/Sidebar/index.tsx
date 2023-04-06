@@ -12,7 +12,7 @@ const SideBar: FC = () => {
     const roleChecking = () => {
         if (me?.role === RoleOption.STUDENT) {
             return student_item;
-        } else if (me?.role === RoleOption.COMPANY) {
+        } else if (me?.role === RoleOption.COMPANY || me?.role === RoleOption.ADVISOR) {
             return itemsCompany;
         } else if (me?.role === RoleOption.COMMITTEE) {
             return itemsCommittee;

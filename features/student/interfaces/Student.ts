@@ -2,6 +2,7 @@ import { JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
 import { CoopStatus } from './index';
+import { IAdvisor } from '@features/advisor/interface';
 
 export interface ITranscriptFileUpload {
     id: string;
@@ -18,6 +19,8 @@ export interface IStudent {
     name_eng: string;
 
     name_prefix: string;
+
+    advisor?: IAdvisor | null | undefined;
 
     transcript: ITranscriptFileUpload | null | undefined;
 

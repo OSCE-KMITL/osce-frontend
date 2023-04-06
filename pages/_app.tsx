@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '../styles/globals.scss';
 import PageLayout from '../components/layout/PageLayout';
 import { ApolloProvider } from '@apollo/client';
 import client from '@lib/apollo';

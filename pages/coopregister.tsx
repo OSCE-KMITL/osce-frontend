@@ -1,11 +1,14 @@
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import RegisterForm from '@components/CoopRegister/RegisterForm';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 
 import { Divider } from 'antd';
 import { CoopStatus } from '@features/student/interfaces';
-import { handleApplyStudentInfo } from '@features/student/student.slice';
-import { useDispatch } from 'react-redux';
+import { handleApplyStudentInfo, handleEditStudentInfo, studentStatusStateSelector } from '@features/student/student.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
+
 interface OwnProps {}
 
 type Props = OwnProps;
@@ -13,18 +16,35 @@ type Props = OwnProps;
 const CoopRegisterPage: FunctionComponent<Props> = () => {
     const { me } = useContext(AuthenticationContext);
     const dispatch = useDispatch();
-    useEffect(() => {
+    const router = useRouter();
+    const apply_status = useSelector(studentStatusStateSelector);
+    React.useEffect(() => {
         if (me) {
-            if (me.is_student?.coop_status !== CoopStatus.DEFAULT) {
-                dispatch(handleApplyStudentInfo());
+            if (me.is_student) {
+                if (me.is_student.coop_status !== CoopStatus.DEFAULT) {
+                    dispatch(handleApplyStudentInfo());
+                }
             }
         }
-    }, []);
+    }, [me, router.pathname]);
 
     return (
         <>
             {' '}
-            <h1 className="">สมัครเข้าร่วมสหกิจศึกษา</h1>
+            <div className="w-full flex flex-row justify-between align-bottom items-end cursor-pointer">
+                <h1 className="">สมัครเข้าร่วมสหกิจศึกษา</h1>
+                {me?.is_student?.coop_status === CoopStatus.SAVED && (
+                    <p
+                        onClick={() => dispatch(handleEditStudentInfo())}
+                        className="px-4 flex flex-row py-2 bg-gray-500 text-gray-200 border border-gray-600 rounded-md"
+                    >
+                        <span>
+                            <PencilSquareIcon className="w-6 h-6" />
+                        </span>
+                        แก้ไขใบสมัคร
+                    </p>
+                )}
+            </div>
             <Divider></Divider>
             <RegisterForm />
         </>
