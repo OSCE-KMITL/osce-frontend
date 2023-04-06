@@ -20,6 +20,9 @@ export const GET_STUDENT_APPLY_JOB = gql`
                     id
                     job_status
                 }
+                company_assessment {
+                    id
+                }
             }
             job {
                 id
@@ -51,6 +54,9 @@ export interface StudentApplyJobProp {
         lastname_th: string;
         curriculum: {
             curriculum_name_th: string;
+        };
+        company_assessment: {
+            id: string;
         };
     };
     job: {

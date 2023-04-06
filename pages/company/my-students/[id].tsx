@@ -5,14 +5,32 @@ import {} from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import AssessmentCompany, { Topic } from '@components/Assessment/AssessmentCompany';
 import { TrashIcon } from '@heroicons/react/24/outline';
+import { useCreateCompanyAssessment } from '@features/company/hooks/useCreateCompanyAssessment';
+import { useGetStudent } from '@features/student/hooks/useGetStudent';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
+import ViewAssessmentCompany from '@components/Assessment/ViewAssessmentCompany';
 
 const Assessment: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const [form] = Form.useForm();
-    const [strengthList, setStrengList] = useState([{ streng: '' }]);
-    const [improvedList, setImprovedList] = useState([{ improved: '' }]);
+    const notification = NotificationService.getInstance();
+    const [strengthList, setStrengList] = useState<Strength[]>([{ strength: '', id: Date.now() }]);
     const [score, setScore] = useState(0);
+    const [createCompanyAssessment, { loading: create_company_assessment_loading }] = useCreateCompanyAssessment();
+    const { data: stu_data, loading: stu_loading, error: stu_error, refetch: refetch_stu_data } = useGetStudent(id?.toString());
+    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
+    const [improvedList, setImprovedList] = useState<Improvement[]>([{ improved: '', id: Date.now() }]);
+
+    interface Strength {
+        strength: string;
+        id: number;
+    }
+
+    interface Improvement {
+        improved: string;
+        id: number;
+    }
 
     const topics: Topic[] = [
         {
@@ -151,18 +169,17 @@ const Assessment: React.FC = () => {
     };
 
     const handleAddStreng = () => {
-        setStrengList([...strengthList, { streng: '' }]);
+        setStrengList([...strengthList, { strength: '', id: Date.now() }]);
     };
 
     const handleAddImproved = () => {
-        setImprovedList([...improvedList, { improved: '' }]);
+        setImprovedList([...improvedList, { improved: '', id: Date.now() }]);
     };
 
-    const handleRemoveString = (index: number) => {
-        console.log('index', index);
+    const handleRemoveString = (id: number) => {
         const list = [...strengthList];
-        list.splice(index, 1);
-        setStrengList(list);
+        const new_list = list.filter((i) => i.id !== id);
+        setStrengList(new_list);
     };
 
     const handleRemoveImprove = (index: number) => {
@@ -171,15 +188,95 @@ const Assessment: React.FC = () => {
         setImprovedList(list);
     };
 
-    const handleSubmit = () => {
+    const checkAllSubtopicAnswers = (topics: Topic[]): boolean => {
+        for (const topic of topics) {
+            for (const subtopic of topic.subtopics) {
+                if (subtopic.answer === null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
+    const checkStrengthInput = (strength: Strength[]): boolean => {
+        const strength_length = strength.map((i) => i.strength.length > 500);
+        if (strength_length.includes(true)) {
+            return true;
+        }
+
+        return false;
+    };
+
+    const checkImprovementInput = (improvement: Improvement[]): boolean => {
+        const improvement_length = improvement.map((i) => i.improved.length > 500);
+        if (improvement_length.includes(true)) {
+            return true;
+        }
+
+        return false;
+    };
+
+    const handleSubmit = async () => {
         console.log('dataTopicOut', dataTopics);
         console.log('strength', strengthList);
         console.log('improvement', improvedList);
+
+        if (checkStrengthInput(strengthList)) {
+            return notification.error('Error', 'ไม่สามารถกรอกข้อมูลจุดเด่นเกิน 500 ตัวอักษร');
+        }
+
+        if (checkImprovementInput(improvedList)) {
+            return notification.error('Error', 'ไม่สามารถกรอกข้อควรปรับปรุงเกิน 500 ตัวอักษร');
+        }
+
+        const new_strength = strengthList
+            .filter((i) => i.strength.trim().length > 0)
+            .map((i) => i.strength)
+            .join(', ');
+        // console.log('renew strength' + new_strength);
+
+        const new_improvement = improvedList
+            .filter((i) => i.improved.trim().length > 0)
+            .map((i) => i.improved)
+            .join(', ');
+        // console.log('renew improvement' + new_improvement);
+
+        const company_id = dataGetMe?.getMe?.is_company?.company_id?.id;
+        const student_id = id.toString();
+
+        if (checkAllSubtopicAnswers(dataTopics)) {
+            await createCompanyAssessment({
+                variables: {
+                    companyAssessmentInfo: {
+                        company_id: company_id,
+                        student_id: student_id,
+                        score: score,
+                        strength: new_strength,
+                        improvement: new_improvement,
+                        assessment_obj: { ...dataTopics },
+                    },
+                },
+                onCompleted: (result) => {
+                    if (result) {
+                        notification.success('Success', 'ประเมินนักศึกษาเสร็จสิ้น');
+                    }
+                    router.back();
+                },
+                onError: (error) => {
+                    console.log(error);
+                    if (error) {
+                        notification.error('Error', error.message);
+                    }
+                },
+            });
+        } else {
+            notification.error('Error', 'กรุณาประเมินให้ครบทุกข้อ');
+        }
     };
 
     const handleStrengChange = (e, index: number) => {
         const { name, value } = e.target;
-        console.log('name:', name);
         const list = [...strengthList];
         list[index][name] = value;
         setStrengList(list);
@@ -187,21 +284,43 @@ const Assessment: React.FC = () => {
 
     const handleImprovedChange = (e, index: number) => {
         const { name, value } = e.target;
-        console.log('name:', name);
         const list = [...improvedList];
         list[index][name] = value;
         setImprovedList(list);
     };
 
     const validateStrengthLength = (rule: any, value: string, callback: any) => {
-        if (value && value.length <= 500) {
-            callback();
-        } else if (value == '') {
-            callback();
-        } else {
+        if (value && value.length > 500) {
             callback('ไม่สามารถกรอกข้อมูลเกิน 500 ตัวอักษร');
         }
+        callback();
     };
+
+    const setDefaluseValueInput = () => {
+        const strength_data = stu_data?.getStudent?.company_assessment?.strength.split(', ');
+        const improvement_data = stu_data?.getStudent?.company_assessment?.improvement.split(', ');
+
+        [...strengthList, { strength: '', id: Date.now() }];
+
+        let set_strength = [];
+        for (const strength_text in strength_data) {
+            set_strength = [...set_strength, { strength: strength_data[strength_text], id: Date.now() }];
+        }
+
+        // const new_data = strength_data.map((data) => {
+        //     return { strength: data, id: Date.now() };
+        // });
+
+        let set_improvement = [];
+        for (const improvement_text in improvement_data) {
+            set_improvement = [...set_improvement, { strength: improvement_text, id: Date.now() }];
+        }
+
+        setStrengList(set_strength);
+        setImprovedList(set_improvement);
+    };
+
+    console.log('strength_list: ', strengthList);
 
     const calculateTotalAnswer = (topics: Topic[]) => {
         let sum = 0;
@@ -222,6 +341,10 @@ const Assessment: React.FC = () => {
         console.log({ value });
     };
 
+    useEffect(() => {
+        refectch_me();
+    }, []);
+
     return (
         <div className="w-full">
             <div className="w-[100%] ">
@@ -234,126 +357,197 @@ const Assessment: React.FC = () => {
                     <div className="flex gap-8 items-center ">
                         <div className="flex">
                             <p className="text-md  font-primary_noto pr-4 py-4">รหัสนักศึกษา</p>
-                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">63015166</p>
+                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">{id?.toString()}</p>
                         </div>
                         <div className="flex">
                             <p className="text-md font-primary_noto p-4">ชื่อ</p>
-                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">นาย ศรายุธ อารีย์</p>
+                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">
+                                {stu_data?.getStudent?.name_prefix ? stu_data?.getStudent?.name_prefix : ''}{' '}
+                                {stu_data?.getStudent?.name_th ? stu_data?.getStudent?.name_th : ''}{' '}
+                                {stu_data?.getStudent?.lastname_th ? stu_data?.getStudent?.lastname_th : ''}
+                            </p>
                         </div>
                     </div>
                     <h3 className="text-xl font-bold font-primary_noto pt-8">ตอนที่ 1 การปฏิบัติงานของนักศึกษาสหกิจศึกษา</h3>
 
-                    <AssessmentCompany topics={dataTopics} onUpdateTopics={handleSubtopicChange} />
-                    <h3 className="text-xl font-bold font-primary_noto pt-8">ตอนที่ 2 การปฏิบัติงานของนักศึกษาสหกิจศึกษา</h3>
-                    <div className="bg-white rounded-2xl px-8 py-8 mt-4 shadow-sm border-solid border-1 border-gray-300 overflow-hidden">
-                        <Form form={form}>
-                            <p>1. จุดเด่นของนักศึกษา / Strength</p>
-                            <div className="flex flex-col gap-2">
-                                {strengthList.map((singleStreng, index) => (
-                                    <div key={index}>
+                    {stu_data?.getStudent?.company_assessment?.id ? (
+                        <>
+                            {score === 0 ? setScore(stu_data?.getStudent?.company_assessment?.score) : ''}
+                            {/* {strengthList ? setDefaluseValueInput() : ''} */}
+                            <ViewAssessmentCompany topics={Object.values(stu_data?.getStudent?.company_assessment?.assessment_obj)} />
+                            <h3 className="text-xl font-bold font-primary_noto pt-8">ตอนที่ 2 การปฏิบัติงานของนักศึกษาสหกิจศึกษา</h3>
+                            <div className="bg-white rounded-2xl px-8 py-8 mt-4 shadow-sm border-solid border-1 border-gray-300 overflow-hidden">
+                                <p>1. จุดเด่นของนักศึกษา / Strength</p>
+                                {stu_data?.getStudent?.company_assessment?.strength ? (
+                                    <>
+                                        <div className="flex flex-col gap-2">
+                                            {stu_data?.getStudent?.company_assessment?.strength?.split(', ').map((singleStreng, index) => (
+                                                <div key={index}>
+                                                    <div className="flex content-center">
+                                                        <Input name={`strength`} size="large" className="w-full mt-1" value={singleStreng} disabled></Input>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col gap-2">
                                         <div className="flex content-center">
-                                            <Form.Item
-                                                key={`strength${index}`}
-                                                id={`strength${index}`}
-                                                rules={[{ validator: validateStrengthLength }]}
-                                                className="w-[85%] m-0 p-0"
-                                            >
-                                                <Input
-                                                    name="streng"
-                                                    size="large"
-                                                    className="w-full mt-1"
-                                                    value={singleStreng.streng}
-                                                    onChange={(e) => handleStrengChange(e, index)}
-                                                ></Input>
-                                            </Form.Item>
-
-                                            {strengthList.length > 1 && (strengthList.length - 1 !== index || strengthList.length === 3) && (
-                                                <Button type="ghost" size="large" onClick={() => handleRemoveString(index)}>
-                                                    <TrashIcon className="w-6 h-6 text-gray-500 hover:text-red-500" />
-                                                </Button>
-                                            )}
-
-                                            {strengthList.length - 1 === index && strengthList.length < 3 && (
-                                                <Button
-                                                    onClick={handleAddStreng}
-                                                    type="ghost"
-                                                    size="large"
-                                                    className="font-bold text-primary-500 hover:text-primary-300 "
-                                                >
-                                                    + เพิ่มจุดเด่น
-                                                </Button>
-                                            )}
+                                            <Input name={`strength`} size="large" className="w-full mt-1" value={'ไม่ระบุข้อมูล'} disabled></Input>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
+                                )}
 
-                            <p className="mt-8">2. ข้อควรปรับปรุงของนักศึกษา / Improvement</p>
-                            <div className="flex flex-col gap-2">
-                                {improvedList.map((singleImproved, index) => (
-                                    <div key={index}>
+                                <p className="mt-8">2. ข้อควรปรับปรุงของนักศึกษา / Improvement</p>
+                                {stu_data?.getStudent?.company_assessment?.improvement ? (
+                                    <>
+                                        <div className="flex flex-col gap-2">
+                                            {stu_data?.getStudent?.company_assessment?.improvement?.split(', ').map((singleImproved, index) => (
+                                                <div key={index}>
+                                                    <div className="flex content-center">
+                                                        <Input name={`strength`} size="large" className="w-full mt-1" value={singleImproved} disabled></Input>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col gap-2">
                                         <div className="flex content-center">
-                                            <Form.Item
-                                                key={`improved${index}`}
-                                                id={`improved${index}`}
-                                                rules={[{ validator: validateStrengthLength }]}
-                                                className="w-[85%] m-0 p-0"
-                                            >
-                                                <Input
-                                                    name="improved"
-                                                    size="large"
-                                                    className="w-full mt-1"
-                                                    value={singleImproved.improved}
-                                                    onChange={(e) => handleImprovedChange(e, index)}
-                                                ></Input>
-                                            </Form.Item>
-
-                                            {improvedList.length > 1 && (improvedList.length - 1 !== index || improvedList.length === 3) && (
-                                                <Button type="ghost" size="large" onClick={() => handleRemoveImprove(index)}>
-                                                    <TrashIcon className="w-6 h-6 text-gray-500 hover:text-red-500" />
-                                                </Button>
-                                            )}
-
-                                            {improvedList.length - 1 === index && improvedList.length < 3 && (
-                                                <Button
-                                                    onClick={handleAddImproved}
-                                                    type="ghost"
-                                                    size="large"
-                                                    className="font-bold text-primary-500 hover:text-primary-300 "
-                                                >
-                                                    + เพิ่มข้อควรปรับปรุง
-                                                </Button>
-                                            )}
+                                            <Input name={`strength`} size="large" className="w-full mt-1" value={'ไม่ระบุข้อมูล'} disabled></Input>
                                         </div>
                                     </div>
-                                ))}
+                                )}
+
+                                <div className="flex justify-end w-full mt-8">
+                                    <div className="w-fit border-2 border-primary-300 rounded-xl px-4 py-3">
+                                        <p className="text-xl text-gray-500">
+                                            คะแนนรวม<span className="ml-4 font-bold text-gray-600">{score} / 40</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </Form>
-                        <div className="flex justify-end w-full mt-8">
-                            <div className="w-fit border-2 border-primary-400 rounded-xl p-4">
-                                <p>คะแนนรวม {score} / 40</p>
+                        </>
+                    ) : (
+                        <>
+                            <AssessmentCompany topics={dataTopics} onUpdateTopics={handleSubtopicChange} />
+
+                            <h3 className="text-xl font-bold font-primary_noto pt-8">ตอนที่ 2 การปฏิบัติงานของนักศึกษาสหกิจศึกษา</h3>
+                            <div className="bg-white rounded-2xl px-8 py-8 mt-4 shadow-sm border-solid border-1 border-gray-300 overflow-hidden">
+                                <Form form={form}>
+                                    <p>1. จุดเด่นของนักศึกษา / Strength</p>
+                                    <div className="flex flex-col gap-2">
+                                        {strengthList.map((singleStreng, index) => (
+                                            <div key={index}>
+                                                <div className="flex content-center">
+                                                    <Form.Item
+                                                        key={singleStreng.id}
+                                                        id={singleStreng.id.toString()}
+                                                        name={singleStreng.id}
+                                                        rules={[{ validator: validateStrengthLength }]}
+                                                        className="w-[85%] m-0 p-0"
+                                                    >
+                                                        <Input
+                                                            name={`strength`}
+                                                            size="large"
+                                                            className="w-full mt-1"
+                                                            value={singleStreng.strength}
+                                                            onChange={(e) => handleStrengChange(e, index)}
+                                                        ></Input>
+                                                    </Form.Item>
+
+                                                    {strengthList.length > 1 && (strengthList.length - 1 !== index || strengthList.length === 3) && (
+                                                        <Button type="ghost" size="large" onClick={() => handleRemoveString(singleStreng.id)}>
+                                                            <TrashIcon className="w-6 h-6 text-gray-500 hover:text-red-500" />
+                                                        </Button>
+                                                    )}
+
+                                                    {strengthList.length - 1 === index && strengthList.length < 3 && (
+                                                        <Button
+                                                            onClick={handleAddStreng}
+                                                            type="ghost"
+                                                            size="large"
+                                                            className="font-bold text-primary-500 hover:text-primary-300 "
+                                                        >
+                                                            + เพิ่มจุดเด่น
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <p className="mt-8">2. ข้อควรปรับปรุงของนักศึกษา / Improvement</p>
+                                    <div className="flex flex-col gap-2">
+                                        {improvedList.map((singleImproved, index) => (
+                                            <div key={index}>
+                                                <div className="flex content-center">
+                                                    <Form.Item
+                                                        key={singleImproved.id}
+                                                        id={singleImproved.id.toString()}
+                                                        name={singleImproved.id}
+                                                        rules={[{ validator: validateStrengthLength }]}
+                                                        className="w-[85%] m-0 p-0"
+                                                    >
+                                                        <Input
+                                                            name="improved"
+                                                            size="large"
+                                                            className="w-full mt-1"
+                                                            value={singleImproved.improved}
+                                                            onChange={(e) => handleImprovedChange(e, index)}
+                                                        ></Input>
+                                                    </Form.Item>
+
+                                                    {improvedList.length > 1 && (improvedList.length - 1 !== index || improvedList.length === 3) && (
+                                                        <Button type="ghost" size="large" onClick={() => handleRemoveImprove(index)}>
+                                                            <TrashIcon className="w-6 h-6 text-gray-500 hover:text-red-500" />
+                                                        </Button>
+                                                    )}
+
+                                                    {improvedList.length - 1 === index && improvedList.length < 3 && (
+                                                        <Button
+                                                            onClick={handleAddImproved}
+                                                            type="ghost"
+                                                            size="large"
+                                                            className="font-bold text-primary-500 hover:text-primary-300 "
+                                                        >
+                                                            + เพิ่มข้อควรปรับปรุง
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Form>
+                                <div className="flex justify-end w-full mt-8">
+                                    <div className="w-fit border-2 border-primary-300 rounded-xl px-4 py-3">
+                                        <p className="text-xl text-gray-500">
+                                            คะแนนรวม<span className="ml-4 font-bold text-gray-600">{score} / 40</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="mt-16 flex justify-end gap-12">
-                        {/* <button className="px-2 py-2 rounded-md w-fit  h-[60%]   border-gray-300 text-xl text-gray-400" onClick={() => router.back()}>
+                            <div className="mt-16 flex justify-end gap-12">
+                                {/* <button className="px-2 py-2 rounded-md w-fit  h-[60%]   border-gray-300 text-xl text-gray-400" onClick={() => router.back()}>
                             ยกเลิก
                         </button> */}
-                        <button
-                            type="submit"
-                            className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
-                            onClick={handleSubmit}
-                        >
-                            {/* {(!committee_loading || !company_loading) && 'บันทึก'}
+                                <button
+                                    type="submit"
+                                    className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
+                                    onClick={handleSubmit}
+                                >
+                                    {/* {(!committee_loading || !company_loading) && 'บันทึก'}
                         {(committee_loading || company_loading) && (
                             <span>
                                 <LoadingSpinner />
                                 loading...
                             </span>
                         )} */}
-                            บันทึก
-                        </button>
-                    </div>
+                                    บันทึก
+                                </button>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

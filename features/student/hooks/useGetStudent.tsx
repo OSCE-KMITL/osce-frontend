@@ -83,6 +83,13 @@ export const GET_STUDENT = gql`
                 created_at
                 updated_at
             }
+            company_assessment {
+                id
+                assessment_obj
+                strength
+                improvement
+                score
+            }
         }
     }
 `;

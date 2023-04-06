@@ -99,8 +99,8 @@ export default function MyStudents() {
                                 </h1>
                             </div>
                         </div>
-                        <div className=" w-full h-full col-span-4 gap-4 grid grid-rows-1 border-l-2 pl-4">
-                            <div className=" flex justify-end gap-x-4 items-center">
+                        <div className=" w-full h-full col-span-4 gap-4 flex border-l-2 pl-4 justify-end">
+                            <div className="flex w-[57%] gap-x-4 items-center">
                                 <div className="text-right items-end">
                                     <Link
                                         href={'/student/' + data?.student?.student_id}
@@ -110,12 +110,21 @@ export default function MyStudents() {
                                     </Link>
                                 </div>
                                 <div className="text-right items-end">
-                                    <Link
-                                        href={`my-students/` + data?.student?.student_id}
-                                        className="bg-primary-100 text-primary-500  border border-primary-500  px-4 py-1 rounded-2xl  cursor-pointer"
-                                    >
-                                        {'ประเมิน'}
-                                    </Link>
+                                    {data?.student?.company_assessment?.id ? (
+                                        <Link
+                                            href={`my-students/` + data?.student?.student_id}
+                                            className="bg-green-100 text-green-500  border border-green-500  px-4 py-1 rounded-2xl  cursor-pointer"
+                                        >
+                                            {'ประเมินแล้ว'}
+                                        </Link>
+                                    ) : (
+                                        <Link
+                                            href={`my-students/` + data?.student?.student_id}
+                                            className="bg-primary-100 text-primary-500  border border-primary-500  px-4 py-1 rounded-2xl  cursor-pointer"
+                                        >
+                                            {'ประเมิน'}
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -146,8 +155,8 @@ export default function MyStudents() {
                                         </h1>
                                     </div>
                                 </div>
-                                <div className=" w-full h-full col-span-4 gap-4 grid grid-rows-1 border-l-2 pl-4">
-                                    <div className=" flex justify-end gap-x-4 items-center">
+                                <div className=" w-full h-full col-span-4 gap-4 flex border-l-2 pl-4 justify-end">
+                                    <div className="flex w-[57%] gap-x-4 items-center">
                                         <div className="text-right items-end">
                                             <Link
                                                 href={'/student/' + data?.student?.student_id}
@@ -157,12 +166,21 @@ export default function MyStudents() {
                                             </Link>
                                         </div>
                                         <div className="text-right items-end">
-                                            <Link
-                                                href={`my-students/` + data?.student?.student_id}
-                                                className="bg-primary-100 text-primary-500  border border-primary-500  px-4 py-1 rounded-2xl  cursor-pointer"
-                                            >
-                                                {'ประเมิน'}
-                                            </Link>
+                                            {data?.student?.company_assessment?.id ? (
+                                                <Link
+                                                    href={`my-students/` + data?.student?.student_id}
+                                                    className="bg-green-100 text-green-500  border border-green-500  px-4 py-1 rounded-2xl  cursor-pointer"
+                                                >
+                                                    {'ประเมินแล้ว'}
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    href={`my-students/` + data?.student?.student_id}
+                                                    className="bg-primary-100 text-primary-500  border border-primary-500  px-4 py-1 rounded-2xl  cursor-pointer"
+                                                >
+                                                    {'ประเมิน'}
+                                                </Link>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
