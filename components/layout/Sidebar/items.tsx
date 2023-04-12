@@ -134,7 +134,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'ข้อมูลบริษัท',
-                key: '',
+                key: '/company/profile',
             },
         ],
     },
