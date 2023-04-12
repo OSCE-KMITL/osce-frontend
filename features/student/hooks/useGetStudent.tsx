@@ -13,6 +13,21 @@ export const GET_STUDENT = gql`
                 level
                 skill_name
             }
+            progress_report {
+                report_no
+                other_suggest
+                progress_report_id
+                mentor_position
+                mentor_name
+                mentor_lastname
+                current_res
+                createdAt
+                commute_score
+                advisement_score
+                updatedAt
+                work_score
+            }
+
             language_abilities {
                 level
                 name
