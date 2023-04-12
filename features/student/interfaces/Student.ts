@@ -2,6 +2,7 @@ import { JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
 import { CoopStatus } from './index';
+import { ProgressReport } from '@features/progress_report/model';
 import { IAdvisor } from '@features/advisor/interface';
 
 export interface ITranscriptFileUpload {
@@ -29,6 +30,8 @@ export interface IStudent {
     department: IDepartment;
 
     curriculum: ICurriculum;
+
+    progress_report: ProgressReport[];
 
     language_abilities: ILanguageAbility[];
 

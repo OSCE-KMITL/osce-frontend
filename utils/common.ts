@@ -42,3 +42,29 @@ export function ChangeCoopStatusToThaiFormat(coop_status: CoopStatus): IResolved
         return createResolvedStatusObj('No action', 0);
     }
 }
+
+const MonthMap = {
+    JANUARY: 'มกราคม',
+    FEBRUARY: 'กุมภาพันธ์',
+    MARCH: 'มีนาคม',
+    APRIL: 'เมษายน',
+    MAY: 'พฤษภาคม',
+    JUNE: 'มิถุนายน',
+    JULY: 'กรกฎาคม',
+    AUGUST: 'สิงหาคม',
+    SEPTEMBER: 'กันยายน',
+    OCTOBER: 'ตุลาคม',
+    NOVEMBER: 'พฤศจิกายน',
+    DECEMBER: 'ธันวาคม',
+};
+
+export function formatDateToThai(dateTimeString: string): string {
+    const utcDate = new Date(dateTimeString);
+    const localDate = new Date(utcDate.getTime() + 7 * 60 * 60 * 1000); // add 7 hours for ICT time zone
+    const month = localDate.toLocaleString('default', { month: 'long' });
+    const thaiYear = localDate.getFullYear() + 543; // convert to Thai year
+    const thaiMonth = MonthMap[month.toUpperCase()];
+    const thaiDay = localDate.getDate();
+
+    return `${thaiDay} ${thaiMonth} ${thaiYear}`;
+}
