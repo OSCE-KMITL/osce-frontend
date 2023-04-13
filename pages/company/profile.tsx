@@ -14,12 +14,14 @@ import NotificationService from '@lib/ant_service/NotificationService';
 import { ICompany } from '@features/company/interfaces';
 import { address_option } from '@constants/addressOptions';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { useUpdateCompany } from '@features/company/hooks/useUpdateCompany';
 
 const CreateJobPage: FC = () => {
     const notification = NotificationService.getInstance();
 
     const { data: companies, refetch: refectch_comapny, loading: companies_loading } = useGetAllCompany();
-    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
+    const { data: dataGetMe, refetch: refectch_me, loading: me_loading } = useGetMe();
+    const [updateCompany, { loading: update_company_loading, error: update_company_error }] = useUpdateCompany();
     const [provinceInput, setProvinceInput] = useState(null);
     const [district, setDistrict] = useState<District[]>(null);
     const [districtInput, setDistrictInput] = useState(null);
@@ -152,24 +154,44 @@ const CreateJobPage: FC = () => {
         setValue('zipcode', value);
     };
 
-    const onSubmit = async (data) => {
-        console.log('data', data);
-        setEditing(false);
+    const onSubmit = async (data: CompanyProfile) => {
+        try {
+            if (company_id && data) {
+                updateCompany({
+                    variables: {
+                        updateInput: {
+                            id: company_id,
+                            address: data.address,
+                            business_type: data.business_type,
+                            district: data.amphoe,
+                            name_eng: data.name_eng,
+                            name_th: data.name_th,
+                            phone_number: data.phone_number,
+                            postal_code: data.zipcode,
+                            province: data.province,
+                            sub_district: data.district,
+                            website_url: data.website_url,
+                        },
+                    },
+                    onCompleted: (result) => {
+                        if (result) {
+                            notification.success('Success', 'ตอบรับงานเสร็จสิ้น');
+                            refectch_comapny();
+                            setEditing(false);
+                            // setDefaluseValueForm()
+                        }
+                    },
+                    onError: (error) => {
+                        if (error) {
+                            notification.error('Error', error.message);
+                        }
+                    },
+                });
+            }
+        } catch (error) {
+            notification.error('Error', error.message);
+        }
     };
-
-    const [form] = Form.useForm<FormInstance<CompanyProfile>>();
-    const [profile, setProfile] = useState<CompanyProfile>({
-        name_eng: '',
-        name_th: '',
-        address: '',
-        district: '',
-        amphoe: '',
-        province: '',
-        zipcode: '',
-        business_type: '',
-        website_url: '',
-        phone_number: '',
-    });
 
     const handleEdit = () => {
         setDefaluseValueForm();
@@ -360,7 +382,7 @@ const CreateJobPage: FC = () => {
                                                 value: /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/i,
                                                 message: 'กรุณากรอกข้อมูลที่อยู่เว็บไซต์ให้ถูกต้อง',
                                             },
-                                            maxLength: { value: 100, message: 'ข้อมูลที่อยู่เว็บไซต์ต้องไม่เกิน 100 ตัวอักษร' },
+                                            maxLength: { value: 200, message: 'ข้อมูลที่อยู่เว็บไซต์ต้องไม่เกิน 200 ตัวอักษร' },
                                         })}
                                     />
                                     <div className="h-5 text-red-500">{errors.website_url && <span>{errors.website_url.message}</span>}</div>
@@ -413,7 +435,7 @@ const CreateJobPage: FC = () => {
                                     </div>
                                     <div className="mb-2 h-auto">
                                         <label htmlFor="amphoe" className="block text-[20px] font-medium text-gray-900">
-                                            อำเภอ*
+                                            อำเภอ/เขต*
                                         </label>
                                         <Select
                                             size="large"
@@ -438,7 +460,7 @@ const CreateJobPage: FC = () => {
                                 <div className="grid grid-cols-2 gap-8">
                                     <div className="mb-2 h-auto">
                                         <label htmlFor="district" className="block text-[20px] font-medium text-gray-900">
-                                            ตำบล*
+                                            ตำบล/แขวง*
                                         </label>
                                         <Select
                                             size="large"
@@ -497,14 +519,12 @@ const CreateJobPage: FC = () => {
                                     type="submit"
                                     className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
                                 >
-                                    {/* {(!committee_loading || !company_loading) && 'บันทึก'}
-                        {(committee_loading || company_loading) && (
-                            <span>
-                                <LoadingSpinner />
-                                loading...
-                            </span>
-                        )} */}
-                                    บันทึก
+                                    {(!update_company_loading || !companies_loading || !me_loading) && 'บันทึก'}
+                                    {(update_company_loading || companies_loading || me_loading) && (
+                                        <span>
+                                            <LoadingSpinner />
+                                        </span>
+                                    )}
                                 </button>
                             </>
                         )}
