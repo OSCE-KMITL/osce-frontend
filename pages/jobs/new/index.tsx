@@ -10,7 +10,6 @@ import {
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import NotificationService from '../../../lib/ant_service/NotificationService';
 import Input from '@ui/Input';
-import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
 import { AutoComplete, Checkbox, DatePicker, Divider, message, Radio, RadioChangeEvent, Select } from 'antd';
@@ -391,7 +390,6 @@ const CreateJobPage: FC = () => {
     return (
         <div className=" gap-8 min-h-screen relative overflow-y-auto py-8 ">
             <div className="w-[80%] h-fit">
-                <BreadcrumbComponent />
                 <h1> เพิ่มงานที่เปิดรับ</h1>
                 <Divider />
             </div>

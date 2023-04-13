@@ -6,7 +6,6 @@ import { AuthenticationContext } from '../../context/AuthContextProvider';
 import { RoleOption } from '../../constants/RoleOptions';
 import ContentContainer from '@ui/ContentContainer';
 import SkeletonLoading from '@ui/SkeletonLoading';
-import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { Link } from '@ui/Link';
 import { Divider, Dropdown, Menu, Modal } from 'antd';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -96,7 +95,6 @@ const Jobs: React.FC = () => {
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
-                <BreadcrumbComponent />
                 <h1>งานที่เปิดรับสมัคร</h1>
                 <Divider />
             </div>

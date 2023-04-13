@@ -3,13 +3,14 @@ import { Link } from '@ui/Link';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import React, { useEffect } from 'react';
-import { Divider, Space, Tag } from 'antd';
+import { Divider, Modal, Space, Tag } from 'antd';
 import { useCancelApplyJob } from 'features/job/hooks/useCancelApplyJob';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
 import SkeletonLoading from '@ui/SkeletonLoading';
 import { JobStatus } from '@constants/Job/JobStatus';
 import { useStudentAcceptJob, useStudentRejectJob, useUndoStudentAcceptJob, useUndoStudentRejectJob } from '@features/job/hooks/useEditStateJob';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 export default function JobApplying() {
     const { data: data_me, loading: loading_me, error: error_me, refetch } = useGetMe();
@@ -20,6 +21,7 @@ export default function JobApplying() {
     const [undoStudentAcceptJob, { loading: loading_undo_stu_accept, error: error_undo_stu_accept }] = useUndoStudentAcceptJob();
     const [studentRejectJob, { loading: loading_stu_reject, error: error_stu_reject }] = useStudentRejectJob();
     const [undoStudentRejectJob, { loading: loading_undo_stu_reject, error: error_undo_stu_reject }] = useUndoStudentRejectJob();
+    const { confirm } = Modal;
 
     useEffect(() => {
         refetch();
@@ -28,6 +30,37 @@ export default function JobApplying() {
     const stu_accepted_job = data?.getStudent?.student_apply_job?.filter(
         (i) => i.job_status === JobStatus.STUDENTACCEPT || i.job_status === JobStatus.COMMITTEEAPPROVE
     );
+
+    const showModalAcceptJob = (student_apply_job_id: string) => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการตอบรับงานนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: 'หากตอบรับงานแล้วจะไม่สามารถแก้ไขได้ และงานอื่นๆที่สมัครจะถูกยกเลิกอัตโนมัติ',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleStudentAcceptJob(student_apply_job_id);
+            },
+            onCancel() {},
+        });
+    };
+
+    const showModalRejectJob = (student_apply_job_id: string) => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการปฏิเสธงานนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: 'หากปฏิเสธงานแล้วจะไม่สามารถแก้ไขหรือย้อนกลับได้',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleStudentRejectJob(student_apply_job_id);
+            },
+            onCancel() {},
+        });
+    };
+
     const handleCancelApplyJob = (id: string) => {
         cancelApplyJob({
             variables: { cancelApplyInfo: { job_id: id } },
@@ -64,23 +97,23 @@ export default function JobApplying() {
         });
     };
 
-    const handleUndoStudentAcceptJob = (id: string) => {
-        undoStudentAcceptJob({
-            variables: { undoStudentAcceptInfo: { student_apply_job_id: id } },
-            onCompleted: (result) => {
-                if (result) {
-                    notification.success('Success', 'ยกเลิกตอบรับงานเสร็จสิ้น');
-                }
-                refetch_stu_data();
-            },
-            onError: (error) => {
-                console.log(error);
-                if (error) {
-                    notification.error('Error', error.message);
-                }
-            },
-        });
-    };
+    // const handleUndoStudentAcceptJob = (id: string) => {
+    //     undoStudentAcceptJob({
+    //         variables: { undoStudentAcceptInfo: { student_apply_job_id: id } },
+    //         onCompleted: (result) => {
+    //             if (result) {
+    //                 notification.success('Success', 'ยกเลิกตอบรับงานเสร็จสิ้น');
+    //             }
+    //             refetch_stu_data();
+    //         },
+    //         onError: (error) => {
+    //             console.log(error);
+    //             if (error) {
+    //                 notification.error('Error', error.message);
+    //             }
+    //         },
+    //     });
+    // };
 
     const handleStudentRejectJob = (id: string) => {
         studentRejectJob({
@@ -100,23 +133,23 @@ export default function JobApplying() {
         });
     };
 
-    const handleUndoStudentRejectJob = (id: string) => {
-        undoStudentRejectJob({
-            variables: { undoStudentRejectInfo: { student_apply_job_id: id } },
-            onCompleted: (result) => {
-                if (result) {
-                    notification.success('Success', 'ยกเลิกการปฏิเสธงานเสร็จสิ้น');
-                }
-                refetch_stu_data();
-            },
-            onError: (error) => {
-                console.log(error);
-                if (error) {
-                    notification.error('Error', error.message);
-                }
-            },
-        });
-    };
+    // const handleUndoStudentRejectJob = (id: string) => {
+    //     undoStudentRejectJob({
+    //         variables: { undoStudentRejectInfo: { student_apply_job_id: id } },
+    //         onCompleted: (result) => {
+    //             if (result) {
+    //                 notification.success('Success', 'ยกเลิกการปฏิเสธงานเสร็จสิ้น');
+    //             }
+    //             refetch_stu_data();
+    //         },
+    //         onError: (error) => {
+    //             console.log(error);
+    //             if (error) {
+    //                 notification.error('Error', error.message);
+    //             }
+    //         },
+    //     });
+    // };
 
     if (error) {
         console.log(error);
@@ -185,7 +218,7 @@ export default function JobApplying() {
                                             ) : (
                                                 <button
                                                     className="px-4 py-1 text-center bg-green-100 text-green-500  border border-green-500  rounded-2xl"
-                                                    onClick={() => handleStudentAcceptJob(item?.id)}
+                                                    onClick={() => showModalAcceptJob(item?.id)}
                                                 >
                                                     ตอบรับ
                                                 </button>
@@ -193,13 +226,13 @@ export default function JobApplying() {
 
                                             <button
                                                 className="px-4 py-1 text-center bg-red-100 text-red-500  border border-red-500  rounded-2xl"
-                                                onClick={() => handleStudentRejectJob(item?.id)}
+                                                onClick={() => showModalRejectJob(item?.id)}
                                             >
                                                 ปฏิเสธ
                                             </button>
                                         </div>
                                     )}
-                                    {item.job_status === JobStatus.STUDENTACCEPT && (
+                                    {/* {item.job_status === JobStatus.STUDENTACCEPT && (
                                         <button
                                             className="px-4 py-1 text-center bg-gray-100 text-gray-500  border border-gray-500  rounded-2xl"
                                             onClick={() => handleUndoStudentAcceptJob(item?.id)}
@@ -214,7 +247,7 @@ export default function JobApplying() {
                                         >
                                             ยกเลิกการปฏิเสธ
                                         </button>
-                                    )}
+                                    )} */}
                                 </div>
                                 <div className="text-right items-end">
                                     <Link
