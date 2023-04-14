@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-import { Range, ReactQuillProps, UnprivilegedEditor, Value } from 'react-quill';
+import { ReactQuillProps } from 'react-quill';
 import { useQuill } from 'react-quilljs';
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
@@ -24,8 +24,6 @@ export const modules = {
 
 const RichTextEditor: FC<ReactQuillProps> = ({ onChange, className, value }) => {
     const { quill, quillRef } = useQuill();
-    console.log(quill);
-    console.log(quillRef);
     return <div ref={quillRef}></div>;
 };
 

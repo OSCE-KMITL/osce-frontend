@@ -25,7 +25,6 @@ const PersonalInformation: FC<RegisterForm> = ({ register, errors }) => {
     }
 
     const birth_date = useSelector(birthDateStateSelector);
-    console.log(birth_date);
 
     return (
         <>

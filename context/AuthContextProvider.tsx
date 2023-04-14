@@ -39,7 +39,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     const { data, refetch } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
     const router = useRouter();
-    console.log(data, ' ===========>');
+ 
     useEffect(() => {
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });

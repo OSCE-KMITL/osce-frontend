@@ -1,4 +1,4 @@
-import { ApolloError, gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { IAccount } from '@features/user-account/interfaces';
 
 export const GET_ADVISOR_ACCOUNTS = gql`
@@ -38,5 +38,5 @@ export interface getAdvisorAccountsResponse {
 
 export function getAdvisorAccounts() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useQuery<getAdvisorAccountsResponse>(GET_ADVISOR_ACCOUNTS, { pollInterval: 2000 });
+    return useQuery<getAdvisorAccountsResponse>(GET_ADVISOR_ACCOUNTS, { pollInterval: 500 });
 }

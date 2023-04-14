@@ -1,8 +1,6 @@
 import { Link } from '@ui/Link';
-import { Button, Statistic } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { useGetJob } from 'features/job/hooks/useGetJobs';
-import { DownloadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,7 +8,6 @@ export default function DetailMyJob() {
     const router = useRouter();
     const { id } = router.query;
     const { data, loading, error, refetch } = useGetJob({ jobId: id as string });
-    console.log(data?.getJobById?.students[0]);
     return (
         <div className="w-full">
             <div className="xl:w-full 2xl:w-4/5 w-full">

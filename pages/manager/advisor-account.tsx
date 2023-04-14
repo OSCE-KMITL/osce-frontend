@@ -16,12 +16,11 @@ const AdvisorAccount: FC<Props> = (props) => {
     if (loading) {
         return <p>loading</p>;
     }
-    console.log(data);
     return (
         <div>
             <div className={'w-full flex flex-row gap-x-6 items-center align-bottom'}>
                 <h1>จัดการบัญชีอาจารย์สหกิจ</h1>
-                <p className="px-4 py-2 rounded-lg text-[25px] bg-white shadow-sm text-primary-500 font-semibold ">ภาควิชา : วิศวะกรรมคอมพิวเตอร์</p>
+                <p className="px-4 py-2 rounded-lg text-[25px] bg-white shadow-sm text-primary-500 font-semibold ">ภาควิชา : วิศวกรรมคอมพิวเตอร์</p>
             </div>
             <Divider />
             <AdvisorAccountTable advisor_accounts={data.getAdvisorAccounts} />

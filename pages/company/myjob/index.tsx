@@ -18,7 +18,7 @@ export default function Myjob() {
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const notification = NotificationService.getInstance();
     const router = useRouter();
-    console.log('job data'+data?.getMe.is_company)
+
     const handleDelete = (id: string) => {
         console.log('delete id:', id);
 
