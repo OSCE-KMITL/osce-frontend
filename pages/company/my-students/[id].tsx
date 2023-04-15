@@ -293,18 +293,20 @@ const Assessment: React.FC = () => {
         const new_strength = strengthList
             .filter((i) => i.strength.trim().length > 0)
             .map((i) => i.strength)
-            .join(', ');
+            .join('|');
         // console.log('renew strength' + new_strength);
 
         const new_improvement = improvedList
             .filter((i) => i.improved.trim().length > 0)
             .map((i) => i.improved)
-            .join(', ');
+            .join('|');
         // console.log('renew improvement' + new_improvement);
 
         const company_id = dataGetMe?.getMe?.is_company?.company_id?.id;
         const student_id = id.toString();
 
+        console.log('new_improvement', new_improvement);
+        console.log('new_strength', new_strength);
         if (checkAllSubtopicAnswers(dataTopics)) {
             await createCompanyAssessment({
                 variables: {
@@ -356,32 +358,6 @@ const Assessment: React.FC = () => {
         callback();
     };
 
-    const setDefaluseValueInput = () => {
-        const strength_data = stu_data?.getStudent?.company_assessment?.strength.split(', ');
-        const improvement_data = stu_data?.getStudent?.company_assessment?.improvement.split(', ');
-
-        [...strengthList, { strength: '', id: Date.now() }];
-
-        let set_strength = [];
-        for (const strength_text in strength_data) {
-            set_strength = [...set_strength, { strength: strength_data[strength_text], id: Date.now() }];
-        }
-
-        // const new_data = strength_data.map((data) => {
-        //     return { strength: data, id: Date.now() };
-        // });
-
-        let set_improvement = [];
-        for (const improvement_text in improvement_data) {
-            set_improvement = [...set_improvement, { strength: improvement_text, id: Date.now() }];
-        }
-
-        setStrengList(set_strength);
-        setImprovedList(set_improvement);
-    };
-
-    console.log('strength_list: ', strengthList);
-
     const calculateTotalAnswer = (topics: Topic[]) => {
         let sum = 0;
         let num_subtopic = 0;
@@ -395,10 +371,6 @@ const Assessment: React.FC = () => {
         }
         const cal = (sum / (num_subtopic * 5)) * 40;
         setScore(Math.round(cal));
-    };
-
-    const onFinish = (value) => {
-        console.log({ value });
     };
 
     useEffect(() => {
@@ -441,7 +413,7 @@ const Assessment: React.FC = () => {
                                 {stu_data?.getStudent?.company_assessment?.strength ? (
                                     <>
                                         <div className="flex flex-col gap-2">
-                                            {stu_data?.getStudent?.company_assessment?.strength?.split(', ').map((singleStreng, index) => (
+                                            {stu_data?.getStudent?.company_assessment?.strength?.split('|').map((singleStreng, index) => (
                                                 <div key={index}>
                                                     <div className="flex content-center">
                                                         <Input name={`strength`} size="large" className="w-full mt-1" value={singleStreng} disabled></Input>
@@ -462,7 +434,7 @@ const Assessment: React.FC = () => {
                                 {stu_data?.getStudent?.company_assessment?.improvement ? (
                                     <>
                                         <div className="flex flex-col gap-2">
-                                            {stu_data?.getStudent?.company_assessment?.improvement?.split(', ').map((singleImproved, index) => (
+                                            {stu_data?.getStudent?.company_assessment?.improvement?.split('|').map((singleImproved, index) => (
                                                 <div key={index}>
                                                     <div className="flex content-center">
                                                         <Input name={`strength`} size="large" className="w-full mt-1" value={singleImproved} disabled></Input>
