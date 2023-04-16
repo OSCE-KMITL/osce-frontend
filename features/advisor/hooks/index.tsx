@@ -11,8 +11,22 @@ export const GET_ADVISOR_ACCOUNTS = gql`
                 name
                 last_name
                 is_committee
-                faculty
-                department
+                curriculum {
+                    curriculum_id
+                    curriculum_name_en
+                }
+                department {
+                    id
+                    department_name_th
+                    department_name_en
+                    department_id
+                    faculty_id
+                }
+                faculty {
+                    faculty_name_th
+                    faculty_name_en
+                    faculty_id
+                }
                 created_at
                 advisor_id
                 students {

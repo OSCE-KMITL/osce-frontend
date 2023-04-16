@@ -9,6 +9,7 @@ import { useDeleteStudent } from '@features/student/hooks/useDeleteStudent';
 import { AccountStatus, IAccount } from '@features/user-account/interfaces';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useUpdateAdvisor } from '@features/advisor/hooks/update/useUpdateAdvisor';
+import FooterInput from '@components/Manager/CoopApply/FooterInput';
 
 interface AdvisorAccountProps {
     advisor_accounts: IAccount[];
@@ -86,12 +87,8 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                     <>
                         {editingKey !== id ? (
                             <>
-                                {status === AccountStatus.ACTIVE && (
-                                    <Tag color={'green'}>{<p className="text-[15px] px-2 py-1 ">{status.toLowerCase()}</p>}</Tag>
-                                )}{' '}
-                                {status === AccountStatus.INACTIVE && (
-                                    <Tag color={'yellow'}>{<p className="text-[15px] px-2 py-1 ">{status.toLowerCase()}</p>}</Tag>
-                                )}
+                                {status === AccountStatus.ACTIVE && <Tag color={'green'}>{<p className="text-[15px] px-2 py-1 ">Active</p>}</Tag>}{' '}
+                                {status === AccountStatus.INACTIVE && <Tag color={'red'}>{<p className="text-[15px] px-2 py-1 ">Inactive</p>}</Tag>}
                             </>
                         ) : (
                             <>
@@ -155,7 +152,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                 className={tableStyle.customTable}
                 columns={advisor_account_column}
                 dataSource={advisor_accounts}
-                // footer={() => <FooterInput />}
+                footer={() => <FooterInput />}
             />
         </>
     );

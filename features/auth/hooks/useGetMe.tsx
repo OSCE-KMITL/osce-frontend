@@ -89,7 +89,22 @@ export const GET_ME = gql`
                 advisor_id
                 name
                 last_name
-                faculty
+                curriculum {
+                    curriculum_id
+                    curriculum_name_en
+                }
+                department {
+                    id
+                    department_name_th
+                    department_name_en
+                    department_id
+                    faculty_id
+                }
+                faculty {
+                    faculty_name_th
+                    faculty_name_en
+                    faculty_id
+                }
                 is_committee
                 announcements {
                     id

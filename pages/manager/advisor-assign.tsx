@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { Divider, Select, SelectProps, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { GET_ADVISOR_ACCOUNTS, getAdvisorAccounts } from '@features/advisor/hooks';
-import { IAccount } from '@features/user-account/interfaces';
+import { AccountStatus, IAccount } from '@features/user-account/interfaces';
 import tableStyle from '../../styles/Table/table.module.scss';
 import { rowClassname } from '@components/Manager/AdvisorAccount/AdvisorAccountTable';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { IStudent } from '@features/student/interfaces/Student';
 import { useAssignStudentToAdvisor } from '@features/advisor/hooks/useAssignStudent';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
+import { CoopStatus } from '@features/student/interfaces';
 
 const AdvisorAssign: React.FC = () => {
     const { data: students, loading, error } = useGetStudents();
@@ -149,10 +150,12 @@ const AdvisorAssign: React.FC = () => {
     ];
 
     const options: SelectProps['options'] = students.getStudentsApply
-        .filter((student) => student.advisor === null)
+        .filter((student) => student.advisor === null && student.coop_status === CoopStatus.PASSED)
         .map((student) => {
             return { label: `${student.student_id} ${student.name_prefix} ${student.name_th} ${student.lastname_th}`, value: student.student_id };
         });
+
+    const active_advisors = advisors.getAdvisorAccounts.filter((advisor) => advisor.status === AccountStatus.ACTIVE);
 
     return (
         <>
@@ -168,7 +171,7 @@ const AdvisorAssign: React.FC = () => {
                 rowClassName={rowClassname}
                 className={tableStyle.customTable}
                 columns={columns}
-                dataSource={advisors.getAdvisorAccounts}
+                dataSource={active_advisors}
             />
         </>
     );
