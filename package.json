@@ -39,6 +39,7 @@
     "html-react-parser": "^3.0.7",
     "isomorphic-unfetch": "^4.0.2",
     "js-cookie": "^3.0.1",
+    "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "next": "13.0.6",
     "next-auth": "^4.18.8",
