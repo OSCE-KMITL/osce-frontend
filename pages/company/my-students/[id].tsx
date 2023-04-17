@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {} from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
-import AssessmentCompany, { Topic } from '@components/Assessment/AssessmentCompany';
+import AssessmentCompany, { Topic } from '@components/Assessment/Assessment';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useCreateCompanyAssessment } from '@features/company/hooks/useCreateCompanyAssessment';
+import { useCreateCompanyAssessment } from '@features/assessment/hooks/useCreateCompanyAssessment';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
-import ViewAssessmentCompany from '@components/Assessment/ViewAssessmentCompany';
+import ViewAssessmentCompany from '@components/Assessment/ViewAssessment';
 
 const Assessment: React.FC = () => {
     const router = useRouter();

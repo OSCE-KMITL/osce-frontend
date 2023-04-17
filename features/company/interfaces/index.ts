@@ -60,15 +60,3 @@ export interface IAdvisor {
     department: string;
     is_committee: Boolean;
 }
-
-export interface ICompanyAssessment {
-    id: string;
-
-    improvement: string;
-
-    score: number;
-
-    strength: string;
-
-    assessment_obj: object;
-}

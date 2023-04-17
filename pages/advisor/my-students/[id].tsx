@@ -1,26 +1,25 @@
-import { Button, Divider, Form, Input } from 'antd';
+import { Divider, Input } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {} from '@features/job/hooks/useEditStateJob';
 import NotificationService from '@lib/ant_service/NotificationService';
-import AssessmentCompany, { Topic } from '@components/Assessment/AssessmentCompany';
-import { TrashIcon } from '@heroicons/react/24/outline';
-import { useCreateCompanyAssessment } from '@features/company/hooks/useCreateCompanyAssessment';
+import AssessmentCompany, { Topic } from '@components/Assessment/Assessment';
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
-import ViewAssessmentCompany from '@components/Assessment/ViewAssessmentCompany';
+import ViewAssessmentCompany from '@components/Assessment/ViewAssessment';
+import { useCreateAdvisorAssessment } from '@features/assessment/hooks/useCreateAdvisorAssessment';
+import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
 
 const Assessment: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const notification = NotificationService.getInstance();
-    const [strengthList, setStrengList] = useState<Strength[]>([{ strength: '', id: Date.now() }]);
     const [score, setScore] = useState(0);
-    const [createCompanyAssessment, { loading: create_company_assessment_loading }] = useCreateCompanyAssessment();
+    const [createAdvisorAssessment, { loading: create_advisor_assessment_loading }] = useCreateAdvisorAssessment();
     const { data: stu_data, loading: stu_loading, error: stu_error, refetch: refetch_stu_data } = useGetStudent(id?.toString());
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
-    const [improvedList, setImprovedList] = useState<Improvement[]>([{ improved: '', id: Date.now() }]);
-
+    const company_name = stu_data?.getStudent?.job?.company_id?.name_th;
+    const project_topic = stu_data?.getStudent?.job?.project_topic;
     interface Strength {
         strength: string;
         id: number;
@@ -187,57 +186,17 @@ const Assessment: React.FC = () => {
         return true;
     };
 
-    const checkStrengthInput = (strength: Strength[]): boolean => {
-        const strength_length = strength.map((i) => i.strength.length > 500);
-        if (strength_length.includes(true)) {
-            return true;
-        }
-
-        return false;
-    };
-
-    const checkImprovementInput = (improvement: Improvement[]): boolean => {
-        const improvement_length = improvement.map((i) => i.improved.length > 500);
-        if (improvement_length.includes(true)) {
-            return true;
-        }
-
-        return false;
-    };
-
     const handleSubmit = async () => {
-        if (checkStrengthInput(strengthList)) {
-            return notification.error('Error', 'ไม่สามารถกรอกข้อมูลจุดเด่นเกิน 500 ตัวอักษร');
-        }
-
-        if (checkImprovementInput(improvedList)) {
-            return notification.error('Error', 'ไม่สามารถกรอกข้อควรปรับปรุงเกิน 500 ตัวอักษร');
-        }
-
-        const new_strength = strengthList
-            .filter((i) => i.strength.trim().length > 0)
-            .map((i) => i.strength)
-            .join('|');
-        // console.log('renew strength' + new_strength);
-
-        const new_improvement = improvedList
-            .filter((i) => i.improved.trim().length > 0)
-            .map((i) => i.improved)
-            .join('|');
-        // console.log('renew improvement' + new_improvement);
-
-        const company_id = dataGetMe?.getMe?.is_company?.company_id?.id;
+        const advisor_id = dataGetMe?.getMe?.is_advisor?.advisor_id;
         const student_id = id.toString();
 
         if (checkAllSubtopicAnswers(dataTopics)) {
-            await createCompanyAssessment({
+            await createAdvisorAssessment({
                 variables: {
-                    companyAssessmentInfo: {
-                        company_id: company_id,
+                    advisorAssessmentInfo: {
+                        advisor_id: advisor_id,
                         student_id: student_id,
                         score: score,
-                        strength: new_strength,
-                        improvement: new_improvement,
                         assessment_obj: { ...dataTopics },
                     },
                 },
@@ -270,7 +229,7 @@ const Assessment: React.FC = () => {
                 num_subtopic++;
             }
         }
-        const cal = (sum / (num_subtopic * 5)) * 40;
+        const cal = (sum / (num_subtopic * 5)) * 20;
         setScore(Math.round(cal));
     };
 
@@ -301,28 +260,33 @@ const Assessment: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <div className="flex gap-8 items-center ">
+                    <div className="flex gap-8 items-center mt-4 mb-8">
                         <div className="flex">
                             <p className="text-md  font-primary_noto pr-4 py-4">ชื่อสถานประกอบการ</p>
-                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">ดิจิโอจำกัด</p>
+                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">{company_name ? company_name : '-'}</p>
                         </div>
                         <div className="flex">
                             <p className="text-md font-primary_noto p-4">ชื่อหัวข้อโครงงาน</p>
-                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">-</p>
+                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">
+                                {project_topic ? project_topic : '-'}
+                            </p>
                         </div>
                     </div>
-                    {/* <h3 className="text-xl font-bold font-primary_noto pt-8">หัวข้อการประเมิน</h3> */}
 
-                    {stu_data?.getStudent?.company_assessment?.id ? (
+                    {stu_data?.getStudent?.advisor_assessment?.id ? (
                         <>
-                            {score === 0 ? setScore(stu_data?.getStudent?.company_assessment?.score) : ''}
-                            {/* {strengthList ? setDefaluseValueInput() : ''} */}
-                            <ViewAssessmentCompany topics={Object.values(stu_data?.getStudent?.company_assessment?.assessment_obj)} />
+                            {score === 0 ? setScore(stu_data?.getStudent?.advisor_assessment?.score) : ''}
+                            {stu_data?.getStudent?.advisor_assessment?.assessment_obj ? (
+                                <ViewAssessmentCompany topics={Object.values(stu_data?.getStudent?.advisor_assessment?.assessment_obj)} />
+                            ) : (
+                                <p>ไม่พบข้อมูลการประเมิน!</p>
+                            )}
+
                             <div className="py-8 overflow-hidden">
                                 <div className=" flex justify-end w-full">
                                     <div className="bg-white w-fit border-2 border-primary-300 rounded-xl px-4 py-3">
                                         <p className="text-xl text-gray-500">
-                                            คะแนนรวม<span className=" ml-4 font-bold text-gray-600">{score} / 40</span>
+                                            คะแนนรวม<span className=" ml-4 font-bold text-gray-600">{score} / 20</span>
                                         </p>
                                     </div>
                                 </div>
@@ -335,7 +299,7 @@ const Assessment: React.FC = () => {
                                 <div className=" flex justify-end w-full">
                                     <div className="bg-white w-fit border-2 border-primary-300 rounded-xl px-4 py-3">
                                         <p className="text-xl text-gray-500">
-                                            คะแนนรวม<span className=" ml-4 font-bold text-gray-600">{score} / 40</span>
+                                            คะแนนรวม<span className=" ml-4 font-bold text-gray-600">{score} / 20</span>
                                         </p>
                                     </div>
                                 </div>
@@ -444,14 +408,13 @@ const Assessment: React.FC = () => {
                                     className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
                                     onClick={handleSubmit}
                                 >
-                                    {/* {(!committee_loading || !company_loading) && 'บันทึก'}
-                        {(committee_loading || company_loading) && (
-                            <span>
-                                <LoadingSpinner />
-                                loading...
-                            </span>
-                        )} */}
-                                    บันทึก
+                                    {!create_advisor_assessment_loading && 'บันทึก'}
+                                    {create_advisor_assessment_loading && (
+                                        <span>
+                                            <LoadingSpinner />
+                                            loading...
+                                        </span>
+                                    )}
                                 </button>
                             </div>
                         </>

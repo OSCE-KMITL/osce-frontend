@@ -1,6 +1,6 @@
 import { Radio } from 'antd';
 import React, { useState } from 'react';
-import { Topic } from './AssessmentCompany';
+import { Topic } from './Assessment';
 
 export type ViewAssessmentProps = {
     topics: Topic[];
