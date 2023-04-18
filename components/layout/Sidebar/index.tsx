@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { Menu } from 'antd';
-import { items, itemsCommittee, itemsCompany, student_item } from './items';
+import { items, itemsAdvisor, itemsCommittee, itemsCompany, student_item } from './items';
 import { useRouter } from 'next/router';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import { RoleOption } from '@constants/RoleOptions';
@@ -12,10 +12,12 @@ const SideBar: FC = () => {
     const roleChecking = () => {
         if (me?.role === RoleOption.STUDENT) {
             return student_item;
-        } else if (me?.role === RoleOption.COMPANY || me?.role === RoleOption.ADVISOR) {
+        } else if (me?.role === RoleOption.COMPANY) {
             return itemsCompany;
         } else if (me?.role === RoleOption.COMMITTEE) {
             return itemsCommittee;
+        } else if (me?.role === RoleOption.ADVISOR) {
+            return itemsAdvisor;
         }
     };
     return (

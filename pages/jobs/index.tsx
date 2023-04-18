@@ -24,7 +24,7 @@ const Jobs: React.FC = () => {
     const { confirm } = Modal;
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department.department_name_th;
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department?.department_name_th;
     const filter_data = data?.getAllJob?.filter((job) => job?.required_major.includes(committee_dep) || job?.required_major.includes('ไม่จำกัดหลักสูตร'));
 
     useEffect(() => {

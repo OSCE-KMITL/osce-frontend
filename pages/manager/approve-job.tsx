@@ -26,7 +26,7 @@ const ApproveJob: React.FC = () => {
     const [undoCommitteeDisapproveJob, { loading: undo_disapprove_loading, error: undo_disapprove_error }] = useUndoCommitteeDisapproveJob();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department?.department_name_th;
     const notification = NotificationService.getInstance();
     const filter_stu_data = stu_apply_job_data?.getAllStudentApplyJob.filter(
         (i) =>

@@ -214,3 +214,28 @@ export const itemsCommittee: MenuProps['items'] = [
         ],
     },
 ];
+export const itemsAdvisor: MenuProps['items'] = [
+    {
+        label: 'จัดการนักศึกษา',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'นักศึกษาในการดูแล',
+                key: '/',
+            },
+        ],
+    },
+    {
+        label: 'งานที่เปิดรับสมัคร',
+        key: '02',
+        type: 'group',
+        children: [
+            {
+                label: 'งานที่เปิดรับ',
+                key: '/jobs',
+            },
+        ],
+    },
+    
+];
