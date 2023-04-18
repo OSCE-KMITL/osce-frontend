@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { AccountStatus } from '@features/user-account/interfaces';
+import { gql, useMutation } from '@apollo/client';
+import { IUpdateAdvisorArgs } from '@features/advisor/hooks/update/useUpdateAdvisorState';
+import { IAccount } from '@features/user-account/interfaces';
 
-export interface IUpdateAdvisorArgs {
-    account_id: string;
-    advisor_id?: string;
-    advisor_status?: AccountStatus;
-    is_committee?: Boolean;
-}
-export function useUpdateAdvisor() {
-    const [updateObject, setUpdateObject] = useState<IUpdateAdvisorArgs | null | undefined>();
-    function handleRoleChange(val: Boolean) {
-        setUpdateObject((prevState) => {
-            return { ...prevState, is_committee: val };
-        });
+export const UPDATE_ADVISOR_ACCOUNT = gql`
+    mutation UpdateAdvisorAccount($payload: UpdateAdvisorArgs!) {
+        updateAdvisorAccount(updateInfo: $payload) {
+            id
+            email
+        }
     }
-    function handleStatusChange(status: AccountStatus) {
-        setUpdateObject((prevState) => {
-            return { ...prevState, advisor_status: status };
-        });
-    }
-    return { updateObject, setUpdateObject, handleStatusChange, handleRoleChange };
+`;
+
+export interface UpdateAdvisorPayload {
+    payload: IUpdateAdvisorArgs;
 }
+
+export interface UpdateAdvisorResponse {
+    updateAdvisorAccount: IAccount;
+}
+
+export const useUpdateAdvisor = () => {
+    return useMutation<UpdateAdvisorResponse, UpdateAdvisorPayload>(UPDATE_ADVISOR_ACCOUNT);
+};

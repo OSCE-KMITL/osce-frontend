@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useMemo } from 'react';
-import { GetAnnouncementsResponse } from '../../features/announcement/interfaces';
+import { GetAnnouncementsResponse } from '@features/announcement/interfaces';
 import Link from 'next/link';
 import { ClockCircleOutlined, FilePdfOutlined, UserOutlined } from '@ant-design/icons';
+import { formatDateToThai } from '../../utils/common';
 
 type Props = GetAnnouncementsResponse;
 
@@ -22,9 +23,11 @@ const AnnouncementCards: FunctionComponent<Props> = (data) => {
                             <div className="flex flex-row  items-center gap-4">
                                 <div className=" gap-2 flex justify-center align-middle items-center  flex-row  font-normal text-gray-500 text-clip  overflow-hidden ">
                                     <UserOutlined className="text-lg" />
-                                    <p className="text-sm">
-                                        {ann.advisor_id.name} {ann.advisor_id.last_name}
-                                    </p>
+                                    {ann.advisor_id && (
+                                        <p className="text-sm">
+                                            {ann.advisor_id.name} {ann.advisor_id.last_name}
+                                        </p>
+                                    )}
                                 </div>
                                 <p className=" bg-blue-100 text-blue-500 px-2  rounded-md  xl:text-sm  cursor-pointer"> ทั่วไป</p>
                             </div>{' '}
@@ -34,7 +37,7 @@ const AnnouncementCards: FunctionComponent<Props> = (data) => {
                                     <p className="text-sm">{randomNumber}</p>
                                 </div>
                                 <p className="text-[16px] flex  items-center gap-2 font-normal text-gray-500 text-sm xl:text-sm text-clip overflow-hidden ">
-                                    <ClockCircleOutlined className={'text-xl'} /> {new Date(ann.createdAt).toLocaleDateString('en-US')}{' '}
+                                    <ClockCircleOutlined className={'text-xl'} /> {formatDateToThai(ann.createdAt.toString())}{' '}
                                 </p>
 
                                 <Link

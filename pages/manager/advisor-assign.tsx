@@ -1,5 +1,5 @@
 import { GET_STUDENTS, useGetStudents } from '@features/student/hooks/useGetStudents';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Divider, Select, SelectProps, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { GET_ADVISOR_ACCOUNTS, getAdvisorAccounts } from '@features/advisor/hooks';
@@ -11,10 +11,13 @@ import { IStudent } from '@features/student/interfaces/Student';
 import { useAssignStudentToAdvisor } from '@features/advisor/hooks/useAssignStudent';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
 import { CoopStatus } from '@features/student/interfaces';
+import { AuthenticationContext } from '@context/AuthContextProvider';
+import NotificationService from '@lib/ant_service/NotificationService';
 
 const AdvisorAssign: React.FC = () => {
     const { data: students, loading, error } = useGetStudents();
     const { data: advisors, loading: advisors_loading, error: advisors_error, refetch } = getAdvisorAccounts();
+    const { me } = useContext(AuthenticationContext);
     const [editingKey, setEditingKey] = useState('');
     const [advisement, setAdvisement] = useState<string[]>([]);
     const [assignStudents, { loading: submit_loading }] = useAssignStudentToAdvisor();
@@ -38,6 +41,10 @@ const AdvisorAssign: React.FC = () => {
                 },
                 onCompleted: async () => {
                     await refetch();
+                    NotificationService.getInstance().success('Successfully ', `เพิ่มนักศึกษาให้อาจารย์เสร็จสิ้น`);
+                },
+                onError: (error) => {
+                    NotificationService.getInstance().success('พบข้อผิดพลาด ', error.message);
                 },
                 refetchQueries: ['GET_STUDENTS', 'GET_ADVISOR_ACCOUNTS'],
             });
@@ -50,7 +57,7 @@ const AdvisorAssign: React.FC = () => {
     }
 
     if (loading || advisors_loading) return <h1>loading...</h1>;
-    if (error || advisors_error) return <h1>error...</h1>;
+    if (error || advisors_error) return <h1>error</h1>;
 
     const handleChange = (value) => {
         setAdvisement((prev) => [...value]);
@@ -161,7 +168,9 @@ const AdvisorAssign: React.FC = () => {
         <>
             <div className={'w-full flex flex-row gap-x-6 items-center align-bottom'}>
                 <h1>กำหนดนักศึกษาให้อาจารย์นิเทศ</h1>
-                <p className="px-4 py-2 rounded-lg text-[25px] bg-white shadow-sm text-primary-500 font-semibold ">ภาควิชา : วิศวกรรมคอมพิวเตอร์</p>
+                <p className="px-4 py-2 rounded-lg text-[25px] bg-white shadow-sm text-primary-500 font-semibold ">
+                    ภาควิชา : {me.is_advisor ? me.is_advisor.department.department_name_th : '-'}
+                </p>
             </div>
             <Divider />
             <Table

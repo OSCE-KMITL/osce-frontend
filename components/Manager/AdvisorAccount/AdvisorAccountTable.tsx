@@ -7,9 +7,13 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import tableStyle from '../../../styles/Table/table.module.scss';
 import { useDeleteStudent } from '@features/student/hooks/useDeleteStudent';
 import { AccountStatus, IAccount } from '@features/user-account/interfaces';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { useUpdateAdvisor } from '@features/advisor/hooks/update/useUpdateAdvisor';
-import FooterInput from '@components/Manager/CoopApply/FooterInput';
+import { useUpdateAdvisorState } from '@features/advisor/hooks/update/useUpdateAdvisorState';
+import { AddAdvisorFooter } from '@components/Manager/AdvisorAccount/AddAdvisorFooter';
+import { UpdateAdvisorPayload, useUpdateAdvisor } from '@features/advisor/hooks/update/useUpdateAdvisor';
+import { GET_ADVISOR_ACCOUNTS } from '@features/advisor/hooks';
+import NotificationService from '@lib/ant_service/NotificationService';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { useDeleteAdvisor } from '@features/advisor/hooks/deleteAdvisor';
 
 interface AdvisorAccountProps {
     advisor_accounts: IAccount[];
@@ -24,19 +28,65 @@ export const rowClassname = (record, index) => {
 type AdvisorAccountType = AdvisorAccountProps;
 
 const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
-    const { handleStatusChange, setUpdateObject, handleRoleChange, updateObject } = useUpdateAdvisor();
-
-    const [delete_student, { data, loading, error }] = useDeleteStudent();
+    const [updateAdvisor, { data: submit_data, loading: update_loading, error: update_error }] = useUpdateAdvisor();
+    const [deleteAdvisor, { loading: delete_loading, error: delete_error }] = useDeleteAdvisor();
+    const { handleStatusChange, setUpdateObject, handleRoleChange, updateObject } = useUpdateAdvisorState();
 
     const [editingKey, setEditingKey] = useState('');
     const { confirm } = Modal;
 
     function handleInitChange(id: string, advisor_id: string, status: AccountStatus, is_committee: Boolean) {
         setEditingKey(id);
-        setUpdateObject({ advisor_id: advisor_id, account_id: id, advisor_status: status, is_committee: is_committee });
+        setUpdateObject({ account_id: id, advisor_status: status, is_committee: is_committee });
     }
 
-    console.log(updateObject);
+    async function handleSubmit() {
+        const payload: UpdateAdvisorPayload = {
+            payload: updateObject,
+        };
+        try {
+            await updateAdvisor({
+                variables: payload,
+                refetchQueries: [GET_ADVISOR_ACCOUNTS],
+                onError: (error) => {
+                    NotificationService.getInstance().error('พบข้อผิดพลาด', error.message);
+                },
+                onCompleted: (data) => {
+                    NotificationService.getInstance().success('แก้ไขเสร็จสิ้น', `แก้ไข ${data.updateAdvisorAccount.email} เสร็จสิ้น`);
+                    setEditingKey('');
+                    setUpdateObject(null);
+                },
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const showDeleteAdvisorModal = (advisor_id: string, email: string) => {
+        confirm({
+            title: `Warning`,
+            icon: <ExclamationCircleFilled />,
+            content: `คุณต้องการที่จะลบบัญชี ${email} ใช่หรือไม่ ?`,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+
+            onOk() {
+                deleteAdvisor({
+                    variables: { account_id: advisor_id },
+                    onError: (error, clientOptions) => {
+                        NotificationService.getInstance().error('พบข้อผิดพลาด', error.message);
+                    },
+                    onCompleted: () => {
+                        NotificationService.getInstance().success('ลบบัญชีเสร็จสิ้น', '');
+                    },
+                })
+                    .then()
+                    .catch();
+            },
+            onCancel() {},
+        });
+    };
 
     const advisor_account_column: ColumnsType<IAccount> = [
         {
@@ -63,7 +113,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                     <>
                         {editingKey === id ? (
                             <>
-                                <Checkbox onChange={(e) => handleRoleChange(e.target.checked)} defaultChecked={is_advisor.is_committee ? true : false}>
+                                <Checkbox onChange={(e) => handleRoleChange(e.target.checked)} defaultChecked={is_advisor.is_committee}>
                                     กรรมการสหกิจ
                                 </Checkbox>
                             </>
@@ -108,7 +158,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
             width: 140,
             align: 'center',
             className: '',
-            render: (value, { id, is_advisor, role, status }, index) => {
+            render: (value, { id, email, is_advisor, role, status }, index) => {
                 return (
                     <div className={'flex flex-row gap-4 justify-center align-middle items-center '}>
                         {editingKey === id ? (
@@ -118,6 +168,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                                         ยกเลิก
                                     </p>
                                     <p
+                                        onClick={handleSubmit}
                                         className={
                                             'text-[16px] bg-blue-200 px-4 py-1 rounded-md border border-blue-600 text-blue-600 font-bold cursor-pointer '
                                         }
@@ -131,7 +182,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                                 <div onClick={() => handleInitChange(id, is_advisor.advisor_id, status, is_advisor.is_committee)} className="cursor-pointer">
                                     <PencilIcon className="w-6 h-6 text-gray-600 " />
                                 </div>
-                                <div className="cursor-pointer">
+                                <div onClick={() => showDeleteAdvisorModal(id, email)} className="cursor-pointer">
                                     <TrashIcon className="w-6 h-6  text-gray-600 hover:text-red-600 " />
                                 </div>
                             </>
@@ -144,7 +195,6 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
 
     return (
         <>
-            {' '}
             <Table
                 bordered={true}
                 size={'large'}
@@ -152,7 +202,8 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
                 className={tableStyle.customTable}
                 columns={advisor_account_column}
                 dataSource={advisor_accounts}
-                footer={() => <FooterInput />}
+                loading={delete_loading && update_loading}
+                footer={() => <AddAdvisorFooter />}
             />
         </>
     );

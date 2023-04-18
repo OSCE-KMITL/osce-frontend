@@ -52,5 +52,5 @@ export interface getAdvisorAccountsResponse {
 
 export function getAdvisorAccounts() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useQuery<getAdvisorAccountsResponse>(GET_ADVISOR_ACCOUNTS, { pollInterval: 500 });
+    return useQuery<getAdvisorAccountsResponse>(GET_ADVISOR_ACCOUNTS, { pollInterval: 1000 });
 }

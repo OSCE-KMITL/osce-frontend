@@ -6,7 +6,7 @@ export interface AnnouncementProps {
     description: string;
     updatedAt: Date;
     createdAt: Date;
-    advisor_id: {
+    advisor_id?: {
         name: string;
         last_name: string;
     };

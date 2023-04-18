@@ -4,9 +4,13 @@ import { IDepartment } from '@constants/faculty-info/interfaces';
 export interface IAdvisor {
     advisor_id: string;
 
+    name_prefix: string;
+
     name: string;
 
-    name_prefix: string;
+    name_en?: string;
+
+    last_name_en?: string;
 
     last_name: string;
 
@@ -16,7 +20,7 @@ export interface IAdvisor {
 
     students: IStudent[];
 
-    is_committee: Boolean;
+    is_committee: boolean;
 
     created_at: Date;
 

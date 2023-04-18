@@ -16,7 +16,6 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useSetCoopStatus } from '@features/student/hooks/useSetCoopStatus';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
-import FooterInput from '@components/Manager/CoopApply/FooterInput';
 
 interface StudentRegisterTableProps {
     student_data: IStudent[];
@@ -117,25 +116,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
                 return <>{name_prefix + '' + name_th + ' ' + lastname_th}</>;
             },
         },
-        // {
-        //     title: 'ภาควิชา',
-        //     dataIndex: 'department',
-        //     render: (value, { department }, index) => {
-        //         return <>{department.department_name_th}</>;
-        //     },
-        //     onFilter: (value: string, record) => record.department.department_name_th.includes(value),
-        //     filters: faculties.map((fac) => {
-        //         return {
-        //             value: fac.faculty_name_th,
-        //             text: fac.faculty_name_th,
-        //             children: departments
-        //                 .filter((dept) => dept.faculty_id === fac.faculty_id)
-        //                 .map((dept) => {
-        //                     return { value: dept.department_name_th, text: dept.department_name_th };
-        //                 }),
-        //         };
-        //     }),
-        // },
+
         {
             title: 'หลักสูตร',
             dataIndex: 'curriculum',
