@@ -79,16 +79,16 @@ export const student_item: MenuProps['items'] = [
         ],
     },
     {
-        label: 'งานที่เปิดรับ',
+        label: 'ข้อมูลงาน',
         key: '03',
         type: 'group',
         children: [
             {
                 label: 'งานที่เปิดรับ',
-                key: '/jobs',
+                key: '/student/job-list',
             },
             {
-                label: 'งานที่กำลังสมัคร',
+                label: 'งานที่สมัคร',
                 key: '/student/job-applying',
             },
         ],
@@ -133,7 +133,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'ข้อมูลบริษัท',
-                key: '',
+                key: '/company/profile',
             },
         ],
     },
@@ -144,7 +144,7 @@ export const itemsCompany: MenuProps['items'] = [
         children: [
             {
                 label: 'นักศึกษาที่สังกัดปัจจุบัน',
-                key: '',
+                key: '/company/my-students',
             },
         ],
     },
@@ -181,7 +181,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'กำหนดนักศึกษาให้อาจารย์',
-                key: '/manager/advisor-assign',
+                key: '',
             },
             {
                 label: 'รวมคะแนนสหกิจ',
@@ -202,6 +202,14 @@ export const itemsCommittee: MenuProps['items'] = [
             {
                 label: 'เพิ่มงานที่เปิดรับ',
                 key: '/jobs/new',
+            },
+            {
+                label: 'งานที่บริษัทตอบรับ',
+                key: '/manager/approve-job',
+            },
+            {
+                label: 'กำหนดงานให้นักศึกษา',
+                key: '/manager/assign-job',
             },
         ],
     },

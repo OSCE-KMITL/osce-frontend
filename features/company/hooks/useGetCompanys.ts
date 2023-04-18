@@ -1,3 +1,4 @@
+import { IJob } from '@features/job/interfaces';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 
 export const GET_ALL_COMPANIES = gql`
@@ -28,6 +29,12 @@ export const GET_ALL_COMPANIES = gql`
             }
             job {
                 id
+                job_title
+                required_major
+                limit
+                students{
+                    student_id
+                }
             }
         }
     }
@@ -54,9 +61,7 @@ export interface CompanyProps {
         phone_number: string;
         is_coordinator: string;
     };
-    job: {
-        id: string;
-    };
+    job: IJob[];
 }
 
 export interface CompanyResponses {
@@ -65,7 +70,7 @@ export interface CompanyResponses {
 
 export function useGetAllCompany() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error } = useQuery<CompanyResponses>(GET_ALL_COMPANIES);
+    const { data, loading, error, refetch } = useQuery<CompanyResponses>(GET_ALL_COMPANIES);
 
-    return { data, loading, error };
+    return { data, loading, error, refetch };
 }

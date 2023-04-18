@@ -72,6 +72,77 @@ export const GET_STUDENT = gql`
             height
             gpa
             gender
+
+            student_apply_job {
+                id
+                job_status
+                student {
+                    student_id
+                }
+                job {
+                    id
+                    job_title
+                    required_major
+                    project_topic
+                    nature_of_work
+                    required_skills
+                    limit
+                    welfare
+                    compensation
+                    internship_period
+                    work_period
+                    coordinator_name
+                    coordinator_job_title
+                    coordinator_email
+                    coordinator_phone_number
+                    supervisor_name
+                    supervisor_job_title
+                    supervisor_email
+                    supervisor_phone_number
+                    company_id {
+                        name_eng
+                    }
+                }
+                created_at
+                updated_at
+            }
+            company_assessment {
+                id
+                assessment_obj
+                strength
+                improvement
+                score
+            }
+            advisor_assessment {
+                id
+                assessment_obj
+                score
+            }
+            job {
+                id
+                job_title
+                required_major
+                project_topic
+                nature_of_work
+                required_skills
+                limit
+                welfare
+                compensation
+                internship_period
+                work_period
+                coordinator_name
+                coordinator_job_title
+                coordinator_email
+                coordinator_phone_number
+                supervisor_name
+                supervisor_job_title
+                supervisor_email
+                supervisor_phone_number
+                company_id {
+                    name_th
+                    name_eng
+                }
+            }
         }
     }
 `;

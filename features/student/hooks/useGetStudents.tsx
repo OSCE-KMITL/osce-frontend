@@ -12,10 +12,10 @@ export const GET_STUDENTS = gql`
             citizen_id
             coop_status
             created_at
-            transcript {
-                current_name
-                url
-            }
+            # transcript {
+            #     current_name
+            #     url
+            # }
             department {
                 id
                 faculty_id
@@ -52,6 +52,54 @@ export const GET_STUDENTS = gql`
             height
             gpa
             gender
+            score_from_advisor
+            score_from_company
+            score_from_presentation
+            student_apply_job {
+                id
+                job_status
+                student {
+                    student_id
+                }
+                job {
+                    id
+                    job_title
+                    required_major
+                    project_topic
+                    nature_of_work
+                    required_skills
+                    limit
+                    welfare
+                    compensation
+                    internship_period
+                    work_period
+                    coordinator_name
+                    coordinator_job_title
+                    coordinator_email
+                    coordinator_phone_number
+                    supervisor_name
+                    supervisor_job_title
+                    supervisor_email
+                    supervisor_phone_number
+                    company_id {
+                        name_eng
+                    }
+                }
+                created_at
+                updated_at
+            }
+            job {
+                id
+                job_title
+                company_id {
+                    id
+                    name_eng
+                }
+                limit
+                students {
+                    student_id
+                }
+            }
         }
     }
 `;

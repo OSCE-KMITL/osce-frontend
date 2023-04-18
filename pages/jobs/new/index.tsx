@@ -10,14 +10,14 @@ import {
 import LoadingSpinner from '../../../components/common/Spinner/LoadingSpinner';
 import NotificationService from '../../../lib/ant_service/NotificationService';
 import Input from '@ui/Input';
-import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { RoleOption } from 'constants/RoleOptions';
-import { AutoComplete, Checkbox, DatePicker, message, Radio, RadioChangeEvent, Select } from 'antd';
+import { AutoComplete, Checkbox, DatePicker, Divider, message, Radio, RadioChangeEvent, Select } from 'antd';
 import { useGetAllCompany } from 'features/company/hooks/useGetCompanys';
 import { UploadFileInput, useUploadFile } from 'features/upload/hooks/useUploadFile';
 import dayjs from 'dayjs';
 import { require_major, welfare_options } from 'constants/Job/jobData';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const CreateJobPage: FC = () => {
     const notification = NotificationService.getInstance();
@@ -28,6 +28,7 @@ const CreateJobPage: FC = () => {
     const [uploadFile, { loading: file_loading }] = useUploadFile();
     const { data: companies } = useGetAllCompany();
     const { me } = useContext(AuthenticationContext);
+    const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
     const [internshipPeriod, setInternshipPeriod] = useState<string | undefined | null>(null);
     const [requireMajor, setRequireMajor] = useState<string | undefined | null>(null);
@@ -56,6 +57,7 @@ const CreateJobPage: FC = () => {
     const selectRequireMajorOnChange = (value: string[]) => {
         setSelectRequireMajor(value);
         setRequireMajor(value.join(', '));
+        setValue('required_major', value.join(', '));
     };
 
     const originalArray = companies?.getAllCompanies;
@@ -74,6 +76,12 @@ const CreateJobPage: FC = () => {
         setComapnyPersonObj(find_company_person);
     };
 
+    const handleCompanypersonOnClick = () => {
+        if (me?.role === 'COMPANY') {
+            setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
+        }
+    };
+
     //object all company person
     const object_company_persons = originalArray?.map((obj) => {
         return {
@@ -83,6 +91,7 @@ const CreateJobPage: FC = () => {
     });
 
     useEffect(() => {
+        refectch_me();
         if (me?.role === 'COMPANY') {
             setComapnyPersonObj(() => object_company_persons?.find((person) => person.company_id === me?.is_company?.company_id.id));
         }
@@ -125,13 +134,18 @@ const CreateJobPage: FC = () => {
     // coordinator name
     const coordinatorNameOnSelect = (value) => {
         setCoordinatorName(value);
+        setValue('coordinator_name', value);
         const index_person = company_person_array.findIndex((obj) => obj.name === value);
         setCoordinatorPosition(company_person_array[index_person].position);
+        setValue('coordinator_job_title', company_person_array[index_person].position);
         setCoordinatorEmail(company_person_array[index_person].email);
+        setValue('coordinator_email', company_person_array[index_person].email);
         setCoordinatorPhoneNum(company_person_array[index_person].phone_number);
+        setValue('coordinator_phone_number', company_person_array[index_person].phone_number);
     };
     const coordinatorNameOnChange = (value) => {
         setCoordinatorName(value);
+        setValue('coordinator_name', value);
     };
 
     // supervisor name
@@ -178,6 +192,7 @@ const CreateJobPage: FC = () => {
         setSupervisorPhoneNum(undefined);
         setSupervisorPosition(undefined);
         setSupervisorEmail(undefined);
+        setValue('coordinator_name', null);
         reset();
     }
 
@@ -375,9 +390,8 @@ const CreateJobPage: FC = () => {
     return (
         <div className=" gap-8 min-h-screen relative overflow-y-auto py-8 ">
             <div className="w-[80%] h-fit">
-                <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold"> เพิ่มงานที่เปิดรับ</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1> เพิ่มงานที่เปิดรับ</h1>
+                <Divider />
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className=" rounded-md  font-primary_noto  ">
                 <div className="grid grid-rows-1 gap-8 mb-8">
@@ -415,36 +429,37 @@ const CreateJobPage: FC = () => {
                                     name={'project_topic'}
                                     errors={errors}
                                     register={register}
-                                    validationSchema={{}}
+                                    validationSchema={{
+                                        maxLength: {
+                                            message: 'ข้อมูลมากเกินไป',
+                                            value: 200,
+                                        },
+                                    }}
                                     isError={errors.project_topic && true}
                                 ></Input>
                             </div>
                             <div className="">
                                 <Input
                                     type={'text'}
-                                    label={'ตำแหน่งงาน'}
+                                    label={'ตำแหน่งงาน*'}
                                     name={'job_title'}
                                     errors={errors}
                                     register={register}
-                                    validationSchema={
-                                        me?.role === RoleOption.COMPANY
-                                            ? {
-                                                  required: 'จำเป็นต้องกรอกตำแหน่งงาน',
-                                                  maxLength: {
-                                                      message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
-                                                  },
-                                                  minLength: {
-                                                      message: 'ข้อมูลน้อยเกินไป',
-                                                      value: 5,
-                                                  },
-                                              }
-                                            : {}
-                                    }
+                                    validationSchema={{
+                                        required: 'จำเป็นต้องกรอกตำแหน่งงาน',
+                                        maxLength: {
+                                            message: 'ข้อมูลมากเกินไป',
+                                            value: 100,
+                                        },
+                                        minLength: {
+                                            message: 'ข้อมูลน้อยเกินไป',
+                                            value: 5,
+                                        },
+                                    }}
                                 ></Input>
                             </div>
                             <div className="mb-2">
-                                <label className={`block text-[20px] font-medium text-gray-900`}>หลักสูตรที่รับ</label>
+                                <label className={`block text-[20px] font-medium text-gray-900`}>หลักสูตรที่รับ*</label>
                                 <Select
                                     className={'w-full text-[20px] font-primary_noto'}
                                     mode="multiple"
@@ -454,8 +469,13 @@ const CreateJobPage: FC = () => {
                                     onChange={selectRequireMajorOnChange}
                                     options={require_major}
                                     value={selectRequireMajor}
+                                    ref={() => {
+                                        register('required_major', { required: 'จำเป็นต้องกรอกข้อมูลหลักสูตรที่รับ' });
+                                    }}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.required_major && !requireMajor && <span>{errors.required_major.message}</span>}
+                                </div>
                             </div>
 
                             <div className="col-span-2">
@@ -466,19 +486,13 @@ const CreateJobPage: FC = () => {
                                     errors={errors}
                                     register={register}
                                     validationSchema={
-                                        me?.role === RoleOption.COMPANY
-                                            ? {
-                                                  required: 'จำเป็นต้องกรอกลักษณะงานที่ต้องปฏิบัติ',
-                                                  maxLength: {
-                                                      message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
-                                                  },
-                                                  minLength: {
-                                                      message: 'ข้อมูลน้อยเกินไป',
-                                                      value: 5,
-                                                  },
-                                              }
-                                            : {}
+                                        //   required: 'จำเป็นต้องกรอกลักษณะงานที่ต้องปฏิบัติ',
+                                        {
+                                            maxLength: {
+                                                message: 'ข้อมูลมากเกินไป',
+                                                value: 1500,
+                                            },
+                                        }
                                     }
                                 ></Input>
                             </div>
@@ -490,21 +504,12 @@ const CreateJobPage: FC = () => {
                                     name={'required_skills'}
                                     errors={errors}
                                     register={register}
-                                    validationSchema={
-                                        me?.role === RoleOption.COMPANY
-                                            ? {
-                                                  required: 'จำเป็นต้องกรอกลักษณะงานที่ต้องปฏิบัติ',
-                                                  maxLength: {
-                                                      message: 'ข้อมูลมากเกินไป',
-                                                      value: 100,
-                                                  },
-                                                  minLength: {
-                                                      message: 'ข้อมูลน้อยเกินไป',
-                                                      value: 5,
-                                                  },
-                                              }
-                                            : {}
-                                    }
+                                    validationSchema={{
+                                        maxLength: {
+                                            message: 'ข้อมูลมากเกินไป',
+                                            value: 1500,
+                                        },
+                                    }}
                                     // isError={errors.nature_of_work && true}
                                 ></Input>
                             </div>
@@ -549,7 +554,7 @@ const CreateJobPage: FC = () => {
 
                                     <div className="h-auto col-span-2">
                                         <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
-                                            จำนวนที่รับสมัคร
+                                            จำนวนที่รับสมัคร*
                                         </label>
                                         <input
                                             className="w-full shadow-sm  text-[18px] rounded-lg  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
@@ -558,9 +563,16 @@ const CreateJobPage: FC = () => {
                                             min={1}
                                             max={20}
                                             name="limit"
-                                            {...register('limit')}
+                                            {...register('limit', {
+                                                required: 'จำเป็นต้องกรอกจำนวนที่รับ',
+                                                pattern: {
+                                                    value: /^[0-9]/,
+                                                    message: 'จำนวนที่รับต้องมากกว่า 0',
+                                                },
+                                                maxLength: { value: 2, message: 'ข้อมูลมากเกินไป' },
+                                            })}
                                         />
-                                        <div className="h-5">{errors.limit && <p className={'text-red-500'}>จำเป็นต้องกรอกจำนวนที่รับสมัคร</p>}</div>
+                                        <div className="h-5 text-red-500 text-[18px]">{errors.limit && <span>{errors.limit.message}</span>}</div>{' '}
                                     </div>
 
                                     <div className="col-span-4 ">
@@ -576,8 +588,18 @@ const CreateJobPage: FC = () => {
                                                     min={0}
                                                     max={1000000}
                                                     name="compensation"
-                                                    {...register('compensation', { required: false })}
+                                                    {...register('compensation', {
+                                                        required: false,
+                                                        pattern: {
+                                                            value: /^[0-9]/,
+                                                            message: 'ค่าตอบแทนต้องมากกว่า 0',
+                                                        },
+                                                        maxLength: { value: 7, message: 'ข้อมูลมากเกินไป' },
+                                                    })}
                                                 />
+                                                <div className="h-5 text-red-500 text-[18px]">
+                                                    {errors.compensation && <span>{errors.compensation.message}</span>}
+                                                </div>{' '}
                                             </div>
 
                                             <div className="w-full min-w-fit h-auto pt-11 ">
@@ -586,8 +608,12 @@ const CreateJobPage: FC = () => {
                                                     onChange={compensationSuffixOnChange}
                                                     value={compensationSuffix}
                                                 >
-                                                    <Radio className='font-primary_noto text-[16px] ' value={'วัน'}>ต่อวัน</Radio>
-                                                    <Radio className='font-primary_noto text-[16px] ' value={'เดือน'}>ต่อเดือน</Radio>
+                                                    <Radio className="font-primary_noto text-[16px] " value={'วัน'}>
+                                                        ต่อวัน
+                                                    </Radio>
+                                                    <Radio className="font-primary_noto text-[16px] " value={'เดือน'}>
+                                                        ต่อเดือน
+                                                    </Radio>
                                                 </Radio.Group>
                                             </div>
                                         </div>
@@ -611,7 +637,12 @@ const CreateJobPage: FC = () => {
                                             name={'other_welfare'}
                                             errors={errors}
                                             register={register}
-                                            validationSchema={{}}
+                                            validationSchema={{
+                                                maxLength: {
+                                                    message: 'ข้อมูลมากเกินไป',
+                                                    value: 200,
+                                                },
+                                            }}
                                             isError={errors.welfare && true}
                                         ></Input>
                                     </div>
@@ -624,7 +655,7 @@ const CreateJobPage: FC = () => {
                         <label className={`label-form-head-card `}>ผู้ประสานงาน</label>
                         <div className="bg-white rounded-xl grid grid-cols-2 px-6 pt-6 gap-x-8">
                             <div className="mb-2 h-auto ">
-                                <label className={`block text-[20px] font-medium text-gray-900 `}>ชื่อ-นามสกุล</label>
+                                <label className={`block text-[20px] font-medium text-gray-900 `}>ชื่อ-นามสกุล*</label>
                                 <AutoComplete
                                     id="coordinator_name"
                                     className="w-full shadow-sm  text-[18px]"
@@ -632,17 +663,26 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={coordinatorNameOnSelect}
                                     onChange={coordinatorNameOnChange}
+                                    onClick={handleCompanypersonOnClick}
+                                    maxLength={200}
                                     placeholder="นาง พรประภา ชินตะวัน"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                                     }
+                                    ref={() => {
+                                        register('coordinator_name', {
+                                            required: 'จำเป็นต้องกรอกชื่อผู้ประสานงาน',
+                                        });
+                                    }}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.coordinator_name && !coordinatorName && <span>{errors.coordinator_name.message}</span>}
+                                </div>{' '}
                             </div>
 
                             <div className="mb-2 h-auto">
                                 <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
-                                    ตำแหน่ง
+                                    ตำแหน่ง*
                                 </label>
                                 <input
                                     className="w-full shadow-sm text-[18px] rounded-lg placeholder:opacity-50  outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
@@ -651,16 +691,25 @@ const CreateJobPage: FC = () => {
                                     name="coordinator_position"
                                     value={coordinatorPosition}
                                     placeholder="Human resource manager"
+                                    maxLength={200}
                                     onChange={(e) => {
                                         setCoordinatorPosition(e.target.value);
+                                        setValue('coordinator_job_title', e.target.value);
+                                    }}
+                                    ref={() => {
+                                        register('coordinator_job_title', {
+                                            required: 'จำเป็นต้องกรอกตำแหน่งผู้ประสานงาน',
+                                        });
                                     }}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.coordinator_job_title && !coordinatorPosition && <span>{errors.coordinator_job_title.message}</span>}
+                                </div>{' '}
                             </div>
 
                             <div className="mb-2 h-auto">
                                 <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
-                                    อีเมล์
+                                    อีเมล์*
                                 </label>
                                 <input
                                     className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
@@ -669,29 +718,77 @@ const CreateJobPage: FC = () => {
                                     name="coordinator_email"
                                     value={coordinatorEmail}
                                     placeholder="pornprapa@company.co.th"
+                                    maxLength={200}
                                     onChange={(e) => {
                                         setCoordinatorEmail(e.target.value);
+                                        setValue('coordinator_email', e.target.value);
+                                    }}
+                                    ref={() => {
+                                        register('coordinator_email', {
+                                            required: 'จำเป็นต้องกรอกอีเมล์ผู้ประสานงาน',
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                message: 'รูปแบบอีเมล์ไม่ถูกต้อง',
+                                            },
+                                        });
                                     }}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.coordinator_email &&
+                                    errors.coordinator_email.message === 'จำเป็นต้องกรอกอีเมล์ผู้ประสานงาน' &&
+                                    !coordinatorEmail ? (
+                                        <span>{errors.coordinator_email.message}</span>
+                                    ) : (
+                                        ''
+                                    )}
+                                    {errors.coordinator_email && errors.coordinator_email.message === 'รูปแบบอีเมล์ไม่ถูกต้อง' ? (
+                                        <span>{errors.coordinator_email.message}</span>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>{' '}
                             </div>
 
                             <div className="mb-2 h-auto">
                                 <label htmlFor="address" className="block text-[20px] font-medium text-gray-900">
-                                    โทรศัพท์
+                                    โทรศัพท์*
                                 </label>
                                 <input
                                     className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
-                                    id="coordinator_phone"
-                                    type="text"
-                                    name="coordinator_phone"
+                                    id="coordinator_phone_number"
+                                    type="tel"
+                                    maxLength={10}
+                                    name="coordinator_phone_number"
                                     placeholder="0812345678"
                                     value={coordinatorPhoneNum}
                                     onChange={(e) => {
                                         setCoordinatorPhoneNum(e.target.value);
+                                        setValue('coordinator_phone_number', e.target.value);
+                                    }}
+                                    ref={() => {
+                                        register('coordinator_phone_number', {
+                                            required: 'จำเป็นต้องกรอกเบอร์ผู้ประสานงาน',
+                                            pattern: {
+                                                value: /^[0-9]{10}$/, // Only allow 10-digit numbers
+                                                message: 'กรุณากรอกเบอร์ติดต่อให้ถูกต้อง',
+                                            },
+                                        });
                                     }}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.coordinator_phone_number &&
+                                    errors.coordinator_phone_number.message === 'จำเป็นต้องกรอกเบอร์ผู้ประสานงาน' &&
+                                    !coordinatorPhoneNum ? (
+                                        <span>{errors.coordinator_phone_number.message}</span>
+                                    ) : (
+                                        ''
+                                    )}
+                                    {errors.coordinator_phone_number && errors.coordinator_phone_number.message === 'กรุณากรอกเบอร์ติดต่อให้ถูกต้อง' ? (
+                                        <span>{errors.coordinator_phone_number.message}</span>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -707,6 +804,8 @@ const CreateJobPage: FC = () => {
                                     size="large"
                                     onSelect={supervisorNameOnSelect}
                                     onChange={supervisorNameOnChange}
+                                    onClick={handleCompanypersonOnClick}
+                                    maxLength={200}
                                     placeholder="นาง เทธิกา จริงกิจจานุกูล"
                                     filterOption={(inputValue, company_person_option) =>
                                         company_person_option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -726,6 +825,7 @@ const CreateJobPage: FC = () => {
                                     name="supervisor_position"
                                     placeholder="Project coordinator "
                                     value={supervisorPosition}
+                                    maxLength={200}
                                     onChange={(e) => {
                                         setSupervisorPosition(e.target.value);
                                     }}
@@ -744,11 +844,19 @@ const CreateJobPage: FC = () => {
                                     name="supervisor_email"
                                     placeholder="tawika@company.co.th"
                                     value={supervisorEmail}
+                                    maxLength={200}
                                     onChange={(e) => {
                                         setSupervisorEmail(e.target.value);
                                     }}
+                                    {...register('supervisor_email', {
+                                        required: false,
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: 'รูปแบบอีเมล์ไม่ถูกต้อง',
+                                        },
+                                    })}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">{errors.supervisor_email && <span>{errors.supervisor_email.message}</span>}</div>{' '}
                             </div>
 
                             <div className="mb-2 h-auto">
@@ -758,15 +866,25 @@ const CreateJobPage: FC = () => {
                                 <input
                                     className="w-full shadow-sm  text-[18px] rounded-lg placeholder:opacity-50 outline-0 block  p-2.5 bg-gray-50 border border-gray-300 text-gray-900 focus:border-primary-300"
                                     id="supervisor_phone"
-                                    type="text"
+                                    type="tel"
                                     name="supervisor_phone"
                                     value={supervisorPhoneNum}
                                     placeholder="0812345678"
+                                    maxLength={10}
                                     onChange={(e) => {
                                         setSupervisorPhoneNum(e.target.value);
                                     }}
+                                    {...register('supervisor_phone_number', {
+                                        required: false,
+                                        pattern: {
+                                            value: /^[0-9]{10}$/, // Only allow 10-digit numbers
+                                            message: 'กรุณากรอกเบอร์ติดต่อให้ถูกต้อง',
+                                        },
+                                    })}
                                 />
-                                <div className="h-5"></div>
+                                <div className="h-5 text-red-500 text-[18px]">
+                                    {errors.supervisor_phone_number && <span>{errors.supervisor_phone_number.message}</span>}
+                                </div>{' '}
                             </div>
                         </div>
                     </div>

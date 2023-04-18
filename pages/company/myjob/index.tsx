@@ -1,23 +1,47 @@
 import ContentContainer from '@ui/ContentContainer';
 import { Link } from '@ui/Link';
 import SkeletonLoading from '@ui/SkeletonLoading';
-import { Dropdown, Menu, Space, Tag } from 'antd';
+import { Divider, Dropdown, Menu, Modal, Space, Tag } from 'antd';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
 import { RoleOption } from 'constants/RoleOptions';
 import { AuthenticationContext } from 'context/AuthContextProvider';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDeleteJob } from 'features/job/hooks/useDeleteJob';
 import NotificationService from 'lib/ant_service/NotificationService';
 import { useRouter } from 'next/router';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+
 
 export default function Myjob() {
-    const { data, loading, error } = useGetMe();
+    const { data, loading, error, refetch } = useGetMe();
     const { me } = useContext(AuthenticationContext);
     const [deleteJob, { data: delete_data, loading: delete_loading, error: delete_error }] = useDeleteJob();
     const notification = NotificationService.getInstance();
     const router = useRouter();
+    const { confirm } = Modal;
+
+
+    useEffect(() => {
+        refetch();
+    }, []);
+
+    const showDeleteConfirm = (job_id: string) => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการลบงานนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: '',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleDelete(job_id);
+            },
+            onCancel() {},
+        });
+    };
+
 
     const handleDelete = (id: string) => {
         console.log('delete id:', id);
@@ -28,6 +52,7 @@ export default function Myjob() {
                     if (result) {
                         notification.success('Success', 'ลบงานเสร็จสิ้น');
                     }
+                    refetch();
                 },
                 onError: (error) => {
                     if (error) {
@@ -50,7 +75,7 @@ export default function Myjob() {
             <Menu.Item key="1" icon={<EditOutlined />} onClick={() => handleEdit(id_job)}>
                 แก้ไข
             </Menu.Item>
-            <Menu.Item key="1" icon={<DeleteOutlined />} danger={true} onClick={() => handleDelete(id_job)}>
+            <Menu.Item key="1" icon={<DeleteOutlined />} danger={true} onClick={() => showDeleteConfirm(id_job)}>
                 ลบ
             </Menu.Item>
         </Menu>
@@ -59,9 +84,8 @@ export default function Myjob() {
     return (
         <ContentContainer>
             <div className="w-[80%] h-fit">
-                <BreadcrumbComponent />
-                <h1 className=" text-4xl md:text-5xl font-primary_noto font-semibold">งานที่เปิดรับ</h1>
-                <hr className="h-[1px] mt-10 mb-4 bg-gray-400 border-0 dark:bg-gray-700" />
+                <h1>งานที่เปิดรับ</h1>
+                <Divider />
             </div>
             {loading && <SkeletonLoading />}
             {me?.role === RoleOption.COMMITTEE || me?.role === RoleOption.COMPANY ? (

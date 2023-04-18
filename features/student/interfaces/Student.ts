@@ -1,9 +1,11 @@
-import { JobProps } from './../../job/hooks/useGetJobs';
+import { IStudentApplyJob, JobProps } from './../../job/hooks/useGetJobs';
 import { ICurriculum, IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { ILanguageAbility, ISkillState } from '@features/register-coop/interfaces';
 import { CoopStatus } from './index';
 import { ProgressReport } from '@features/progress_report/model';
 import { IAdvisor } from '@features/advisor/interface';
+import {  IAccount } from './index';
+import { IAdvisorAssessment, ICompanyAssessment } from '@features/assessment/interfaces';
 
 export interface ITranscriptFileUpload {
     id: string;
@@ -75,9 +77,23 @@ export interface IStudent {
 
     birth_date: string;
 
+    score_from_advisor: number;
+
+    score_from_company: number;
+
+    score_from_presentation: number;
+
     created_at: Date;
 
     updated_at: Date;
 
-    job: JobProps[] | null | undefined;
+    job: JobProps | null | undefined;
+
+    student_apply_job: IStudentApplyJob[] | null | undefined;
+
+    account: IAccount | null | undefined;
+
+    company_assessment: ICompanyAssessment | null | undefined;
+
+    advisor_assessment: IAdvisorAssessment | null | undefined;
 }
