@@ -1,4 +1,6 @@
+import { IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 import { IJob } from '@features/job/interfaces';
+import { IStudent } from '@features/student/interfaces/Student';
 
 export interface ICompanyPerson {
     company_person_id: string;
@@ -56,7 +58,8 @@ export interface IAdvisor {
     advisor_id: string;
     name: string;
     last_name: string;
-    faculty: string;
-    department: string;
+    faculty: IFaculty;
+    department: IDepartment;
     is_committee: Boolean;
+    students: IStudent[] | null | undefined;
 }

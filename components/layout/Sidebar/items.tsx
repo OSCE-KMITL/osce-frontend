@@ -181,7 +181,7 @@ export const itemsCommittee: MenuProps['items'] = [
             },
             {
                 label: 'กำหนดนักศึกษาให้อาจารย์',
-                key: '',
+                key: '/manager/advisor-assign',
             },
             {
                 label: 'รวมคะแนนสหกิจ',
@@ -222,7 +222,7 @@ export const itemsAdvisor: MenuProps['items'] = [
         children: [
             {
                 label: 'นักศึกษาในการดูแล',
-                key: '/',
+                key: '/advisor/my-students',
             },
         ],
     },

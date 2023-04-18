@@ -9,6 +9,8 @@ import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { useSetScoreStudent } from '@features/student/hooks/useSetScoreStudent';
 import { Link } from '@ui/Link';
 import { ExportJsonToExcel } from 'utils/ExportJsonToExcel';
+import { useRouter } from 'next/router';
+import client from '@lib/apollo';
 
 const CoopScore: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -18,16 +20,29 @@ const CoopScore: React.FC = () => {
     const [setScore, { loading: set_score_loading, error: set_score_error }] = useSetScoreStudent();
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
+    const router = useRouter();
 
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
+    useEffect(() => {
+        if (!stu_loading || !stu_error) {
+            client.resetStore()
+            refectch_me();
+            refetch();
+            newDataSource();
+           
+        }
+    }, []);
+
+    if (stu_loading) return <p>loading..</p>;
+    if (stu_error) return <p>error..</p>;
+
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department?.department_name_th;
     const filter_stu_data = stu_data?.getStudentsApply
-    .filter((i) => i.department?.department_name_th === committee_dep.department_name_th)
-    .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
-
+        .filter((i) => i.department?.department_name_th === committee_dep)
+        .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const newDataSource = () => {
         const data = [];
-        setDataSource([]);
+        
         for (let index = 0; index < filter_stu_data?.length; index++) {
             data.push({
                 key: `${index}`,
@@ -37,19 +52,13 @@ const CoopScore: React.FC = () => {
         setDataSource(data);
     };
 
+    const curr_data = filter_stu_data.map((data,idx) => {
+        return {key:idx ,...data}
+    })
+
     const onFinish = (value) => {
         console.log({ value });
     };
-
-    useEffect(() => {
-        newDataSource();
-        refectch_me();
-    }, [stu_data]);
-
-
-    if (stu_loading) return <p>loading..</p>;
-    if (stu_error) return <p>error..</p>;
-
 
     const handleSaveButton = (stdent_id: string) => {
         const advisor_score = form.getFieldValue('advisor_score');
@@ -282,7 +291,7 @@ const CoopScore: React.FC = () => {
             </div>
 
             <Form form={form} onFinish={onFinish}>
-                <Table id="scroe_table" bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
+                <Table id="scroe_table" bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={curr_data} />
             </Form>
         </div>
     );

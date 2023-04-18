@@ -95,7 +95,7 @@ const AdvisorAssign: React.FC = () => {
                                 options={options}
                             />
                         ) : (
-                            <div className="flex flex-row gap-2.5 	flex-wrap: wrap">
+                            <div className="flex flex-wrap gap-2.5">
                                 {record.is_advisor.students.length === 0 && (
                                     <p className="w-fit px-2 py-1 bg-slate-100 text-slate-500 border border-slate-500 rounded-md">ไม่มีนักศึกษาในที่นิเทศ</p>
                                 )}
