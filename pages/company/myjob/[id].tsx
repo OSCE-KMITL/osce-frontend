@@ -2,7 +2,6 @@ import { Link } from '@ui/Link';
 import { Button, Divider, Space, Statistic, Table, TableColumnsType, Tag } from 'antd';
 import { IStudentApplyJob, useGetJob } from 'features/job/hooks/useGetJobs';
 import BreadcrumbComponent from 'components/common/Beardcrumb/Beardcrumb';
-import { useGetJob } from 'features/job/hooks/useGetJobs';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import tableStyle from '../../../styles/Table/table.module.scss';

@@ -19,11 +19,6 @@ const CoopScore: React.FC = () => {
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
-
-    const filter_stu_data = stu_data?.getStudents.filter((i) => i.department?.department_name_th === committee_dep);
-    filter_stu_data?.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
-
     const newDataSource = () => {
         const data = [];
         setDataSource([]);
@@ -39,6 +34,20 @@ const CoopScore: React.FC = () => {
     const onFinish = (value) => {
         console.log({ value });
     };
+
+    useEffect(() => {
+        newDataSource();
+        refectch_me();
+    }, [stu_data]);
+
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
+
+    if (stu_loading) return <p>loading..</p>;
+    if (stu_error) return <p>error..</p>;
+
+    const filter_stu_data = stu_data?.getStudentsApply
+        .filter((i) => i.department?.department_name_th === committee_dep.department_name_th)
+        .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const handleSaveButton = (stdent_id: string) => {
         const advisor_score = form.getFieldValue('advisor_score');
@@ -69,11 +78,6 @@ const CoopScore: React.FC = () => {
     const handleCancel = () => {
         setEditingRowKey(null);
     };
-
-    useEffect(() => {
-        newDataSource();
-        refectch_me();
-    }, [stu_data]);
 
     const handleExportExcel = () => {
         const dataToExport = dataSource.map((item) => {
@@ -263,6 +267,7 @@ const CoopScore: React.FC = () => {
     if (stu_error) {
         return <p>error</p>;
     }
+
     return (
         <div>
             <h1>รวมคะแนนสหกิจ</h1>

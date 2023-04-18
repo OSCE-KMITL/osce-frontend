@@ -21,9 +21,9 @@ const AssignJob: React.FC = () => {
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
 
-    const committee_dep = dataGetMe?.getMe?.is_advisor?.department;
+    const committee_dep = dataGetMe?.getMe?.is_advisor?.department.department_name_th;
 
-    const filter_stu_data = stu_data?.getStudents.filter((i) => i.department?.department_name_th === committee_dep);
+    const filter_stu_data = stu_data?.getStudentsApply.filter((i) => i.department?.department_name_th === committee_dep);
     filter_stu_data?.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const newDataSource = () => {
