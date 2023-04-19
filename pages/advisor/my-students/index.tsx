@@ -24,7 +24,7 @@ export default function MyStudents() {
     }, []);
 
     const advisor_department = advisor_data?.getAdvisor?.department?.department_name_th;
-    const student_data = advisor_data?.getAdvisor?.students.filter((i) => i.department?.department_name_th === advisor_department);
+    const student_data = advisor_data?.getAdvisor?.students;
     const updateStudentData = (type_filter: string) => {
         if (type_filter === 'ทั้งหมด') {
             setDataStudent(student_data);
@@ -82,7 +82,7 @@ export default function MyStudents() {
                             )}
                             <div className="grid grid-cols-2 w-full align-middle items-center pl-24  text-gray-700">
                                 <h1 className="text-md font-medium leading-6 ">
-                                    {data?.student?.name_prefix} {data?.student?.name_th} {data?.student?.lastname_th}
+                                    {data?.name_prefix} {data?.name_th} {data?.lastname_th}
                                 </h1>
                                 {data?.job ? (
                                     <h1 className="text-md font-medium leading-6  grid justify-end pr-16">
@@ -94,13 +94,21 @@ export default function MyStudents() {
                             </div>
                         </div>
                         <div className=" w-full h-full col-span-4 gap-4 flex border-l-2 pl-4 justify-end">
-                            <div className="flex w-[57%] gap-x-4 items-center">
+                            <div className="flex w-full gap-x-4 items-center">
                                 <div className="text-right items-end">
                                     <Link
                                         href={'/student/' + data?.student?.student_id}
                                         className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
                                     >
                                         {'ดูใบสมัคร'}
+                                    </Link>
+                                </div>
+                                <div className="text-right items-end">
+                                    <Link
+                                        href={'/student/' + data?.student_id}
+                                        className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
+                                    >
+                                        {'รายงานผลสหกิจ'}
                                     </Link>
                                 </div>
                                 <div className="text-right items-end">
@@ -163,13 +171,21 @@ export default function MyStudents() {
                                     </div>
                                 </div>
                                 <div className=" w-full h-full col-span-4 gap-4 flex border-l-2 pl-4 justify-end">
-                                    <div className="flex w-[57%] gap-x-4 items-center">
+                                    <div className="flex w-full gap-x-4 items-center">
                                         <div className="text-right items-end">
                                             <Link
                                                 href={'/student/' + data?.student_id}
                                                 className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
                                             >
                                                 {'ดูใบสมัคร'}
+                                            </Link>
+                                        </div>
+                                        <div className="text-right items-end">
+                                            <Link
+                                                href={'/student/' + data?.student_id}
+                                                className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
+                                            >
+                                                {'รายงานผลสหกิจ'}
                                             </Link>
                                         </div>
                                         <div className="text-right items-end">
