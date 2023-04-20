@@ -28,17 +28,18 @@ const ApproveJob: React.FC = () => {
 
     const committee_dep = dataGetMe?.getMe?.is_advisor?.department?.department_name_th;
     const notification = NotificationService.getInstance();
-    const filter_stu_data = stu_apply_job_data?.getAllStudentApplyJob.filter(
-        (i) =>
-            (i.job_status === JobStatus.STUDENTACCEPT || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
-            (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
-    );
+    const filter_stu_data = stu_apply_job_data?.getAllStudentApplyJob
+        ?.filter(
+            (i) =>
+                (i.job_status === JobStatus.STUDENTACCEPT || i.job_status === JobStatus.COMMITTEEAPPROVE || i.job_status === JobStatus.COMMITTEECANCEL) &&
+                (i.job.required_major.includes(committee_dep) || i.job.required_major.includes('ไม่จำกัดหลักสูตร'))
+        )
+        ?.sort((a, b) => a.job?.job_title?.localeCompare(b.job?.job_title));
 
     useEffect(() => {
         refectch_me();
     }, []);
 
-    filter_stu_data?.sort((a, b) => a.job?.company_id?.name_eng.localeCompare(b.job?.company_id?.name_eng));
     const handleApproveJob = (id: string) => {
         if (id) {
             committeeApproveJob({
