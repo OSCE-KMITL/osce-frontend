@@ -24,7 +24,6 @@ export const GET_ANNOUNCEMENT = gql`
                 last_name
                 name
                 updated_at
-                faculty
                 created_at
                 advisor_id
             }

@@ -14,7 +14,7 @@ const ProgressReportTextInput: FC<ProgressReportTextInputProps> = ({ topic, hand
                 onChange={(event) => handleChange(event.target.value)}
                 type="text"
                 value={value ? value : undefined}
-                disabled={!!value}
+                disabled={value ? true : false}
                 className="w-3/4 justify-self-end rounded-md h-auto bg-white px-2 py-2 text-xl border border-gray-400"
             />
         </div>

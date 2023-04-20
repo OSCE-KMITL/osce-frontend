@@ -4,15 +4,15 @@ import { IDepartment } from '@constants/faculty-info/interfaces';
 export interface IAdvisor {
     advisor_id: string;
 
-    name_prefix: string;
+    name_prefix?: string;
 
-    name: string;
+    name?: string;
 
     name_en?: string;
 
     last_name_en?: string;
 
-    last_name: string;
+    last_name?: string;
 
     faculty: IDBFactory;
 
