@@ -15,6 +15,7 @@ import DocumentCoop201 from '@components/PDF/DocumentCoop201';
 import DocumentCoop304 from '@components/PDF/DocumentCoop304';
 
 const CoopScore: React.FC = () => {
+    const [dataSource, setDataSource] = useState([]);
     const [editingRowKey, setEditingRowKey] = useState(null);
     const notification = NotificationService.getInstance();
     const { data: stu_data, loading: stu_loading, error: stu_error, refetch } = useGetStudents();
@@ -283,7 +284,7 @@ const CoopScore: React.FC = () => {
             <h1>รวมคะแนนสหกิจ</h1>
             <Divider />
             <div className="flex justify-end mb-4">
-                <Link onClick={() => ExportJsonToExcel(handleExportExcel())} intent="primary">
+                <Link onClick={() => ExportJsonToExcel(handleExportExcel(), 'คะแนนสหกิจ')} intent="primary">
                     <DocumentArrowDownIcon className="w-6 h-6 text-white mr-2" />
                     <p className="text-[14px] font-bold">Export to Excel</p>
                 </Link>

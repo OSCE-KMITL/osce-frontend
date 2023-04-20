@@ -1,5 +1,6 @@
 import { IJob } from '@features/job/interfaces';
 import { ApolloError, gql, useQuery } from '@apollo/client';
+import { ICompany } from '@features/company/interfaces';
 
 export const GET_ALL_COMPANIES = gql`
     query GetAllCompanies {
@@ -32,7 +33,7 @@ export const GET_ALL_COMPANIES = gql`
                 job_title
                 required_major
                 limit
-                students{
+                students {
                     student_id
                 }
             }
@@ -65,7 +66,7 @@ export interface CompanyProps {
 }
 
 export interface CompanyResponses {
-    getAllCompanies: CompanyProps[] | null;
+    getAllCompanies: ICompany[] | null;
 }
 
 export function useGetAllCompany() {
