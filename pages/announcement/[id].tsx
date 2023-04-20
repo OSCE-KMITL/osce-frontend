@@ -44,7 +44,7 @@ const AnnouncementContent: FunctionComponent<Props> = () => {
                     <div className=" gap-2 flex justify-center align-middle items-center  flex-row  font-normal text-gray-500 text-clip  overflow-hidden ">
                         <UserOutlined className="text-lg" />
                         <p className="text-sm">
-                            {data.getAnnouncement.advisor_id.name} {data.getAnnouncement.advisor_id.last_name}
+                            {data.getAnnouncement.advisor_id?.name} {data.getAnnouncement.advisor_id?.last_name}
                         </p>
                     </div>
                 </div>

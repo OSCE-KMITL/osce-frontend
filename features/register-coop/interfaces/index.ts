@@ -76,7 +76,7 @@ interface RegisterError {
 export const regExPattern = {
     gpa: new RegExp(/^[0-4]\.\d\d$/),
     only_thai: new RegExp('^[ก-๏s]+$'),
-    only_eng: new RegExp('^[A-Za-z]+$'),
+    only_eng: new RegExp(/^[a-zA-Z\s]*$/),
     student_id: new RegExp('[0-9]{8}'),
     phone_number: new RegExp('[0]{1}[0-9]{9}'),
     email: new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'),

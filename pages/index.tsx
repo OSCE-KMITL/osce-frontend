@@ -6,12 +6,13 @@ import { Divider } from 'antd';
 import { CoopStatus } from '@features/student/interfaces';
 import { RoleOption } from '@constants/RoleOptions';
 import { ENDPOINT_URI } from '@constants';
+import { useGetAnnouncements } from '@features/announcement/hooks/useGetAnnouncement';
+import AnnouncementList from '@components/HomePage/AnnouncementList';
 
 const HomePage: React.FC = () => {
     const { me } = useContext(AuthenticationContext);
     const router = useRouter();
     const [showCoopRegisterButton, setShowCoopRegisterButton] = useState(false);
-
     useEffect(() => {
         const checkUser = (): void => {
             if (!me) {
@@ -40,64 +41,10 @@ const HomePage: React.FC = () => {
                         </div>
                     </div>
                 )}
-                <div className="h-[70%] flex flex-col gap-4">
-                    <div className="flex flex-row gap-4">
-                        <p className="font-semibold">ประกาศ</p>
-                        <p>งานที่เปิดรับ</p>
-                    </div>
-                    <div className="w-full flex flex-col justify-center bg-white rounded-md">
-                        <div className="px-4 pt-2 flex flex-col align-middle">
-                            <p> ประกาศ 01</p>
-                            <p className="text-md text-primary-500">description</p>
-                            <Divider />
-                        </div>{' '}
-                        <div className="px-4 pt-2">
-                            <p> ประกาศ 01</p>
-                            <p className="text-md text-primary-500">description</p>
-                            <Divider />
-                        </div>{' '}
-                        <div className="px-4 pt-2">
-                            <p> ประกาศ 01</p>
-                            <p className="text-md text-primary-500">description</p>
-                            <Divider />
-                        </div>{' '}
-                        <div className="px-4 pt-2">
-                            <p> ประกาศ 01</p>
-                            <p className="text-md text-primary-500">description</p>
-                            <Divider />
-                        </div>{' '}
-                        <div className="px-4 pt-2">
-                            <p> ประกาศ 01</p>
-                            <p className="text-md text-primary-500">description</p>
-                            <Divider />
-                        </div>{' '}
-                    </div>
-                    <div className="gap-4 border border-primary-500 border-1 w-1/6 text-center px-4 py-2 text-primary-500 rounded-md">
-                        <p className="font-semibold">ดูเพิ่มเติม</p>
-                    </div>
-                </div>{' '}
+                <AnnouncementList />
             </div>
-
-            <div>asdsd</div>
         </div>
     );
 };
 
 export default HomePage;
-// <div className="grid grid-rows-3 gap-2">
-//     <div
-//       onClick={() => {
-//           if (me) {
-//               if (me.role === RoleOption.STUDENT) {
-//                   router.push('coopregister');
-//               } else {
-//                   router.push('/');
-//               }
-//           } else {
-//               router.push(ENDPOINT_URI + '/auth/google');
-//           }
-//       }}
-//     >
-//         <ActionCard goto={''} hero_content="สมัครเข้าร่วมสกิจศึกษา" button_title={'สมัครเข้าร่วมสหกิจ'} description={''} />
-//     </div>{' '}
-// </div>

@@ -1,5 +1,5 @@
 import { IStudent } from '@features/student/interfaces/Student';
-import { IDepartment } from '@constants/faculty-info/interfaces';
+import { IDepartment, IFaculty } from '@constants/faculty-info/interfaces';
 
 export interface IAdvisor {
     advisor_id: string;
@@ -14,7 +14,7 @@ export interface IAdvisor {
 
     last_name: string;
 
-    faculty: IDBFactory;
+    faculty: IFaculty;
 
     department: IDepartment;
 

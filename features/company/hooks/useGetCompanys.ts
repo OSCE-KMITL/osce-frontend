@@ -1,5 +1,7 @@
 import { IJob } from '@features/job/interfaces';
 import { ApolloError, gql, useQuery } from '@apollo/client';
+import { ICompany } from '@features/company/interfaces';
+import { IAccount } from '@features/user-account/interfaces';
 
 export const GET_ALL_COMPANIES = gql`
     query GetAllCompanies {
@@ -26,13 +28,18 @@ export const GET_ALL_COMPANIES = gql`
                 is_coordinator
                 created_at
                 updated_at
+                account {
+                    id
+                    email
+                    status
+                }
             }
             job {
                 id
                 job_title
                 required_major
                 limit
-                students{
+                students {
                     student_id
                 }
             }
@@ -60,17 +67,18 @@ export interface CompanyProps {
         email: string;
         phone_number: string;
         is_coordinator: string;
+        account: IAccount | null;
     };
     job: IJob[];
 }
 
 export interface CompanyResponses {
-    getAllCompanies: CompanyProps[] | null;
+    getAllCompanies: ICompany[] | null;
 }
 
 export function useGetAllCompany() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error, refetch } = useQuery<CompanyResponses>(GET_ALL_COMPANIES);
+    const { data, loading, error, refetch } = useQuery<CompanyResponses>(GET_ALL_COMPANIES, { pollInterval: 2000 });
 
     return { data, loading, error, refetch };
 }

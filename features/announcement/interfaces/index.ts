@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { IAdvisor } from '@features/advisor/interface';
 
 export interface AnnouncementProps {
     id: string;
@@ -6,10 +7,7 @@ export interface AnnouncementProps {
     description: string;
     updatedAt: Date;
     createdAt: Date;
-    advisor_id?: {
-        name: string;
-        last_name: string;
-    };
+    advisor_id?: IAdvisor | null;
 }
 
 export interface GetAnnouncementsResponse {

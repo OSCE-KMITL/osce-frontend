@@ -16,6 +16,7 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useSetCoopStatus } from '@features/student/hooks/useSetCoopStatus';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
+import PDF102 from '@components/PDF/PDF102';
 
 interface StudentRegisterTableProps {
     student_data: IStudent[];
