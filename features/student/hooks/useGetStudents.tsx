@@ -9,6 +9,9 @@ export const GET_STUDENTS = gql`
             advisor {
                 advisor_id
             }
+            account {
+                email
+            }
             citizen_id
             coop_status
             created_at

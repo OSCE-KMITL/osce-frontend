@@ -46,7 +46,7 @@ const CoopScore: React.FC = () => {
     if (stu_error) return <p>error..</p>;
 
     const filter_stu_data = stu_data?.getStudentsApply
-        .filter((i) => i.department?.department_name_th === committee_dep.department_name_th)
+        .filter((i) => i.department?.department_name_th === committee_dep?.department_name_th)
         .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const handleSaveButton = (stdent_id: string) => {
@@ -273,7 +273,7 @@ const CoopScore: React.FC = () => {
             <h1>รวมคะแนนสหกิจ</h1>
             <Divider />
             <div className="flex justify-end mb-4">
-                <Link onClick={() => ExportJsonToExcel(handleExportExcel())} intent="primary">
+                <Link onClick={() => ExportJsonToExcel(handleExportExcel(), 'คะแนนสหกิจ')} intent="primary">
                     <DocumentArrowDownIcon className="w-6 h-6 text-white mr-2" />
                     <p className="text-[14px] font-bold">Export to Excel</p>
                 </Link>

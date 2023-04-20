@@ -2,12 +2,14 @@ import React, { FunctionComponent } from 'react';
 import { useRouter } from 'next/router';
 import NotificationService from '@lib/ant_service/NotificationService';
 import MessageService from '@lib/ant_service/MessageService';
-import jsPDF from 'jspdf';
+import jsPDF, { jsPDFOptions } from 'jspdf';
 import Button from '@ui/Button';
 import image102 from '../../public/coop.102.jpg';
 import { font_sarabun } from '@components/PDF/Font/Font';
+import { IStudent } from '@features/student/interfaces/Student';
 
 interface OwnProps {
+    student?: IStudent;
     year: string | null;
     name: string | null;
     student_number: string | null;
@@ -118,7 +120,7 @@ const PDF102: FunctionComponent<Props> = (props) => {
         name && doc.text(name, 32, 69);
         student_number && doc.text(student_number, 124, 69);
         year && doc.text(year, 150, 58);
-        department && doc.text(department, 24, 75);
+        department && doc.text(department, 35, 75);
         curriculum && doc.text(curriculum, 86, 75);
         gpa && doc.text(gpa, 155, 75);
         date_of_birth && doc.text(date_of_birth, 45, 92);

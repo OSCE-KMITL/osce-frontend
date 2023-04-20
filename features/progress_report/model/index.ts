@@ -15,15 +15,17 @@ export class ProgressReport {
 
     mentor_name: string;
 
-    mentor_lastname: string;
-
     mentor_position: string;
+
+    mentor_email: string;
+
+    mentor_tel: string;
 
     other_suggest: string;
 
     student_id: IStudent;
 
-    createdAt!: Date;
+    created_at!: Date;
 
-    updatedAt!: Date;
+    updated_at!: Date;
 }
