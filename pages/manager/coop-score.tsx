@@ -12,6 +12,7 @@ import { ExportJsonToExcel } from 'utils/ExportJsonToExcel';
 import { useRouter } from 'next/router';
 import client from '@lib/apollo';
 import DocumentCoop201 from '@components/PDF/DocumentCoop201';
+import DocumentCoop304 from '@components/PDF/DocumentCoop304';
 
 const CoopScore: React.FC = () => {
     const [editingRowKey, setEditingRowKey] = useState(null);
@@ -151,8 +152,8 @@ const CoopScore: React.FC = () => {
             title: 'บริษัท',
             dataIndex: 'score_from_company',
             align: 'center',
-            render: (value, { score_from_company, key }, index) => {
-                if (editingRowKey === key)
+            render: (value, record, index) => {
+                if (editingRowKey === record?.key)
                     return (
                         <Form.Item name="company_score" className="m-0">
                             <InputNumber maxLength={2} min={0} max={40} className="w-[50%] font-primary_noto text-[16px]"></InputNumber>
@@ -161,8 +162,14 @@ const CoopScore: React.FC = () => {
                 else {
                     return (
                         <>
-                            {score_from_company}
-                            {'/40'}
+                            {record?.company_assessment ? (
+                                <DocumentCoop304 student={record} />
+                            ) : (
+                                <>
+                                    {record?.score_from_company}
+                                    {'/40'}
+                                </>
+                            )}
                         </>
                     );
                 }

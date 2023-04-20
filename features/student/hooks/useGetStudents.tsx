@@ -104,6 +104,10 @@ export const GET_STUDENTS = gql`
                     student_id
                 }
                 project_topic
+                supervisor_name
+                supervisor_job_title
+                supervisor_email
+                supervisor_phone_number
             }
             skills {
                 level
@@ -116,6 +120,12 @@ export const GET_STUDENTS = gql`
             advisor_assessment {
                 id
                 assessment_obj
+            }
+            company_assessment {
+                id
+                assessment_obj
+                strength
+                improvement
             }
         }
     }
