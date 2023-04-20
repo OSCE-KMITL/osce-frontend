@@ -105,7 +105,7 @@ export default function MyStudents() {
                                 </div>
                                 <div className="text-right items-end">
                                     <Link
-                                        href={'/student/' + data?.student_id}
+                                        href={'/student/report/' + data?.student_id}
                                         className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
                                     >
                                         {'รายงานผลสหกิจ'}
@@ -182,7 +182,7 @@ export default function MyStudents() {
                                         </div>
                                         <div className="text-right items-end">
                                             <Link
-                                                href={'/student/' + data?.student_id}
+                                                href={'/student/report/' + data?.student_id}
                                                 className="px-4 py-1 text-center bg-blue-100 text-blue-500  border border-blue-500  rounded-2xl"
                                             >
                                                 {'รายงานผลสหกิจ'}

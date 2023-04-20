@@ -62,7 +62,7 @@ const Download: React.FC = () => {
                 <div className="grid grid-cols-3 gap-8 p-2">
                     <List
                         className="bg-white drop-shadow-xl "
-                        header={<div className="flex text-xl font-bold text-primary-500">นักศึกษา</div>}
+                        header={<div className="flex text-2xl font-bold text-primary-500">นักศึกษา</div>}
                         bordered
                         dataSource={student_file}
                         renderItem={(item) => (
@@ -77,14 +77,14 @@ const Download: React.FC = () => {
                             >
                                 <Typography.Text>
                                     <FilePdfOutlined style={{ color: 'red', fontSize: '20px', marginRight: '16px' }} />
-                                </Typography.Text>{' '}
-                                {item}
+                                </Typography.Text>
+                                <p className="text-base w-full">{item}</p>
                             </List.Item>
                         )}
                     />
                     <List
                         className="bg-white drop-shadow-xl "
-                        header={<div className="text-xl font-bold text-primary-500">อาจารย์นิเทศ</div>}
+                        header={<div className="text-2xl font-bold text-primary-500">อาจารย์นิเทศ</div>}
                         bordered
                         dataSource={advisor_file}
                         renderItem={(item) => (
@@ -99,14 +99,14 @@ const Download: React.FC = () => {
                             >
                                 <Typography.Text>
                                     <FilePdfOutlined style={{ color: 'red', fontSize: '20px', marginRight: '16px' }} />
-                                </Typography.Text>{' '}
-                                {item}
+                                </Typography.Text>
+                                <p className="text-base w-full">{item}</p>
                             </List.Item>
                         )}
                     />
                     <List
                         className="bg-white drop-shadow-xl "
-                        header={<div className="text-xl font-bold text-primary-500">สถานประกอบการ</div>}
+                        header={<div className="text-2xl font-bold text-primary-500">สถานประกอบการ</div>}
                         bordered
                         dataSource={company_file}
                         renderItem={(item) => (
@@ -121,8 +121,8 @@ const Download: React.FC = () => {
                             >
                                 <Typography.Text>
                                     <FilePdfOutlined style={{ color: 'red', fontSize: '20px', marginRight: '16px' }} />
-                                </Typography.Text>{' '}
-                                {item}
+                                </Typography.Text>
+                                <p className="text-base w-full">{item}</p>
                             </List.Item>
                         )}
                     />
