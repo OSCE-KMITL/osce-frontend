@@ -5,6 +5,9 @@ export const GET_STUDENTS = gql`
     query getStudentsApply {
         getStudentsApply {
             address
+            account {
+                email
+            }
             birth_date
             advisor {
                 advisor_id
@@ -12,10 +15,10 @@ export const GET_STUDENTS = gql`
             citizen_id
             coop_status
             created_at
-            # transcript {
-            #     current_name
-            #     url
-            # }
+            transcript {
+                current_name
+                url
+            }
             department {
                 id
                 faculty_id
@@ -94,11 +97,25 @@ export const GET_STUDENTS = gql`
                 company_id {
                     id
                     name_eng
+                    name_th
                 }
                 limit
                 students {
                     student_id
                 }
+                project_topic
+            }
+            skills {
+                level
+                skill_name
+            }
+            language_abilities {
+                level
+                name
+            }
+            advisor_assessment {
+                id
+                assessment_obj
             }
         }
     }

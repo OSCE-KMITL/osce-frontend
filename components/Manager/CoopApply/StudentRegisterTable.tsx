@@ -16,6 +16,9 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useSetCoopStatus } from '@features/student/hooks/useSetCoopStatus';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
+import Btn_PDF_102 from '@components/PDF/DocumentCoop102';
+import DocumentCoop102 from '@components/PDF/DocumentCoop102';
+import DocumentCoop101 from '@components/PDF/DocumentCoop101';
 
 interface StudentRegisterTableProps {
     student_data: IStudent[];
@@ -170,11 +173,11 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
         {
             title: 'เอกสาร',
             dataIndex: 'coop_file',
-            render: (value, { transcript, student_id, coop_status }, index) => {
+            render: (value, record, index) => {
                 return (
                     <div className={'flex flex-row gap-2'}>
                         <Link
-                            href={'/student/' + student_id}
+                            href={'/student/' + record?.student_id}
                             className={
                                 'px-2 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer flex flex-row items-center gap-x-1'
                             }
@@ -182,9 +185,9 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
                             <DocumentTextIcon className="w-5 h-5  text-gray-600 " />
                             ใบสมัคร
                         </Link>{' '}
-                        {transcript ? (
+                        {record?.transcript ? (
                             <a
-                                href={transcript.url}
+                                href={record?.transcript.url}
                                 target="_blank"
                                 rel="noreferrer noopener"
                                 className={'px-3 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer '}
@@ -192,14 +195,8 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
                                 Transcript
                             </a>
                         ) : null}{' '}
-                        <Link
-                            href={'/student/' + student_id}
-                            className={
-                                'px-3 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer flex flex-row items-center gap-x-1'
-                            }
-                        >
-                            101
-                        </Link>{' '}
+                        <DocumentCoop101 student={record} />
+                        <DocumentCoop102 student={record} />
                     </div>
                 );
             },

@@ -11,9 +11,9 @@ import { Link } from '@ui/Link';
 import { ExportJsonToExcel } from 'utils/ExportJsonToExcel';
 import { useRouter } from 'next/router';
 import client from '@lib/apollo';
+import DocumentCoop201 from '@components/PDF/DocumentCoop201';
 
 const CoopScore: React.FC = () => {
-    const [dataSource, setDataSource] = useState([]);
     const [editingRowKey, setEditingRowKey] = useState(null);
     const notification = NotificationService.getInstance();
     const { data: stu_data, loading: stu_loading, error: stu_error, refetch } = useGetStudents();
@@ -24,11 +24,9 @@ const CoopScore: React.FC = () => {
 
     useEffect(() => {
         if (!stu_loading || !stu_error) {
-            client.resetStore()
+            client.resetStore();
             refectch_me();
             refetch();
-            newDataSource();
-           
         }
     }, []);
 
@@ -40,21 +38,9 @@ const CoopScore: React.FC = () => {
         .filter((i) => i.department?.department_name_th === committee_dep)
         .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
-    const newDataSource = () => {
-        const data = [];
-        
-        for (let index = 0; index < filter_stu_data?.length; index++) {
-            data.push({
-                key: `${index}`,
-                ...filter_stu_data[index],
-            });
-        }
-        setDataSource(data);
-    };
-
-    const curr_data = filter_stu_data.map((data,idx) => {
-        return {key:idx ,...data}
-    })
+    const curr_data = filter_stu_data.map((data, idx) => {
+        return { key: idx, ...data };
+    });
 
     const onFinish = (value) => {
         console.log({ value });
@@ -91,7 +77,7 @@ const CoopScore: React.FC = () => {
     };
 
     const handleExportExcel = () => {
-        const dataToExport = dataSource.map((item) => {
+        const dataToExport = curr_data.map((item) => {
             return {
                 รหัสนักศึกษา: item.student_id,
                 'ชื่อ-นามสกุล': `${item.name_prefix} ${item.name_th} ${item.lastname_th}`,
@@ -137,8 +123,8 @@ const CoopScore: React.FC = () => {
             title: 'อาจารย์นิเทศ',
             dataIndex: 'score_from_advisor',
             align: 'center',
-            render: (value, { score_from_advisor, key }, index) => {
-                if (editingRowKey === key)
+            render: (value, record, index) => {
+                if (editingRowKey === record?.key)
                     return (
                         <Form.Item name="advisor_score" className="m-0">
                             <InputNumber maxLength={2} min={0} max={20} className="w-[50%] font-primary_noto text-[16px]"></InputNumber>
@@ -147,8 +133,14 @@ const CoopScore: React.FC = () => {
                 else {
                     return (
                         <>
-                            {score_from_advisor}
-                            {'/20'}
+                            {record?.advisor_assessment ? (
+                                <DocumentCoop201 student={record} />
+                            ) : (
+                                <>
+                                    {record?.score_from_advisor}
+                                    {'/20'}
+                                </>
+                            )}
                         </>
                     );
                 }
