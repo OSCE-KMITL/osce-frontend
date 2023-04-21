@@ -177,6 +177,9 @@ const DocumentCoop304: FC<Prop> = ({ student }) => {
                 improvement[index] && doc.text(improvement[index], 27.5, width_improvement[index]);
             }
         }
+
+        doc.setFillColor(255, 255, 255);
+        doc.rect(15, 85, 200, 30, 'F');
         // doc.save('a4.pdf');
 
         const pdfBlob = doc.output('blob');
