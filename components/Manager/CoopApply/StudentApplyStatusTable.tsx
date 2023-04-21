@@ -26,7 +26,7 @@ interface StudentRegisterTableProps {
 
 type StudentRegisterTableType = StudentRegisterTableProps;
 
-const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) => {
+const StudentApplyStatusTable: FC<StudentRegisterTableType> = ({ student_data }) => {
     const { confirm } = Modal;
 
     const [delete_student, { data, loading, error }] = useDeleteStudent();
@@ -102,9 +102,8 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
     const student_apply_column: ColumnsType<IStudent> = [
         {
             align: 'center',
-            title: 'รหัสนักศึกษา',
+            title: <div className="flex items-center justify-center pl-8">รหัสนักศึกษา</div>,
             dataIndex: 'student_id',
-            width: 180,
             sorter: (a, b) => parseInt(a.student_id) - parseInt(b.student_id),
             filters: student_data.map((student) => {
                 return { value: student.student_id, text: student.student_id };
@@ -113,95 +112,97 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             filterSearch: true,
         },
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'name_th',
             render: (value, { name_th, lastname_th, name_prefix }, index) => {
-                return <>{name_prefix + '' + name_th + ' ' + lastname_th}</>;
+                return <>{name_prefix + ' ' + name_th + ' ' + lastname_th}</>;
             },
         },
 
-        {
-            title: 'หลักสูตร',
-            dataIndex: 'curriculum',
-            render: (value, { curriculum }, index) => {
-                return <>{curriculum.curriculum_name_th}</>;
-            },
-            onFilter: (value: string, record) => record.curriculum.curriculum_name_th.includes(value),
-            filters: faculties.map((fac) => {
-                return {
-                    value: fac.faculty_name_th,
-                    text: fac.faculty_name_th,
-                    children: departments
-                        .filter((dept) => dept.faculty_id === fac.faculty_id)
-                        .map((dept) => {
-                            return {
-                                value: dept.department_name_th,
-                                text: dept.department_name_th,
-                                children: curriculums
-                                    .filter((curr) => curr.faculty_id === fac.faculty_id && dept.department_id === curr.dept_id)
-                                    .map((curr) => {
-                                        return {
-                                            value: curr.curriculum_name_th,
-                                            text: curr.curriculum_name_th,
-                                        };
-                                    }),
-                            };
-                        }),
-                };
-            }),
-        },
-        {
-            title: 'ปีที่สมัคร',
-            dataIndex: 'created_at',
-            // sorter: (a, b) => a.created_at.toString().length - b.created_at.toString().length,
-            filters: [
-                { text: '2566', value: 2566 },
-                { text: '2565', value: 2565 },
-                { text: '2564', value: 2564 },
-                { text: '2563', value: 2563 },
-            ],
-            onFilter: (value: number, record) => {
-                const d = new Date(record.created_at.toString()).getFullYear() + 543;
-                return d === value;
-            },
+        // {
+        //     align: 'center',
+        //     title: 'หลักสูตร',
+        //     dataIndex: 'curriculum',
+        //     render: (value, { curriculum }, index) => {
+        //         return <>{curriculum.curriculum_name_th}</>;
+        //     },
+        //     onFilter: (value: string, record) => record.curriculum.curriculum_name_th.includes(value),
+        //     filters: faculties.map((fac) => {
+        //         return {
+        //             value: fac.faculty_name_th,
+        //             text: fac.faculty_name_th,
+        //             children: departments
+        //                 .filter((dept) => dept.faculty_id === fac.faculty_id)
+        //                 .map((dept) => {
+        //                     return {
+        //                         value: dept.department_name_th,
+        //                         text: dept.department_name_th,
+        //                         children: curriculums
+        //                             .filter((curr) => curr.faculty_id === fac.faculty_id && dept.department_id === curr.dept_id)
+        //                             .map((curr) => {
+        //                                 return {
+        //                                     value: curr.curriculum_name_th,
+        //                                     text: curr.curriculum_name_th,
+        //                                 };
+        //                             }),
+        //                     };
+        //                 }),
+        //         };
+        //     }),
+        // },
+        // {
+        //     title: 'ปีที่สมัคร',
+        //     dataIndex: 'created_at',
+        //     // sorter: (a, b) => a.created_at.toString().length - b.created_at.toString().length,
+        //     filters: [
+        //         { text: '2566', value: 2566 },
+        //         { text: '2565', value: 2565 },
+        //         { text: '2564', value: 2564 },
+        //         { text: '2563', value: 2563 },
+        //     ],
+        //     onFilter: (value: number, record) => {
+        //         const d = new Date(record.created_at.toString()).getFullYear() + 543;
+        //         return d === value;
+        //     },
 
-            render: (value, { created_at, student_id }, index) => {
-                const d = new Date(created_at.toString()).getFullYear();
-                return <div>{d + 543}</div>;
-            },
-        },
+        //     render: (value, { created_at, student_id }, index) => {
+        //         const d = new Date(created_at.toString()).getFullYear();
+        //         return <div>{d + 543}</div>;
+        //     },
+        // },
+        // {
+        //     title: 'เอกสาร',
+        //     dataIndex: 'coop_file',
+        //     render: (value, record, index) => {
+        //         return (
+        //             <div className={'flex flex-row gap-2'}>
+        //                 <Link
+        //                     href={'/student/' + record?.student_id}
+        //                     className={
+        //                         'px-2 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer flex flex-row items-center gap-x-1'
+        //                     }
+        //                 >
+        //                     <DocumentTextIcon className="w-5 h-5  text-gray-600 " />
+        //                     ใบสมัคร
+        //                 </Link>{' '}
+        //                 {record?.transcript ? (
+        //                     <a
+        //                         href={record?.transcript.url}
+        //                         target="_blank"
+        //                         rel="noreferrer noopener"
+        //                         className={'px-3 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer '}
+        //                     >
+        //                         Transcript
+        //                     </a>
+        //                 ) : null}{' '}
+        //                 <DocumentCoop101 student={record} />
+        //                 <DocumentCoop102 student={record} />
+        //             </div>
+        //         );
+        //     },
+        // },
         {
-            title: 'เอกสาร',
-            dataIndex: 'coop_file',
-            render: (value, record, index) => {
-                return (
-                    <div className={'flex flex-row gap-2'}>
-                        <Link
-                            href={'/student/' + record?.student_id}
-                            className={
-                                'px-2 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer flex flex-row items-center gap-x-1'
-                            }
-                        >
-                            <DocumentTextIcon className="w-5 h-5  text-gray-600 " />
-                            ใบสมัคร
-                        </Link>{' '}
-                        {record?.transcript ? (
-                            <a
-                                href={record?.transcript.url}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className={'px-3 py-1 text-center border  border-gray-800 bg-gray-100 text-gray-500 shadow-sm rounded-md cursor-pointer '}
-                            >
-                                Transcript
-                            </a>
-                        ) : null}{' '}
-                        <DocumentCoop101 student={record} />
-                        <DocumentCoop102 student={record} />
-                    </div>
-                );
-            },
-        },
-        {
+            align: 'center',
             title: 'สถานะ',
             dataIndex: 'status',
             className: 'max-w-[160px] min-w-[160px]',
@@ -237,64 +238,63 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
                 );
             },
             filters: [
-                { text: 'บันทึกใบสมัคร', value: CoopStatus.SAVED },
+                // { text: 'บันทึกใบสมัคร', value: CoopStatus.SAVED },
                 { text: 'ส่งใบสมัคร', value: CoopStatus.APPLYING },
                 { text: 'ผ่านการคัดเลือก', value: CoopStatus.PASSED },
                 { text: 'ไม่ผ่านการคัดเลือก', value: CoopStatus.REJECTED },
             ],
             onFilter: (value: string, record) => record.coop_status.indexOf(value) === 0,
         },
-        {
-            title: 'Action',
-            dataIndex: 'action',
-            width: 140,
-            // className: 'flex justify-between',
-            render: (value, { transcript, student_id, coop_status }, index) => {
-                return (
-                    <div className={'flex flex-row gap-4 '}>
-                        {editingKey === student_id ? (
-                            <div className={'flex flex-row gap-x-1'}>
-                                {set_coop_lading ? (
-                                    <LoadingSpinner />
-                                ) : (
-                                    <div className="flex flex-row items-center align-middle w-full gap-x-3 justify-center cursor-pointer">
-                                        {' '}
-                                        <p className={'text-[16px] '} onClick={() => setEditingKey('')}>
-                                            ยกเลิก
-                                        </p>
-                                        <p
-                                            className={
-                                                'text-[16px] bg-blue-200 px-4 py-1 rounded-md border border-blue-600 text-blue-600 font-bold cursor-pointer '
-                                            }
-                                            onClick={() => handleSubmit(student_id, status ? status : coop_status)}
-                                        >
-                                            บันทึก
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <>
-                                <Link href={'/student/' + student_id} className="cursor-pointer"></Link>
-                                <div onClick={() => setEditingKey(student_id)} className="cursor-pointer">
-                                    <PencilIcon className="w-6 h-6 text-gray-600 " />
-                                </div>{' '}
-                                <div className="cursor-pointer" onClick={() => showDeleteModal(student_id)}>
-                                    <TrashIcon className="w-6 h-6  text-gray-600 hover:text-red-600 " />
-                                </div>
-                            </>
-                        )}
-                    </div>
-                );
-            },
-        },
+        // {
+        //     title: 'Action',
+        //     dataIndex: 'action',
+        //     width: 140,
+        //     className: 'flex justify-between ',
+        //     render: (value, { transcript, student_id, coop_status }, index) => {
+        //         return (
+        //             <div className={'flex flex-row gap-4 '}>
+        //                 {editingKey === student_id ? (
+        //                     <div className={'flex flex-row gap-x-1'}>
+        //                         {set_coop_lading ? (
+        //                             <LoadingSpinner />
+        //                         ) : (
+        //                             <div className="flex flex-row items-center align-middle w-full gap-x-3 justify-center cursor-pointer">
+        //                                 {' '}
+        //                                 <p className={'text-[16px] '} onClick={() => setEditingKey('')}>
+        //                                     ยกเลิก
+        //                                 </p>
+        //                                 <p
+        //                                     className={
+        //                                         'text-[16px] bg-blue-200 px-4 py-1 rounded-md border border-blue-600 text-blue-600 font-bold cursor-pointer '
+        //                                     }
+        //                                     onClick={() => handleSubmit(student_id, status ? status : coop_status)}
+        //                                 >
+        //                                     บันทึก
+        //                                 </p>
+        //                             </div>
+        //                         )}
+        //                     </div>
+        //                 ) : (
+        //                     <>
+        //                         <Link href={'/student/' + student_id} className="cursor-pointer"></Link>
+        //                         <div onClick={() => setEditingKey(student_id)} className="cursor-pointer">
+        //                             <PencilIcon className="w-6 h-6 text-gray-600 " />
+        //                         </div>{' '}
+        //                         <div className="cursor-pointer" onClick={() => showDeleteModal(student_id)}>
+        //                             <TrashIcon className="w-6 h-6  text-gray-600 hover:text-red-600 " />
+        //                         </div>
+        //                     </>
+        //                 )}
+        //             </div>
+        //         );
+        //     },
+        // },
     ];
 
     return (
         <>
             {' '}
             <Table
-                bordered={true}
                 size={'large'}
                 rowClassName={rowClassname}
                 className={tableStyle.customTable}
@@ -306,6 +306,6 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
     );
 };
 
-export default StudentRegisterTable;
+export default StudentApplyStatusTable;
 
 //

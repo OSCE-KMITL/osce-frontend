@@ -156,10 +156,10 @@ export const itemsCommittee: MenuProps['items'] = [
         key: '01',
         type: 'group',
         children: [
-            {
-                label: 'นักศึกษา',
-                key: '/manager/accounts',
-            },
+            // {
+            //     label: 'นักศึกษา',
+            //     key: '/manager/accounts',
+            // },
             {
                 label: 'อาจารย์สหกิจ',
                 key: '/manager/advisor-account',

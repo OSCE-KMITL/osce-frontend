@@ -119,7 +119,7 @@ const AdvisorAssign: React.FC = () => {
             dataIndex: 'action',
             width: 140,
             align: 'center',
-            className: 'flex justify-between max-w-[150px] min-w-[150px] h-full ',
+            // className: 'flex justify-between max-w-[150px] min-w-[150px] h-full ',
             render: (value, { id, is_advisor }) => {
                 return (
                     <div className={'h-auto flex flex-row gap-4 justify-center align-middle items-center '}>
@@ -168,7 +168,7 @@ const AdvisorAssign: React.FC = () => {
         <>
             <div className={'w-full flex flex-row gap-x-6 items-center align-bottom'}>
                 <h1>กำหนดนักศึกษาให้อาจารย์นิเทศ</h1>
-                <p className="px-4 py-2 rounded-lg text-[25px] bg-white shadow-sm text-primary-500 font-semibold ">
+                <p className="px-4 py-2 rounded-lg text-[20px] bg-white shadow-sm text-primary-500 font-semibold ">
                     ภาควิชา : {me.is_advisor ? me.is_advisor.department?.department_name_th : '-'}
                 </p>
             </div>

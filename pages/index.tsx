@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
     }, [me, router]);
 
     return (
-        <div className="w-full min-h-screen grid xl:grid-cols-2 grid-rows-1 gap-20 px-10 py-10  ">
+        <div className="w-full min-h-screen grid xl:grid-cols-2 grid-rows-1 gap-8 px-10 py-10  ">
             <div className="w-full flex flex-col gap-6">
                 {showCoopRegisterButton && (
                     <div className={'h-1/4 w-full bg-primary-400 px-10 py-10 rounded-lg flex flex-col justify-between'}>
@@ -78,7 +78,18 @@ const HomePage: React.FC = () => {
                 </div>{' '}
             </div>
 
-            <div>asdsd</div>
+            <div>
+                <div className={'h-1/4 w-full bg-primary-400 px-10 py-10 rounded-lg flex flex-col justify-between'}>
+                    <h2 className="text-white font-semibold">ตรวจสอบรายชื่อผู้สมัครสหกิจศึกษา</h2>
+                    <p className={'text-white '}>ปีการศึกษา{' '}{new Date().getFullYear() + 543}</p>
+                    <div
+                        onClick={() => router.push('/studentapply-status')}
+                        className="text-center w-1/4 bg-primary-500 self-end rounded-2xl text-white px-2 py-4 cursor-pointer"
+                    >
+                        <p>ดูรายชื่อ</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
