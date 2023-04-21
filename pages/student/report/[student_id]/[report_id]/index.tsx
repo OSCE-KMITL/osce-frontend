@@ -28,8 +28,8 @@ const ProgressReportInfo: FunctionComponent<Props> = (props) => {
     if (error) return <h1>error</h1>;
     if (loading) return <h1>loading</h1>;
 
-    const current_progress = data.getStudent.progress_report.length === 0 ? 1 : data.getStudent.progress_report.length + 1;
-    const progress_report = data.getStudent.progress_report.filter((progress) => progress.progress_report_id === (router.query.report_id as string))[0];
+    const current_progress = data?.getStudent?.progress_report?.length === 0 ? 1 : data?.getStudent?.progress_report?.length + 1;
+    const progress_report = data?.getStudent?.progress_report?.filter((progress) => progress?.progress_report_id === (router?.query?.report_id as string))[0];
     return (
         <div>
             <p onClick={() => router.back()} className="flex cursor-pointer flex-row mb-4 items-center gap-1 text-gray-500 ">
@@ -38,11 +38,11 @@ const ProgressReportInfo: FunctionComponent<Props> = (props) => {
             </p>
             <div className="flex flex-row items-center gap-x-4">
                 <h1>รายงานผลสหกิจ</h1>
-                <h1 className="px-4 text-center py-2 bg-white rounded-md text-primary-500">ครั้งที่ : {progress_report.report_no}</h1>
+                <h1 className="px-4 text-center py-2 bg-white rounded-md text-primary-500">ครั้งที่ : {progress_report?.report_no}</h1>
             </div>
             <Divider />
             <div className="flex flex-col gap-y-8 bg-white px-4 py-4 ">
-                {progress_report.report_no === 1 && (
+                {progress_report?.report_no === 1 && (
                     <div className="flex flex-col gap-y-4 bg-white rounded-md ">
                         <div className="mb-1">
                             <h3 className="text-3xl text-primary-500">ผู้นิเทศงาน (วิศวกรผู้ดูแลนักศึกษา)</h3>
@@ -69,9 +69,9 @@ const ProgressReportInfo: FunctionComponent<Props> = (props) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2.5 justify-center  bg-white   rounded-md ">
-                        <ProgressReportChoice topic={'1. ความสะดวกในการเดินทาง'} value={progress_report.commute_score.toString()} />
-                        <ProgressReportChoice topic={'2. ความสะดวกในการทำงาน'} value={progress_report.work_score.toString()} />
-                        <ProgressReportChoice topic={'3. การให้คำแนะนำจากบริษัท'} value={progress_report.advisement_score.toString()} />
+                        <ProgressReportChoice topic={'1. ความสะดวกในการเดินทาง'} value={progress_report?.commute_score?.toString()} />
+                        <ProgressReportChoice topic={'2. ความสะดวกในการทำงาน'} value={progress_report?.work_score?.toString()} />
+                        <ProgressReportChoice topic={'3. การให้คำแนะนำจากบริษัท'} value={progress_report?.advisement_score?.toString()} />
                     </div>{' '}
                 </div>
 
@@ -80,8 +80,8 @@ const ProgressReportInfo: FunctionComponent<Props> = (props) => {
                         <h3 className="text-3xl text-primary-500">หน้าที่รับผิดชอบ</h3>
                     </div>
                     <div className="grid grid-cols-1 gap-4 ">
-                        <ProgressReportTextInput value={progress_report.current_res} topic={'งานที่ได้รับมอบหมายในปัจจุบัน'} />
-                        <ProgressReportTextInput value={progress_report.other_suggest} topic={'อื่นๆ '} />
+                        <ProgressReportTextInput value={progress_report?.current_res} topic={'งานที่ได้รับมอบหมายในปัจจุบัน'} />
+                        <ProgressReportTextInput value={progress_report?.other_suggest} topic={'อื่นๆ '} />
                     </div>
                 </div>
             </div>

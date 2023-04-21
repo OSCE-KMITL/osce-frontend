@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import client from '@lib/apollo';
 import DocumentCoop201 from '@components/PDF/DocumentCoop201';
 import DocumentCoop304 from '@components/PDF/DocumentCoop304';
+import { CoopStatus } from '@features/student/interfaces';
 
 const CoopScore: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -40,9 +41,11 @@ const CoopScore: React.FC = () => {
         .filter((i) => i.department?.department_name_th === committee_dep)
         .sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
-    const curr_data = filter_stu_data.map((data, idx) => {
-        return { key: idx, ...data };
-    });
+    const curr_data = filter_stu_data
+        .map((data, idx) => {
+            return { key: idx, ...data };
+        })
+        .filter((student) => student.coop_status === CoopStatus.PASSED);
 
     const onFinish = (value) => {
         console.log({ value });

@@ -94,21 +94,21 @@ export const student_item: MenuProps['items'] = [
         ],
     },
 
-    {
-        label: 'การประเมินผล',
-        key: '05',
-        type: 'group',
-        children: [
-            {
-                label: 'ประเมินสถานประกอบการ',
-                key: '/assessment/company-assessment',
-            },
-            {
-                label: 'ประเมินอาจารย์นิเทศ',
-                key: '/assessment/advisor-assessment',
-            },
-        ],
-    },
+    // {
+    //     label: 'การประเมินผล',
+    //     key: '05',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             label: 'ประเมินสถานประกอบการ',
+    //             key: '/assessment/company-assessment',
+    //         },
+    //         {
+    //             label: 'ประเมินอาจารย์นิเทศ',
+    //             key: '/assessment/advisor-assessment',
+    //         },
+    //     ],
+    // },
 ];
 export const itemsCompany: MenuProps['items'] = [
     {

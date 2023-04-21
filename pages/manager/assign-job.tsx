@@ -8,6 +8,7 @@ import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
+import { CoopStatus } from '@features/student/interfaces';
 
 const AssignJob: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -20,23 +21,19 @@ const AssignJob: React.FC = () => {
     const [committeeAssignJob, { loading: approve_loading, error: approve_error }] = useCommitteeAssignJob();
     const [form] = Form.useForm();
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
-
+    useEffect(() => {
+        refectch_me();
+    }, []);
     const committee_dep = dataGetMe?.getMe?.is_advisor?.department?.department_name_th;
 
     const filter_stu_data = stu_data?.getStudentsApply.filter((i) => i.department?.department_name_th === committee_dep);
     filter_stu_data?.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
-    const newDataSource = () => {
-        const data = [];
-        setDataSource([]);
-        for (let index = 0; index < filter_stu_data?.length; index++) {
-            data.push({
-                key: `${index}`,
-                ...filter_stu_data[index],
-            });
-        }
-        setDataSource(data);
-    };
+    const curr_data = filter_stu_data
+        .map((data, idx) => {
+            return { key: idx, ...data };
+        })
+        .filter((student) => student.coop_status === CoopStatus.PASSED);
 
     const companies = company_data?.getAllCompanies;
     const object_company_name = companies?.map((obj) => {
@@ -103,11 +100,6 @@ const AssignJob: React.FC = () => {
         setEditingRowKey(null);
         setJobOnChange(false);
     };
-
-    useEffect(() => {
-        newDataSource();
-        refectch_me();
-    }, [stu_data]);
 
     interface ITableStudent extends IStudent {
         key: string;
@@ -255,7 +247,7 @@ const AssignJob: React.FC = () => {
             <h1>กำหนดงานให้นักศึกษา</h1>
             <Divider />
             <Form form={form} onFinish={onFinish}>
-                <Table bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={dataSource} />
+                <Table bordered={true} size={'large'} rowClassName={rowClassname} className={''} columns={columns} dataSource={curr_data} />
             </Form>
         </div>
     );

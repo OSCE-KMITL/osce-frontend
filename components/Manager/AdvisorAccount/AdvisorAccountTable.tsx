@@ -90,7 +90,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
 
     const advisor_account_column: ColumnsType<IAccount> = [
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'name_th',
             render: (value, { is_advisor, email, role, status }, index) => {
                 const prefix = () => (is_advisor.name_prefix ? is_advisor.name_prefix : '');
@@ -98,14 +98,14 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
             },
         },
         {
-            title: 'อีเมล',
+            title: <div className="flex items-center justify-center">อีเมล</div>,
             dataIndex: 'email',
             render: (value, { is_advisor, email, role, status }, index) => {
                 return <>{email.toLowerCase()}</>;
             },
         },
         {
-            title: 'บทบาท',
+            title: <div className="flex items-center justify-center">บทบาท</div>,
             dataIndex: 'status',
             className: ' min-w-[300px]',
             render: (value, { status, is_advisor, id }, index) => {
@@ -128,6 +128,7 @@ const AdvisorAccountTable: FC<AdvisorAccountType> = ({ advisor_accounts }) => {
             },
         },
         {
+            align: 'center',
             title: 'สถานะ',
             dataIndex: 'status',
             className: 'max-w-[160px] min-w-[200px]',

@@ -113,7 +113,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             filterSearch: true,
         },
         {
-            title: 'ชื่อ-นามสกุล',
+            title: <div className="flex items-center justify-center">ชื่อ-นามสกุล</div>,
             dataIndex: 'name_th',
             render: (value, { name_th, lastname_th, name_prefix }, index) => {
                 return <>{name_prefix + '' + name_th + ' ' + lastname_th}</>;
@@ -121,7 +121,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
         },
 
         {
-            title: 'หลักสูตร',
+            title: <div className="flex items-center justify-center">หลักสูตร</div>,
             dataIndex: 'curriculum',
             render: (value, { curriculum }, index) => {
                 return <>{curriculum.curriculum_name_th}</>;
@@ -151,6 +151,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             }),
         },
         {
+            align: 'center',
             title: 'ปีที่สมัคร',
             dataIndex: 'created_at',
             // sorter: (a, b) => a.created_at.toString().length - b.created_at.toString().length,
@@ -171,7 +172,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             },
         },
         {
-            title: 'เอกสาร',
+            title: <div className="flex items-center justify-center">เอกสาร</div>,
             dataIndex: 'coop_file',
             render: (value, record, index) => {
                 return (
@@ -202,6 +203,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             },
         },
         {
+            align: 'center',
             title: 'สถานะ',
             dataIndex: 'status',
             className: 'max-w-[160px] min-w-[160px]',
@@ -245,6 +247,7 @@ const StudentRegisterTable: FC<StudentRegisterTableType> = ({ student_data }) =>
             onFilter: (value: string, record) => record.coop_status.indexOf(value) === 0,
         },
         {
+            align:'center',
             title: 'Action',
             dataIndex: 'action',
             width: 140,

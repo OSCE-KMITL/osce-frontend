@@ -48,7 +48,7 @@ export default function MyStudents() {
                 <div className="flex justify-end">
                     <div className="rounded-xl py-2 px-4 bg-white flex items-center ">
                         <p className="text-md  font-primary_noto pr-2">ประเภท</p>
-                        <select className="text-md text-primary-500 font-bold font-primary_noto flex" value={selectedValue} onChange={handleChange}>
+                        <select className="bg-white text-md text-primary-500 font-bold font-primary_noto flex" value={selectedValue} onChange={handleChange}>
                             <option value="ทั้งหมด" label="ทั้งหมด"></option>
                             <option value="สหกิจศึกษา" label="สหกิจศึกษา"></option>
                             <option value="ฝึกงาน" label="ฝึกงาน"></option>

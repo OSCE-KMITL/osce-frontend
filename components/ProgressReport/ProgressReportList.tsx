@@ -35,14 +35,16 @@ const ProgressReportList: FunctionComponent<Props> = ({ student_id }) => {
                     {' '}
                     <h1>รายงานผลสหกิจ</h1>
                     <div className="flex flex-row gap-x-4">
-                        <p className="px-2 py-1 bg-white text-primary-500 text-[20px]">{data.getStudent.student_id}</p>
-                        <p className="px-2 py-1 bg-white text-primary-500 text-[20px]">
+                        <p className="px-4 py-2 rounded-lg text-[20px] bg-white shadow-sm text-primary-500 font-semibold ">{data.getStudent.student_id}</p>
+                        <p className="px-4 py-2 rounded-lg text-[20px] bg-white shadow-sm text-primary-500 font-semibold ">
                             {data.getStudent.name_prefix + ' ' + data.getStudent.name_th + ' ' + data.getStudent.lastname_th}
                         </p>{' '}
-                        <p className="px-2 py-1 bg-white text-primary-500 text-[20px]">
+                        <p className="px-4 py-2 rounded-lg text-[20px] bg-white shadow-sm text-primary-500 font-semibold ">
                             บริษัท : {data.getStudent.job ? data.getStudent.job.company_id.name_th : '-'}
                         </p>{' '}
-                        <p className="px-2 py-1 bg-white text-primary-500 text-[20px]">ตำแหน่ง : {data.getStudent.job ? data.getStudent.job.job_title : '-'}</p>
+                        <p className="px-4 py-2 rounded-lg text-[20px] bg-white shadow-sm text-primary-500 font-semibold ">
+                            ตำแหน่ง : {data.getStudent.job ? data.getStudent.job.job_title : '-'}
+                        </p>
                     </div>
                 </div>
                 {me?.is_student && (
@@ -55,7 +57,7 @@ const ProgressReportList: FunctionComponent<Props> = ({ student_id }) => {
                 )}
             </div>
             <Divider />
-            <div className="bg-white px-2 py-2">
+            <div className="bg-white px-2 pt-6 pb-1 rounded-2xl">
                 <ProgressReportBanner progress_report={data.getStudent.progress_report} student_id={student_id} />
             </div>
         </div>

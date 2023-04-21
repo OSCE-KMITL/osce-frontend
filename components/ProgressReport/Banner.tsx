@@ -17,7 +17,7 @@ const ProgressReportBanner: FunctionComponent<Props> = ({ progress_report, stude
     if (!progress_report) return <h1>ไม่พบข้อมูลรายงานสหกิจ</h1>;
     const reports = progress_report.map((ele, idx) => {
         return (
-            <div onClick={() => router.push('/student/report/63015208/' + ele.progress_report_id)} className="" key={ele.progress_report_id}>
+            <div onClick={() => router.push(`/student/report/${student_id}/` + ele.progress_report_id)} className="" key={ele.progress_report_id}>
                 <div className="flex flex-row justify-between ">
                     <div className="flex flex-row gap-2 items-center  text-primary-500 rounded-md px-2">
                         <p className="font-bold px-2  text-[20px] ">ครั้งที่ {ele.report_no}</p>
