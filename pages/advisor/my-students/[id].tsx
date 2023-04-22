@@ -1,4 +1,4 @@
-import { Divider, Input } from 'antd';
+import { Divider, Input, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {} from '@features/job/hooks/useEditStateJob';
@@ -9,6 +9,7 @@ import { useGetMe } from '@features/auth/hooks/useGetMe';
 import ViewAssessmentCompany from '@components/Assessment/ViewAssessment';
 import { useCreateAdvisorAssessment } from '@features/assessment/hooks/useCreateAdvisorAssessment';
 import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const Assessment: React.FC = () => {
     const router = useRouter();
@@ -20,6 +21,11 @@ const Assessment: React.FC = () => {
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
     const company_name = stu_data?.getStudent?.job?.company_id?.name_th;
     const project_topic = stu_data?.getStudent?.job?.project_topic;
+    const { confirm } = Modal;
+
+    useEffect(() => {
+        refectch_me();
+    }, []);
     interface Strength {
         strength: string;
         id: number;
@@ -233,9 +239,20 @@ const Assessment: React.FC = () => {
         setScore(Math.round(cal));
     };
 
-    useEffect(() => {
-        refectch_me();
-    }, []);
+    const showDeleteConfirm = () => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการบันทึกการประเมินนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: 'หากบันทึกการประเมินแล้ว จะไม่สามารถแก้ไขการประเมินได้',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleSubmit();
+            },
+            onCancel() {},
+        });
+    };
 
     return (
         <div className="w-full">
@@ -263,7 +280,9 @@ const Assessment: React.FC = () => {
                     <div className="flex gap-8 items-center mt-4 mb-8">
                         <div className="flex">
                             <p className="text-md  font-primary_noto pr-4 py-4">ชื่อสถานประกอบการ</p>
-                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">{company_name ? company_name : '-'}</p>
+                            <p className="text-md text-primary-500 font-bold font-primary_noto  rounded-xl p-4 bg-white ">
+                                {company_name ? company_name : '-'}
+                            </p>
                         </div>
                         <div className="flex">
                             <p className="text-md font-primary_noto p-4">ชื่อหัวข้อโครงงาน</p>
@@ -406,7 +425,7 @@ const Assessment: React.FC = () => {
                                 <button
                                     type="submit"
                                     className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
-                                    onClick={handleSubmit}
+                                    onClick={showDeleteConfirm}
                                 >
                                     {!create_advisor_assessment_loading && 'บันทึก'}
                                     {create_advisor_assessment_loading && (

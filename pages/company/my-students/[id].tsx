@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input } from 'antd';
+import { Button, Divider, Form, Input, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {} from '@features/job/hooks/useEditStateJob';
@@ -9,6 +9,7 @@ import { useCreateCompanyAssessment } from '@features/assessment/hooks/useCreate
 import { useGetStudent } from '@features/student/hooks/useGetStudent';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import ViewAssessmentCompany from '@components/Assessment/ViewAssessment';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const Assessment: React.FC = () => {
     const router = useRouter();
@@ -21,6 +22,11 @@ const Assessment: React.FC = () => {
     const { data: stu_data, loading: stu_loading, error: stu_error, refetch: refetch_stu_data } = useGetStudent(id?.toString());
     const { data: dataGetMe, refetch: refectch_me } = useGetMe();
     const [improvedList, setImprovedList] = useState<Improvement[]>([{ improved: '', id: Date.now() }]);
+    const { confirm } = Modal;
+
+    useEffect(() => {
+        refectch_me();
+    }, []);
 
     interface Strength {
         strength: string;
@@ -367,9 +373,20 @@ const Assessment: React.FC = () => {
         setScore(Math.round(cal));
     };
 
-    useEffect(() => {
-        refectch_me();
-    }, []);
+    const showDeleteConfirm = () => {
+        confirm({
+            title: 'คุณแน่ใจหรือไม่ว่าต้องการบันทึกการประเมินนี้?',
+            icon: <ExclamationCircleFilled />,
+            content: 'หากบันทึกการประเมินแล้ว จะไม่สามารถแก้ไขการประเมินได้',
+            okText: 'ยืนยัน',
+            okType: 'danger',
+            cancelText: 'ยกเลิก',
+            onOk() {
+                handleSubmit();
+            },
+            onCancel() {},
+        });
+    };
 
     return (
         <div className="w-full">
@@ -560,7 +577,7 @@ const Assessment: React.FC = () => {
                                 <button
                                     type="submit"
                                     className="px-2 py-2 rounded-md w-40 bg-green-600 h-[60%] border-2 border-solid drop-shadow-md border-gray-300 text-xl text-gray-100"
-                                    onClick={handleSubmit}
+                                    onClick={showDeleteConfirm}
                                 >
                                     {/* {(!committee_loading || !company_loading) && 'บันทึก'}
                         {(committee_loading || company_loading) && (
