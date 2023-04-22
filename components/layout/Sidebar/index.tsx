@@ -1,17 +1,30 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { Menu } from 'antd';
-import { items, itemsAdvisor, itemsCommittee, itemsCompany, student_item } from './items';
+import { items, itemsAdvisor, itemsCommittee, itemsCompany, student_item, student_not_pass_item } from './items';
 import { useRouter } from 'next/router';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import { RoleOption } from '@constants/RoleOptions';
+import { useGetStudent } from '@features/student/hooks/useGetStudent';
+import { CoopStatus } from '@features/student/interfaces';
+import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const SideBar: FC = () => {
     const { me } = useContext(AuthenticationContext);
+    const { data: dataGetMe, refetch } = useGetMe();
+    const student_id = dataGetMe?.getMe?.is_student?.student_id;
+    const { data: student, loading: student_loading, error: student_error } = useGetStudent(student_id);
     const router = useRouter();
+    useEffect(() => {
+        refetch();
+    }, []);
 
     const roleChecking = () => {
         if (me?.role === RoleOption.STUDENT) {
-            return student_item;
+            if (student?.getStudent?.coop_status === CoopStatus.PASSED) {
+                return student_item;
+            } else {
+                return student_not_pass_item;
+            }
         } else if (me?.role === RoleOption.COMPANY) {
             return itemsCompany;
         } else if (me?.role === RoleOption.COMMITTEE) {

@@ -50,7 +50,7 @@ const ProgressReportList: FunctionComponent<Props> = ({ student_id }) => {
                 {me?.is_student && (
                     <Link
                         href={'/student/report/create'}
-                        className="px-2 py-1 bg-primary-500 cursor-pointer border border-primary-400 text-white rounded-md text-center"
+                        className="px-2 py-1 bg-primary-500 cursor-pointer border border-primary-400 text-white rounded-md text-center hover:text-gray-300"
                     >
                         <p> + เพิ่มรายงาน</p>
                     </Link>

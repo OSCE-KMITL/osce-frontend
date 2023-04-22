@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useGetStudents } from '@features/student/hooks/useGetStudents';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { IStudent } from '@features/student/interfaces/Student';
-import { PencilSquareIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, DocumentArrowDownIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { useSetScoreStudent } from '@features/student/hooks/useSetScoreStudent';
 import { Link } from '@ui/Link';
@@ -26,11 +26,7 @@ const CoopScore: React.FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!stu_loading || !stu_error) {
-            client.resetStore();
-            refectch_me();
-            refetch();
-        }
+        refectch_me();
     }, []);
 
     if (stu_loading) return <p>loading..</p>;
@@ -234,7 +230,7 @@ const CoopScore: React.FC = () => {
                                     });
                                 }}
                             >
-                                <PencilSquareIcon className="w-6 h-6 text-gray-600" />
+                                <PencilIcon className="w-6 h-6 text-gray-600 " />
                             </Button>
                         )}
 

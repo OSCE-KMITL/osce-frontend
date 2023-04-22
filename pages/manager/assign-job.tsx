@@ -5,7 +5,7 @@ import { useGetStudents } from '@features/student/hooks/useGetStudents';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { IStudent } from '@features/student/interfaces/Student';
 import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { CoopStatus } from '@features/student/interfaces';
@@ -195,7 +195,7 @@ const AssignJob: React.FC = () => {
                                     updateOptionJobTitles(record.job?.company_id?.id);
                                 }}
                             >
-                                <PencilSquareIcon className="w-6 h-6 text-gray-600" />
+                                <PencilIcon className="w-6 h-6 text-gray-600 " />
                             </Button>
                         )}
 

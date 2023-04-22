@@ -74,7 +74,7 @@ export const student_item: MenuProps['items'] = [
         children: [
             {
                 label: 'รายงานผลสหกิจ',
-                key: '/student/report/',
+                key: '/student/report',
             },
         ],
     },
@@ -93,6 +93,62 @@ export const student_item: MenuProps['items'] = [
             },
         ],
     },
+
+    // {
+    //     label: 'การประเมินผล',
+    //     key: '05',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             label: 'ประเมินสถานประกอบการ',
+    //             key: '/assessment/company-assessment',
+    //         },
+    //         {
+    //             label: 'ประเมินอาจารย์นิเทศ',
+    //             key: '/assessment/advisor-assessment',
+    //         },
+    //     ],
+    // },
+];
+
+export const student_not_pass_item: MenuProps['items'] = [
+    {
+        label: 'จัดการสหกิจ',
+        key: '01',
+        type: 'group',
+        children: [
+            {
+                label: 'ใบสมัครงานสหกิจศึกษา',
+                key: '/coopregister',
+            },
+        ],
+    },
+    // {
+    //     label: 'การรายงานผลสหกิจศึกษา',
+    //     key: '02',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             label: 'รายงานผลสหกิจ',
+    //             key: '/student/report/',
+    //         },
+    //     ],
+    // },
+    // {
+    //     label: 'ข้อมูลงาน',
+    //     key: '03',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             label: 'งานที่เปิดรับ',
+    //             key: '/student/job-list',
+    //         },
+    //         {
+    //             label: 'งานที่สมัคร',
+    //             key: '/student/job-applying',
+    //         },
+    //     ],
+    // },
 
     // {
     //     label: 'การประเมินผล',
@@ -237,5 +293,4 @@ export const itemsAdvisor: MenuProps['items'] = [
             },
         ],
     },
-    
 ];
