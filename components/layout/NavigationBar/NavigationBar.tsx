@@ -7,9 +7,26 @@ import { useRouter } from 'next/router';
 
 const NavigationBar: React.FC = () => {
     const { me, useLogout } = useContext(AuthenticationContext);
+
+    const [name, setName] = useState<string | null>();
+
+    useEffect(() => {
+        if (!me) {
+            setName('');
+        }
+        if (me?.is_advisor) {
+            setName(me?.is_advisor.name.charAt(0).toUpperCase());
+        } else if (me?.is_student) {
+            setName(me.is_student.name_eng.charAt(0).toUpperCase());
+        } else if (me?.is_student) {
+            setName(me.is_student.name_eng.charAt(0).toUpperCase());
+        } else {
+            setName(me?.email.charAt(0).toUpperCase());
+        }
+    }, [me]);
+
     const router = useRouter();
 
-    useEffect(() => {}, [me]);
     const items: MenuProps['items'] = [
         {
             key: '1',
@@ -49,9 +66,7 @@ const NavigationBar: React.FC = () => {
                                     {/* <UserAvatar email={user.email} />*/}
                                 </span>
                                 <Avatar className="bg-primary-500" src={me.profile_image ? me.profile_image : ''} size={'large'}>
-                                    {me.is_student && me.is_student.name_eng}
-                                    {me.is_company && me.is_company.full_name.charAt(0)}
-                                    {me.is_advisor && me.is_advisor.name}
+                                    {name ? name : '-'}
                                 </Avatar>
                             </div>
                         </Dropdown>

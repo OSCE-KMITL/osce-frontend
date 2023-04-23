@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import Input from '@ui/Input';
 import { useFacultyState } from '@features/register-coop/hooks/useFormState';
 
@@ -22,6 +22,7 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
     } = useFacultyState();
 
     const { me } = useContext(AuthenticationContext);
+
     const student_id = () => {
         if (me?.role === RoleOption.STUDENT) {
             return studentIdParser(me.email);

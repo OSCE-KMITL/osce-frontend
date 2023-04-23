@@ -18,12 +18,15 @@ const CoopRegisterPage: FunctionComponent<Props> = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const apply_status = useSelector(studentStatusStateSelector);
+
     React.useEffect(() => {
         if (me) {
             if (me.is_student) {
                 if (me.is_student.coop_status !== CoopStatus.DEFAULT) {
                     dispatch(handleApplyStudentInfo());
                 }
+            }else{
+                router.push("/")
             }
         }
     }, [me, router.pathname]);

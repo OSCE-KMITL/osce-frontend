@@ -10,17 +10,15 @@ import { useGetMe } from '@features/auth/hooks/useGetMe';
 
 const SideBar: FC = () => {
     const { me } = useContext(AuthenticationContext);
-    const { data: dataGetMe, refetch } = useGetMe();
-    const student_id = dataGetMe?.getMe?.is_student?.student_id;
-    const { data: student, loading: student_loading, error: student_error } = useGetStudent(student_id);
+    // const { data: dataGetMe, refetch } = useGetMe();
+    // const student_id = dataGetMe?.getMe?.is_student?.student_id;
+    // const { data: student, loading: student_loading, error: student_error } = useGetStudent(student_id);
+
     const router = useRouter();
-    useEffect(() => {
-        refetch();
-    }, []);
 
     const roleChecking = () => {
         if (me?.role === RoleOption.STUDENT) {
-            if (student?.getStudent?.coop_status === CoopStatus.PASSED) {
+            if (me.is_student?.coop_status === CoopStatus.PASSED) {
                 return student_item;
             } else {
                 return student_not_pass_item;
