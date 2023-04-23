@@ -54,9 +54,10 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
 
     async function useLogout() {
-        setMe(null);
-        CookieManager.clearTokenFromCookie();
-        await client.resetStore();
+        await CookieManager.clearTokenFromCookie();
+        await router.push('/');
+        await setMe(null);
+        // await client.resetStore();
     }
 
     return <AuthenticationContext.Provider value={{ me: me, setAuthUser, useLogout }}>{children}</AuthenticationContext.Provider>;
