@@ -5,15 +5,14 @@ import { PresetStatusColorType } from 'antd/es/_util/colors';
 import { Checkbox, Modal, Radio, Table, Tag } from 'antd';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import tableStyle from '../../../styles/Table/table.module.scss';
-import { useDeleteStudent } from '@features/student/hooks/useDeleteStudent';
 import { AccountStatus, IAccount } from '@features/user-account/interfaces';
 import { useUpdateAdvisorState } from '@features/advisor/hooks/update/useUpdateAdvisorState';
-import { AddAdvisorFooter } from '@components/Manager/AdvisorAccount/AddAdvisorFooter';
 import { UpdateAdvisorPayload, useUpdateAdvisor } from '@features/advisor/hooks/update/useUpdateAdvisor';
 import { GET_ADVISOR_ACCOUNTS } from '@features/advisor/hooks';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useDeleteAdvisor } from '@features/advisor/hooks/deleteAdvisor';
+import { AddAdvisorFooter } from '@components/Manager/AdvisorAccount/AddAdvisorFooter';
 
 interface AdvisorAccountProps {
     advisor_accounts: IAccount[];
