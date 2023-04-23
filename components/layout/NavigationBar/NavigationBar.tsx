@@ -1,11 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import NavLink from './NavLink';
-import { Avatar } from 'antd';
+import { Avatar, Divider, Dropdown, MenuProps } from 'antd';
+import { useRouter } from 'next/router';
 
 const NavigationBar: React.FC = () => {
     const { me, useLogout } = useContext(AuthenticationContext);
+    const router = useRouter();
+
+    useEffect(() => {}, [me]);
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: <p>หน้าแรก</p>,
+        },
+
+        {
+            key: '2',
+            label: (
+                <div onClick={useLogout}>
+                    <p className="text-red-500">ออกจากระบบ</p>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <header className=" w-full h-[85px] bg-white py-4 mx-auto  fixed z-50 shadow-md  flex justify-center text-md font-[500]  font-primary_noto ">
@@ -20,14 +39,22 @@ const NavigationBar: React.FC = () => {
                             เข้าสู่ระบบ
                         </Link>
                     ) : (
-                        <>
-                            <span className="flex items-end flex-col  cursor-pointer text-xl " onClick={useLogout}>
-                                <p className="text-sm font-primary_noto font-light bg-gray-200 px-2 py-1 rounded-md text-gray-500">{me.role.toLowerCase()}</p>
-                                <p className="text-sm font-primary_noto  font-semibold text-gray-800">{me.email.toLowerCase()}</p>
-                                {/* <UserAvatar email={user.email} />*/}
-                            </span>
-                            <Avatar src={me.profile_image || 'A'} size={'large'} />
-                        </>
+                        <Dropdown menu={{ items }}>
+                            <div className="flex flex-row gap-2 justify-center cursor-pointer items-center">
+                                <span className="flex items-end flex-col  cursor-pointer text-xl ">
+                                    <p className="text-sm font-primary_noto font-light bg-gray-200 px-2 py-1 rounded-md text-gray-500">
+                                        {me.role.toLowerCase()}
+                                    </p>
+                                    <p className="text-sm font-primary_noto  font-semibold text-gray-800">{me.email.toLowerCase()}</p>
+                                    {/* <UserAvatar email={user.email} />*/}
+                                </span>
+                                <Avatar className="bg-primary-500" src={me.profile_image ? me.profile_image : ''} size={'large'}>
+                                    {me.is_student && me.is_student.name_eng}
+                                    {me.is_company && me.is_company.full_name.charAt(0)}
+                                    {me.is_advisor && me.is_advisor.name}
+                                </Avatar>
+                            </div>
+                        </Dropdown>
                     )}
                 </div>
             </nav>

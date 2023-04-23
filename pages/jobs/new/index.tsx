@@ -39,7 +39,7 @@ const CreateJobPage: FC = () => {
     const [dateSelect, setDateSelect] = useState<string[] | undefined | null>(null);
     const [compensationSuffix, setCompensationSuffix] = useState<string | undefined | null>(null);
     const [fileRecive, setFileRecive] = useState<UploadFileInput | null | undefined>(null);
-    const [companyPersonObj, setComapnyPersonObj] = useState<undefined | CompanyPersonObj | null>(undefined);
+    const [companyPersonObj, setComapnyPersonObj] = useState<undefined | any | null>(undefined);
     const [coordinatorPosition, setCoordinatorPosition] = useState<string | undefined | null>(null);
     const [coordinatorName, setCoordinatorName] = useState<string | undefined | null>(null);
     const [coordinatorEmail, setCoordinatorEmail] = useState<string | undefined | null>(null);

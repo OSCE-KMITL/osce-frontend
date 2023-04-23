@@ -18,7 +18,7 @@ const AdvisorAccount: FC<Props> = (props) => {
     if (error) {
         return <p>{error.message}</p>;
     }
-    const filtered_data = data.getAdvisorAccounts.filter((acccount) => acccount.id !== me.id);
+    const filtered_data = data.getAdvisorAccounts.filter((acccount) => acccount.id !== me?.id);
     return (
         <div>
             <div className={'w-full flex flex-row gap-x-6 items-center align-bottom'}>
