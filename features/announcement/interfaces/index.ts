@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { IAdvisor } from '@features/advisor/interface';
 
 export interface AnnouncementProps {
     id: string;
