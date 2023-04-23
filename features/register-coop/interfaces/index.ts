@@ -80,6 +80,7 @@ export const regExPattern = {
     student_id: new RegExp('[0-9]{8}'),
     phone_number: new RegExp('[0]{1}[0-9]{9}'),
     email: new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'),
+    only_eng_sp: new RegExp(/^[a-zA-Z!@#$%^&*()_+={}\[\]|\\:;"'<,>.?/\s-]+$/),
 };
 
 export const checkIsSelected = (value: string) => {

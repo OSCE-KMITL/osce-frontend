@@ -7,6 +7,7 @@ import AddCompanyDrawer from '@components/Manager/CompanyAccount/AddCompanyDrawe
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import NotificationService from '@lib/ant_service/NotificationService';
 import { useDeleteCompany } from '@features/company/hooks/useDeleteCompany';
+import { rowClassname } from '../AdvisorAccount/AdvisorAccountTable';
 
 interface OwnProps {
     companies: ICompany[] | null | undefined;
@@ -113,6 +114,7 @@ const CompanyAccountTable: FC<CompanyAccountTableType> = ({ companies, loading }
     ];
     return (
         <Table
+            rowClassName={rowClassname}
             dataSource={companies || null}
             loading={loading}
             columns={companies_columns}

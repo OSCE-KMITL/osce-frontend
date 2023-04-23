@@ -30,10 +30,10 @@ const AssignJob: React.FC = () => {
     filter_stu_data?.sort((a, b) => parseInt(a.student_id) - parseInt(b.student_id));
 
     const curr_data = filter_stu_data
-        .map((data, idx) => {
+        ?.map((data, idx) => {
             return { key: idx, ...data };
         })
-        .filter((student) => student.coop_status === CoopStatus.PASSED);
+        ?.filter((student) => student.coop_status === CoopStatus.PASSED);
 
     const companies = company_data?.getAllCompanies;
     const object_company_name = companies?.map((obj) => {

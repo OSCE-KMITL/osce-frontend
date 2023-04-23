@@ -65,23 +65,24 @@ const AddCompanyDrawer: React.FC = () => {
                             {...register('company_name', {
                                 maxLength: { value: 60, message: 'รูปแบบไม่ถูกต้อง' },
                                 required: { value: true, message: 'กรุณาให้ข้อมูล' },
-                                pattern: { value: regExPattern.only_eng, message: 'กรอกข้อมูลภาษาอังกฤษเท่านั้น' },
+                                pattern: { value: regExPattern.only_eng_sp, message: 'กรอกข้อมูลภาษาอังกฤษเท่านั้น' },
                             })}
                             className="w-full px-2 py-2 text-[20px] border border-gray-700 rounded-md  "
                             type="text"
+                            placeholder='cp all'
                         />
                         {<p className="text-red-500">{errors.company_name ? errors.company_name.message : ''}</p>}
                     </div>{' '}
                     <div>
-                        <p>ชื่อ-นามสกุลผู้ประสานงาน (ภาษาอังกฤษ)</p>
+                        <p>ชื่อ-นามสกุลผู้ประสานงาน </p>
                         <input
                             {...register('full_name', {
                                 maxLength: { value: 60, message: 'รูปแบบไม่ถูกต้อง' },
                                 required: { value: true, message: 'กรุณาให้ข้อมูล' },
-                                pattern: { value: regExPattern.only_eng, message: 'กรอกข้อมูลภาษาอังกฤษเท่านั้น' },
                             })}
                             className="w-full px-2 py-2 text-[20px] border border-gray-700 rounded-md  "
                             type="text"
+                            placeholder='ชื่อ นามสกุล'
                         />
                         {errors.full_name && <p className="text-red-500">{errors.full_name.message}</p>}
                     </div>{' '}
@@ -94,6 +95,7 @@ const AddCompanyDrawer: React.FC = () => {
                             })}
                             className="w-full px-2 py-2 text-[20px] border border-gray-700 rounded-md  "
                             type="text"
+                            placeholder='hr'
                         />{' '}
                         {errors.job_title && <p className="text-red-500">{errors.job_title.message}</p>}
                     </div>
@@ -107,6 +109,7 @@ const AddCompanyDrawer: React.FC = () => {
                             })}
                             className="w-full px-2 py-2 text-[20px] border border-gray-700 rounded-md  "
                             type="text"
+                            placeholder='jenjira@cp.co.th'
                         />
                         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                     </div>{' '}
@@ -121,6 +124,8 @@ const AddCompanyDrawer: React.FC = () => {
                             })}
                             className="w-full px-2 py-2 text-[20px] border border-gray-700 rounded-md  "
                             type="text"
+                            placeholder='0819874567'
+
                         />
                         {errors.phone_number ? <p className="text-red-500">{errors.phone_number.message} </p> : ''}
                     </div>
