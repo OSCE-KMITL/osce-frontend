@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import RegisterForm from '@components/CoopRegister/RegisterForm';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 
@@ -14,19 +14,20 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const CoopRegisterPage: FunctionComponent<Props> = () => {
-    const { me } = useContext(AuthenticationContext);
+    const { me, getMeRefetch } = useContext(AuthenticationContext);
     const dispatch = useDispatch();
     const router = useRouter();
     const apply_status = useSelector(studentStatusStateSelector);
 
-    React.useEffect(() => {
+    useEffect(() => {
+        getMeRefetch();
         if (me) {
             if (me.is_student) {
                 if (me.is_student.coop_status !== CoopStatus.DEFAULT) {
                     dispatch(handleApplyStudentInfo());
                 }
-            }else{
-                router.push("/")
+            } else {
+                router.push('/');
             }
         }
     }, [me, router.pathname]);

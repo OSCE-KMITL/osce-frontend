@@ -27,23 +27,24 @@ interface AuthContextValues {
     me: UserAuthData | null;
     setAuthUser: (user: UserAuthData | null) => void;
     useLogout: () => void;
+    getMeRefetch: () => void;
 }
 
 const initialState: AuthContextValues = {
     me: null,
     setAuthUser: () => {},
     useLogout: () => {},
+    getMeRefetch: () => {},
 };
 
 export const AuthenticationContext = createContext<AuthContextValues>(initialState);
 
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
-    const { data, refetch, error } = useGetMe();
+    const { data, refetch: getMeRefetch, error } = useGetMe();
     const [me, setMe] = useState<UserAuthData | null>(null);
     const router = useRouter();
 
     useEffect(() => {
-        refetch().then().catch();
         if (data?.getMe) {
             setMe({ ...me, ...data.getMe });
         }
@@ -61,7 +62,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
         // await client.resetStore();
     }
 
-    return <AuthenticationContext.Provider value={{ me: me, setAuthUser, useLogout }}>{children}</AuthenticationContext.Provider>;
+    return <AuthenticationContext.Provider value={{ me: me, setAuthUser, useLogout, getMeRefetch }}>{children}</AuthenticationContext.Provider>;
 };
 
 export default AuthContextProvider;
