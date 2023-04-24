@@ -74,7 +74,7 @@ const RegisterForm: FC<Props> = () => {
 
     const onSubmit = async (data: RegisterCoopHookState) => {
         const result: CoopStudentInfo = {
-            student_id: me.is_student?.student_id,
+            student_id: me?.is_student?.student_id ? me?.is_student?.student_id : data.student_id,
             name_prefix: data.name_prefix,
             level_id: curriculums_obj.level_id,
             curriculum_id: curriculums_obj.curriculum_id,

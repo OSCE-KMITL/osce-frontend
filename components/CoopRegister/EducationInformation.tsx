@@ -44,12 +44,12 @@ const EducationInformation: FC<RegisterForm> = ({ register, errors }) => {
                             name={'student_id'}
                             type="text"
                             label={'รหัสนักศึกษา'}
-                            value={studentIdParser(me?.email)}
+                            value={me?.is_student ? me?.is_student.student_id : undefined}
                             fullWidth
                             register={register}
                             isError={errors.student_id && true}
-                            placeholder={me?.role === RoleOption.STUDENT ? student_id() : ' 63010000'}
-                            disable={me && true}
+                            placeholder={me?.is_student ? me?.is_student.student_id : ' 63010000'}
+                            disable={me?.is_student ? true : false}
                             errors={errors}
                         />
                     </div>

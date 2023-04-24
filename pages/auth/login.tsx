@@ -6,6 +6,7 @@ import { LoginInput, useLogin } from '@features/auth/hooks/useLogin';
 import { AuthenticationContext, UserAuthData } from '@context/AuthContextProvider';
 import LoadingSpinner from '../../components/common/Spinner/LoadingSpinner';
 import { useRouter } from 'next/router';
+import { ENDPOINT_URI } from '@constants';
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const Login: React.FC = () => {
@@ -51,10 +52,10 @@ const Login: React.FC = () => {
                     <p className="font-light text-xl text-gray-700 ">บุคลากรและนักศึกษาเข้าสู่ระบบด้วย Email ของสถาบัน</p>
                     <div
                         className="flex bg-white  text-gray-900 border-2 justify-center items-center font-semibold  rounded-md gap-4 cursor-pointer"
-                        onClick={() => {}}
+                        onClick={() => router.push(ENDPOINT_URI + '/login/google')}
                     >
                         <GoogleIcon />
-                        <p className=" py-3"> {!loading ? 'Log in with Google' : 'Loading ...'}</p>
+                        <p className=" py-3"> {!loading ? 'เข้าสู่ระบบด้วย Account สถาบัน' : 'Loading ...'}</p>
                     </div>
                     <div className="flex w-full ">
                         <p className="mx-auto font-light text-xl text-gray-700 mt-4 ">หรือ</p>
