@@ -9,6 +9,7 @@ import { PencilIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useCommitteeAssignJob } from '@features/job/hooks/useEditStateJob';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
 import { CoopStatus } from '@features/student/interfaces';
+import withAuth from '@components/withAuth/WithAuth';
 
 const AssignJob: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
@@ -253,4 +254,4 @@ const AssignJob: React.FC = () => {
     );
 };
 
-export default AssignJob;
+export default withAuth(AssignJob);

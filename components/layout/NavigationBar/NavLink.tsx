@@ -18,7 +18,7 @@ export const PUBLIC_NAVIGATOR_LINK: NavContent[] = [
     },
     {
         title: 'กำหนดการสหกิจ',
-        link: '/accounts',
+        link: '/timeline',
     },
     {
         title: 'ดาวโหลดแบบฟอร์ม',

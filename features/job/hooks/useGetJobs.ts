@@ -25,6 +25,7 @@ export const GET_JOBS = gql`
             supervisor_job_title
             supervisor_email
             supervisor_phone_number
+            created_at
             company_id {
                 id
                 name_th
@@ -272,9 +273,7 @@ export interface JobResponses {
 
 export function useGetJobs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { data, loading, error, refetch } = useQuery<JobResponses>(GET_JOBS);
-
-    return { data, loading, error, refetch };
+    return useQuery<JobResponses>(GET_JOBS);
 }
 
 export function useGetJob({ jobId: string }) {

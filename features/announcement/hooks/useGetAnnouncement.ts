@@ -7,7 +7,7 @@ import { storeAnnouncement } from '../announcement.slice';
 export const useGetAnnouncements = () => {
     const dispatch = useDispatch();
 
-    const { data, loading, error, refetch } = useQuery<GetAnnouncementsResponse>(GET_ANNOUNCEMENTS, { pollInterval: 500 });
+    const { data, loading, error, refetch } = useQuery<GetAnnouncementsResponse>(GET_ANNOUNCEMENTS, { pollInterval: 10000 });
 
     useEffect(() => {
         if (data) {

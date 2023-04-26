@@ -13,6 +13,7 @@ import LoadingSpinner from '@components/common/Spinner/LoadingSpinner';
 import { CoopStatus } from '@features/student/interfaces';
 import { AuthenticationContext } from '@context/AuthContextProvider';
 import NotificationService from '@lib/ant_service/NotificationService';
+import withAuth from '@components/withAuth/WithAuth';
 
 const AdvisorAssign: React.FC = () => {
     const { data: students, loading, error } = useGetStudents();
@@ -186,4 +187,4 @@ const AdvisorAssign: React.FC = () => {
     );
 };
 
-export default AdvisorAssign;
+export default withAuth(AdvisorAssign);

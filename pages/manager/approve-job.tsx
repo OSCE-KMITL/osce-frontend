@@ -17,6 +17,7 @@ import {
 import NotificationService from '@lib/ant_service/NotificationService';
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
+import withAuth from '@components/withAuth/WithAuth';
 
 const ApproveJob: React.FC = () => {
     const { data: stu_apply_job_data, loading, error, refetch } = useGetStudentApplyJob();
@@ -237,4 +238,4 @@ const ApproveJob: React.FC = () => {
     );
 };
 
-export default ApproveJob;
+export default withAuth(ApproveJob);

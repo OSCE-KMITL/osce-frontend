@@ -7,6 +7,7 @@ import { Link } from '@ui/Link';
 import { ExportJsonToExcel } from '../../utils/ExportJsonToExcel';
 import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { useGetMe } from '@features/auth/hooks/useGetMe';
+import withAuth from '@components/withAuth/WithAuth';
 
 const StudentInfo: React.FC = () => {
     const { data: student_data, loading, error } = useGetStudents();
@@ -56,4 +57,4 @@ const StudentInfo: React.FC = () => {
     );
 };
 
-export default StudentInfo;
+export default withAuth(StudentInfo);

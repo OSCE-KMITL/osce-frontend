@@ -3,6 +3,7 @@ import { getAdvisorAccounts } from '@features/advisor/hooks';
 import AdvisorAccountTable from '@components/Manager/AdvisorAccount/AdvisorAccountTable';
 import { Divider } from 'antd';
 import { AuthenticationContext } from '@context/AuthContextProvider';
+import withAuth from '@components/withAuth/WithAuth';
 
 interface OwnProps {}
 
@@ -33,4 +34,4 @@ const AdvisorAccount: FC<Props> = (props) => {
     );
 };
 
-export default AdvisorAccount;
+export default withAuth(AdvisorAccount);

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import withAuth from '@components/withAuth/WithAuth';
 
 interface OwnProps {}
 
@@ -12,4 +13,4 @@ const AccountManager: FC<Props> = (props) => {
     );
 };
 
-export default AccountManager;
+export default withAuth(AccountManager);

@@ -59,7 +59,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
         await CookieManager.clearTokenFromCookie();
         await router.push('/');
         await setMe(null);
-        // await client.resetStore();
+        await client.resetStore();
     }
 
     return <AuthenticationContext.Provider value={{ me: me, setAuthUser, useLogout, getMeRefetch }}>{children}</AuthenticationContext.Provider>;

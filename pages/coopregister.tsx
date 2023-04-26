@@ -8,6 +8,7 @@ import { handleApplyStudentInfo, handleEditStudentInfo, studentStatusStateSelect
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import withAuth from '@components/withAuth/WithAuth';
 
 interface OwnProps {}
 

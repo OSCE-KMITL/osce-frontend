@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useGetAllCompany } from '@features/company/hooks/useGetCompanys';
 import { Divider, Table } from 'antd';
 import CompanyAccountTable from '@components/Manager/CompanyAccount/CompanyAccountTable';
+import withAuth from '@components/withAuth/WithAuth';
 
 interface OwnProps {}
 
@@ -21,4 +22,4 @@ const AdvisorAccount: FC<Props> = (props) => {
     );
 };
 
-export default AdvisorAccount;
+export default withAuth(AdvisorAccount);
